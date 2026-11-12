@@ -92,7 +92,13 @@ class BottleSortApp(tk.Tk):
         self.level_state = self.campaign[0].state if self.campaign else ()
         self.initial_state = self.level_state
         self.history: list[
-            tuple[tuple[tuple[str, ...], ...], int, tuple[tuple[int, int], ...]]
+            tuple[
+                tuple[tuple[str, ...], ...],
+                int,
+                tuple[tuple[int, int], ...],
+                tuple[tuple[str, ...], ...],
+                frozenset[str],
+            ]
         ] = []
         self.solution_path: list[tuple[int, int]] = []
         self.selected = None
@@ -104,9 +110,14 @@ class BottleSortApp(tk.Tk):
         self.timer_job: str | None = None
         self.current_mechanics: dict = {}
         self.animating = False
-        self.revealed_hidden_bottles: set[int] = set()
+        self.layer_tokens: tuple[tuple[str, ...], ...] = ()
+        self.initial_layer_tokens: tuple[tuple[str, ...], ...] = ()
+        self.secret_layer_tokens: set[str] = set()
+        self.revealed_layer_tokens: set[str] = set()
         self._menu_animation_job: str | None = None
         self._level_animation_job: str | None = None
+        self._menu_scene_requested = False
+        self._level_scene_requested = False
         self.audio = SoundManager(self)
         self.save_path = Path(os.path.expanduser("~/.bottle_sort_save.json"))
 
@@ -225,6 +236,7 @@ class BottleSortApp(tk.Tk):
             fg="#60748b",
         )
         self.minecraft_label.pack(pady=(0, 10))
+        self._animate_menu_scene()
 
     def _button(self, parent, key: str, command, *, width: int = 12):
         return tk.Button(
@@ -371,6 +383,7 @@ class BottleSortApp(tk.Tk):
         footer.pack(pady=8)
         self.level_select_back = self._button(footer, "back", self.show_menu)
         self.level_select_back.pack(side="left", padx=6)
+        self._animate_level_scene()
 
     def show_menu(self):
         self._stop_timer()
@@ -379,15 +392,17 @@ class BottleSortApp(tk.Tk):
         self._hide_all_frames()
         self.main_container.pack(fill="both", expand=True)
         self._refresh_progress()
+        self._menu_scene_requested = True
         if self._menu_animation_job is None:
-            self._menu_animation_job = self.after_idle(self._animate_menu_scene)
+            self._menu_animation_job = self.after(80, self._animate_menu_scene)
 
     def show_level_select(self):
         self._build_level_select()
         self._hide_all_frames()
         self.level_select_frame.pack(fill="both", expand=True)
+        self._level_scene_requested = True
         if self._level_animation_job is None:
-            self._level_animation_job = self.after_idle(self._animate_level_scene)
+            self._level_animation_job = self.after(80, self._animate_level_scene)
 
     def show_settings(self):
         self._build_settings()
@@ -395,31 +410,29 @@ class BottleSortApp(tk.Tk):
         self.settings_frame.pack(fill="both", expand=True)
 
     def _hide_all_frames(self):
+        self._menu_scene_requested = False
+        self._level_scene_requested = False
         for frame_name in ["main_container", "game_frame", "settings_frame", "level_select_frame"]:
             frame = getattr(self, frame_name, None)
             if frame is not None:
                 frame.pack_forget()
 
     def _animate_menu_scene(self) -> None:
-        if not self.main_container.winfo_ismapped():
-            self._menu_animation_job = None
-            return
-
         canvas = self.menu_scene
         canvas.delete("all")
-        width = max(canvas.winfo_width(), 500)
+        width = max(canvas.winfo_width(), self.winfo_width() - 200, 500)
         elapsed = time.monotonic()
         colors = (COLOR_PALETTE[2], COLOR_PALETTE[5], COLOR_PALETTE[9], COLOR_PALETTE[13], COLOR_PALETTE[20])
         centers = [
             width * (index + 1) / 6 + math.sin(elapsed * 0.55 + index * 1.8) * 9
             for index in range(len(colors))
         ]
-        pour_period = 2.8
+        pour_period = 2.2
         pour_cycle = elapsed % (pour_period * len(colors))
         source_index = int(pour_cycle // pour_period)
         target_index = (source_index + 1) % len(colors)
         pour_time = pour_cycle % pour_period
-        pour_amount = min(0.18, pour_time / 2.4 * 0.18)
+        pour_amount = min(0.18, pour_time / 1.6 * 0.18)
         fills = [0.35, 0.58, 0.42, 0.62, 0.3]
         fills[source_index] -= pour_amount
         fills[target_index] += pour_amount
@@ -533,11 +546,11 @@ class BottleSortApp(tk.Tk):
                     outline="",
                 )
 
-        if pour_time < 2.4:
+        if pour_time < 1.6:
             x0, y0, _ = bottle_tops[source_index]
             x1, y1, _ = bottle_tops[target_index]
             for drop_index in range(5):
-                progress = (pour_time / 2.4 + drop_index * 0.19) % 1.0
+                progress = (pour_time / 1.6 + drop_index * 0.19) % 1.0
                 x = x0 + (x1 - x0) * progress
                 y = y0 + (y1 - y0) * progress - 20 * math.sin(progress * math.pi)
                 canvas.create_oval(
@@ -546,17 +559,17 @@ class BottleSortApp(tk.Tk):
                     outline="",
                 )
 
-        self._menu_animation_job = self.after(40, self._animate_menu_scene)
+        self._menu_animation_job = (
+            self.after(40 if self.main_container.winfo_ismapped() else 100, self._animate_menu_scene)
+            if self._menu_scene_requested
+            else None
+        )
 
     def _animate_level_scene(self) -> None:
-        if not self.level_select_frame.winfo_ismapped():
-            self._level_animation_job = None
-            return
-
         canvas = self.level_scene
         canvas.delete("all")
-        width = max(canvas.winfo_width(), 900)
-        height = max(canvas.winfo_height(), 600)
+        width = max(canvas.winfo_width(), self.winfo_width(), 900)
+        height = max(canvas.winfo_height(), self.winfo_height() - 100, 600)
         elapsed = time.monotonic()
         background = "#eaf0f7"
         positions = (0.055, 0.14, 0.86, 0.945)
@@ -573,7 +586,7 @@ class BottleSortApp(tk.Tk):
             neck_left = center_x - neck_width / 2
             neck_right = center_x + neck_width / 2
             color = COLOR_PALETTE[(index * 7 + 4) % len(COLOR_PALETTE)]
-            soft_color = self._blend_color(color, background, 0.77)
+            soft_color = self._blend_color(color, background, 0.48)
             glass = self._blend_color("#6e8aa3", background, 0.3)
             canvas.create_oval(left - 9, bottom + 5, right + 9, bottom + 15,
                                fill=self._blend_color("#afc3d4", background, 0.5), outline="")
@@ -626,7 +639,11 @@ class BottleSortApp(tk.Tk):
                     outline="",
                 )
 
-        self._level_animation_job = self.after(110, self._animate_level_scene)
+        self._level_animation_job = (
+            self.after(110 if self.level_select_frame.winfo_ismapped() else 150, self._animate_level_scene)
+            if self._level_scene_requested
+            else None
+        )
 
     def _refresh_progress(self):
         if self.progress_load_error:
@@ -669,6 +686,25 @@ class BottleSortApp(tk.Tk):
             self.progress = {"completed": [], "settings": {}}
             self.progress_load_error = str(error)
 
+    @staticmethod
+    def _make_layer_tokens(level_id: int, state) -> tuple[tuple[str, ...], ...]:
+        return tuple(
+            tuple(f"{level_id}:{bottle_index}:{layer_index}" for layer_index in range(len(bottle)))
+            for bottle_index, bottle in enumerate(state)
+        )
+
+    def _reveal_hidden_top_runs(self, state, layer_tokens) -> None:
+        hidden_bottles = set(self.current_mechanics.get("hidden_bottles", []))
+        for bottle_index in hidden_bottles:
+            if bottle_index >= len(state) or not state[bottle_index]:
+                continue
+            bottle = state[bottle_index]
+            top_color = bottle[-1]
+            run_length = 1
+            while run_length < len(bottle) and bottle[-run_length - 1] == top_color:
+                run_length += 1
+            self.revealed_layer_tokens.update(layer_tokens[bottle_index][-run_length:])
+
     def _save_progress(self):
         self.save_path.parent.mkdir(parents=True, exist_ok=True)
         payload = dict(self.progress)
@@ -684,6 +720,9 @@ class BottleSortApp(tk.Tk):
             payload["move_count"] = self.move_count
             payload["elapsed_seconds"] = self._elapsed()
             payload["solution_path"] = [list(move) for move in self.solution_path]
+            if len(self.layer_tokens) == len(self.level_state):
+                payload["current_layer_tokens"] = [list(bottle) for bottle in self.layer_tokens]
+                payload["revealed_layer_tokens"] = sorted(self.revealed_layer_tokens)
         self.save_path.write_text(json.dumps(payload), encoding="utf-8")
         self.progress = payload
 
@@ -700,7 +739,6 @@ class BottleSortApp(tk.Tk):
         self.game_frame.pack(fill="both", expand=True)
 
         self.selected = None
-        self.revealed_hidden_bottles = set()
         self.game_status.config(text="", fg="#235b3c")
         self.next_btn.pack_forget()
         self.next_btn.config(state="normal")
@@ -712,6 +750,52 @@ class BottleSortApp(tk.Tk):
             else tuple(tuple(bottle) for bottle in level.state)
         )
         self.initial_state = tuple(tuple(bottle) for bottle in level.state)
+        self.initial_layer_tokens = self._make_layer_tokens(level.id, self.initial_state)
+        saved_tokens = self.progress.get("current_layer_tokens") if snapshot_matches else None
+        valid_saved_tokens = (
+            isinstance(saved_tokens, list)
+            and len(saved_tokens) == len(self.level_state)
+            and all(
+                isinstance(tokens, list)
+                and len(tokens) == len(bottle)
+                and all(isinstance(token, str) for token in tokens)
+                for tokens, bottle in zip(saved_tokens, self.level_state)
+            )
+        )
+        if valid_saved_tokens:
+            self.layer_tokens = tuple(tuple(tokens) for tokens in saved_tokens)
+            all_tokens = [token for bottle in self.layer_tokens for token in bottle]
+            valid_saved_tokens = (
+                len(set(all_tokens)) == len(all_tokens)
+                and set(all_tokens)
+                == {token for bottle in self.initial_layer_tokens for token in bottle}
+            )
+        if not valid_saved_tokens:
+            self.layer_tokens = self._make_layer_tokens(level.id, self.level_state)
+        hidden_bottles = set(self.current_mechanics.get("hidden_bottles", []))
+        if valid_saved_tokens:
+            self.secret_layer_tokens = {
+                token
+                for bottle_index in hidden_bottles
+                if bottle_index < len(self.initial_layer_tokens)
+                for token in self.initial_layer_tokens[bottle_index]
+            }
+            saved_revealed = self.progress.get("revealed_layer_tokens", [])
+            self.revealed_layer_tokens = (
+                set(saved_revealed) & self.secret_layer_tokens
+                if isinstance(saved_revealed, list)
+                and all(isinstance(token, str) for token in saved_revealed)
+                else set()
+            )
+        else:
+            self.secret_layer_tokens = {
+                token
+                for bottle_index in hidden_bottles
+                if bottle_index < len(self.layer_tokens)
+                for token in self.layer_tokens[bottle_index]
+            }
+            self.revealed_layer_tokens = set()
+        self._reveal_hidden_top_runs(self.level_state, self.layer_tokens)
         self.history = []
         self.move_count = int(self.progress.get("move_count", 0)) if snapshot_matches else 0
         self.elapsed_seconds = float(self.progress.get("elapsed_seconds", 0.0)) if snapshot_matches else 0.0
@@ -775,7 +859,7 @@ class BottleSortApp(tk.Tk):
             frozen = idx in frozen_bottles
             stone = idx in stone_bottles
             decoy = idx in decoy_bottles
-            hidden = idx in hidden_bottles and idx not in self.revealed_hidden_bottles
+            mystery = idx in hidden_bottles
             glass_shape = tuple(
                 coordinate
                 for x, y in (
@@ -804,7 +888,13 @@ class BottleSortApp(tk.Tk):
             for layer_idx, color in enumerate(bottle):
                 y_bottom = 179 - layer_idx * liquid_height
                 y_top = y_bottom - liquid_height
-                base_color = "#43566b" if hidden else self._color_for(color)
+                layer_token = self.layer_tokens[idx][layer_idx]
+                unknown = (
+                    mystery
+                    and layer_token in self.secret_layer_tokens
+                    and layer_token not in self.revealed_layer_tokens
+                )
+                base_color = "#43566b" if unknown else self._color_for(color)
                 canvas.create_rectangle(
                     26,
                     sy(y_top),
@@ -820,14 +910,21 @@ class BottleSortApp(tk.Tk):
                         fill=self._blend_color(base_color, "#ffffff", 0.12),
                         outline="",
                     )
-                if self.patterns_enabled:
-                    marks = ("●", "▲", "■", "◆", "✚", "✦", "⬟", "✿")
-                    pattern_ink = "#ffffff" if hidden else self._pattern_ink(base_color)
+                if unknown:
                     canvas.create_text(
                         43,
                         sy((y_top + y_bottom) / 2),
-                        text="?" if hidden else marks[zlib.crc32(color.encode("utf-8")) % len(marks)],
-                        fill=pattern_ink,
+                        text="?",
+                        fill="#ffffff",
+                        font=("Segoe UI", 13, "bold"),
+                    )
+                elif self.patterns_enabled:
+                    marks = ("●", "▲", "■", "◆", "✚", "✦", "⬟", "✿")
+                    canvas.create_text(
+                        43,
+                        sy((y_top + y_bottom) / 2),
+                        text=marks[zlib.crc32(color.encode("utf-8")) % len(marks)],
+                        fill=self._pattern_ink(base_color),
                         font=("Segoe UI", 10, "bold"),
                     )
 
@@ -856,7 +953,7 @@ class BottleSortApp(tk.Tk):
                     canvas.create_line(53, sy(crack_y + 4), 63, sy(crack_y + 11), fill="#586779", width=2)
                 badge_text = self._t("mechanic_stone")
                 badge_fill, badge_outline = "#d5dce3", "#526273"
-            elif hidden or decoy:
+            elif mystery or decoy:
                 badge_text = self._t("mechanic_mystery")
                 badge_fill, badge_outline = "#ffe4a8", "#bd7112"
             else:
@@ -864,7 +961,7 @@ class BottleSortApp(tk.Tk):
 
             if badge_text:
                 canvas.create_oval(56, sy(15), 79, sy(38), fill=badge_fill, outline=badge_outline, width=2)
-                canvas.create_text(67.5, sy(26), text="?" if hidden or decoy else ("❄" if frozen else "◆"),
+                canvas.create_text(67.5, sy(26), text="?" if mystery or decoy else ("❄" if frozen else "◆"),
                                    fill=badge_outline, font=("Segoe UI", 10, "bold"))
                 canvas.create_text(43, sy(211), text=badge_text, fill=badge_outline, font=("Segoe UI", 10, "bold"))
             elif idx in giant_bottles:
@@ -882,8 +979,6 @@ class BottleSortApp(tk.Tk):
 
             canvas.bind("<ButtonPress-1>", lambda event, idx=idx: self._begin_drag(idx))
             canvas.bind("<ButtonRelease-1>", lambda event, idx=idx: self._end_drag(idx))
-            if hidden:
-                canvas.create_text(43, sy(118), text="?", fill="#ffffff", font=("Segoe UI", 27, "bold"))
             canvas.create_text(43, sy(235), text=str(idx + 1), fill="#344b64", font=("Segoe UI", 10, "bold"))
 
     def _color_for(self, color: str) -> str:
@@ -935,8 +1030,6 @@ class BottleSortApp(tk.Tk):
             return
         if source == index and self.selected is None:
             self.selected = index
-            if index in self.current_mechanics.get("hidden_bottles", []):
-                self.revealed_hidden_bottles.add(index)
             self._render_board()
             return
         if self.selected is not None and index != self.selected and can_pour(
@@ -964,9 +1057,10 @@ class BottleSortApp(tk.Tk):
         y1 = target_canvas.winfo_rooty() + 70 - self.winfo_rooty()
         droplet = tk.Label(self, bg=color, relief="raised", borderwidth=1)
         droplet.place(x=x0, y=y0, width=28, height=16)
+        self._draw_tilting_bottle(source, target)
         self.animating = True
         started = time.monotonic()
-        duration = 0.8
+        duration = 0.5
         self.audio.play_pour()
 
         def animate() -> None:
@@ -978,25 +1072,112 @@ class BottleSortApp(tk.Tk):
                 self.after(16, animate)
                 return
             droplet.destroy()
+            source_canvas.delete("pour_tilt")
             self.animating = False
             self._apply_move(source, target)
             self._render_board()
 
         animate()
 
+    def _draw_tilting_bottle(self, source: int, target: int) -> None:
+        canvas = self.bottle_canvases[source]
+        level = self.campaign[self.level_index]
+        capacity = level.capacities[source]
+        scale = math.sqrt(capacity / level.capacity)
+
+        def sy(value):
+            return 14 + (value - 14) * scale
+
+        direction = 1 if target > source else -1
+        angle = direction * 0.14
+        pivot_x, pivot_y = 43, sy(180)
+
+        def rotate(points):
+            cosine, sine = math.cos(angle), math.sin(angle)
+            result = []
+            for index in range(0, len(points), 2):
+                dx = points[index] - pivot_x
+                dy = points[index + 1] - pivot_y
+                result.extend((
+                    pivot_x + dx * cosine - dy * sine,
+                    pivot_y + dx * sine + dy * cosine,
+                ))
+            return result
+
+        tags = ("pour_tilt",)
+        canvas.create_rectangle(15, sy(14), 79, sy(204), fill="#eaf0f7", outline="", tags=tags)
+        glass_shape = [
+            31, sy(22), 55, sy(22), 55, sy(48), 64, sy(62),
+            64, sy(180), 59, sy(195), 27, sy(195), 22, sy(180),
+            22, sy(62), 31, sy(48),
+        ]
+        canvas.create_polygon(
+            *rotate(glass_shape),
+            fill="#f9fcff",
+            outline="#718ba2",
+            width=2,
+            smooth=True,
+            tags=tags,
+        )
+        bottle = self.level_state[source]
+        token_row = self.layer_tokens[source]
+        layer_height = 108 / max(1, capacity)
+        for layer_index, color in enumerate(bottle):
+            y_bottom = 179 - layer_index * layer_height
+            y_top = y_bottom - layer_height
+            token = token_row[layer_index]
+            unknown = (
+                source in self.current_mechanics.get("hidden_bottles", [])
+                and token in self.secret_layer_tokens
+                and token not in self.revealed_layer_tokens
+            )
+            liquid_color = "#43566b" if unknown else self._color_for(color)
+            canvas.create_polygon(
+                *rotate([26, sy(y_top), 60, sy(y_top), 60, sy(y_bottom), 26, sy(y_bottom)]),
+                fill=liquid_color,
+                outline="",
+                tags=tags,
+            )
+            if unknown:
+                question = rotate([43, sy((y_top + y_bottom) / 2)])
+                canvas.create_text(
+                    question[0], question[1], text="?", fill="#ffffff",
+                    font=("Segoe UI", 12, "bold"), tags=tags,
+                )
+        canvas.create_polygon(
+            *rotate(glass_shape),
+            fill="",
+            outline="#718ba2",
+            width=2,
+            smooth=True,
+            tags=tags,
+        )
+
     def _apply_move(self, source, target):
         level = self.campaign[self.level_index]
         self.game_status.config(text="")
         before = self.level_state
-        self.history.append((before, self.move_count, tuple(self.solution_path)))
+        self._reveal_hidden_top_runs(before, self.layer_tokens)
+        self.history.append((
+            before,
+            self.move_count,
+            tuple(self.solution_path),
+            self.layer_tokens,
+            frozenset(self.revealed_layer_tokens),
+        ))
         if self.solution_path and self.solution_path[0] == (source, target):
             self.solution_path.pop(0)
         else:
             self.solution_path = []
-        self.revealed_hidden_bottles.update((source, target))
-        self.level_state = apply_pour(
-            self.level_state, source, target, level.capacities, self.current_mechanics
-        )
+        next_state = apply_pour(before, source, target, level.capacities, self.current_mechanics)
+        next_tokens = [list(bottle) for bottle in self.layer_tokens]
+        moved_count = len(before[source]) - len(next_state[source])
+        moved_tokens = next_tokens[source][-moved_count:]
+        del next_tokens[source][-moved_count:]
+        next_tokens[target].extend(moved_tokens)
+        self.level_state = next_state
+        self.layer_tokens = tuple(tuple(bottle) for bottle in next_tokens)
+        self._reveal_hidden_top_runs(self.level_state, self.layer_tokens)
         self.move_count += 1
         self._update_game_labels(level)
         self._save_progress()
@@ -1023,10 +1204,19 @@ class BottleSortApp(tk.Tk):
     def undo_move(self):
         if not self.history:
             return
-        previous_state, previous_moves, previous_solution_path = self.history.pop()
+        (
+            previous_state,
+            previous_moves,
+            previous_solution_path,
+            previous_tokens,
+            previous_revealed,
+        ) = self.history.pop()
         self.level_state = previous_state
         self.move_count = previous_moves
         self.solution_path = list(previous_solution_path)
+        self.layer_tokens = previous_tokens
+        self.revealed_layer_tokens = set(previous_revealed)
+        self._reveal_hidden_top_runs(self.level_state, self.layer_tokens)
         self.next_btn.pack_forget()
         self.game_status.config(text="", fg="#235b3c")
         self._update_game_labels(self.campaign[self.level_index])
@@ -1038,7 +1228,9 @@ class BottleSortApp(tk.Tk):
         self.history = []
         self.move_count = 0
         self.solution_path = list(self.campaign[self.level_index].solution)
-        self.revealed_hidden_bottles = set()
+        self.layer_tokens = self.initial_layer_tokens
+        self.revealed_layer_tokens = set()
+        self._reveal_hidden_top_runs(self.level_state, self.layer_tokens)
         self.next_btn.pack_forget()
         self.next_btn.config(state="normal")
         self.game_status.config(text="", fg="#235b3c")

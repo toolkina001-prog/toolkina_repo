@@ -44,6 +44,17 @@ class CampaignTests(unittest.TestCase):
                 f"Level {level.id} starts with a completed bottle.",
             )
 
+    def test_every_mystery_level_has_a_verified_solution(self):
+        campaign_path = Path(__file__).resolve().parents[1] / "campaign" / "levels.json"
+        levels = load_campaign(campaign_path)
+        mystery_levels = [
+            level for level in levels
+            if level.mechanics_config and level.mechanics_config.get("hidden_bottles")
+        ]
+
+        self.assertTrue(mystery_levels)
+        verify_campaign(mystery_levels)
+
     def test_giant_bottle_levels_are_three_times_capacity_and_solvable(self):
         levels = [
             generate_level_definition(level_id)
