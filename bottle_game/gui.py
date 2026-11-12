@@ -339,7 +339,6 @@ class BottleSortApp(tk.Tk):
             highlightthickness=0,
         )
         self.level_scene.place(relwidth=1, relheight=1)
-        self.level_scene.lower()
 
         self.level_select_title = tk.Label(self.level_select_frame, text=self._t("campaign"), font=("Segoe UI", 24, "bold"), bg="#eaf0f7", fg="#172c46")
         self.level_select_title.pack(pady=(24, 4))
