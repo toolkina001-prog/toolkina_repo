@@ -20,6 +20,12 @@ class BottlePuzzleTests(unittest.TestCase):
         self.assertEqual(result[0], ("R", "R"))
         self.assertEqual(result[1], ("G", "G"))
 
+    def test_top_layer_moves_and_bottom_layer_stays(self):
+        state = (("red", "blue"), ())
+        result = apply_pour(state, 0, 1, 4)
+        self.assertEqual(result[0], ("red",))
+        self.assertEqual(result[1], ("blue",))
+
     def test_solved_state_is_detected(self):
         state = (("R", "R", "R", "R"), ("G", "G", "G", "G"), (), ())
         self.assertTrue(is_solved(state, 4))
