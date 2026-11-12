@@ -5,15 +5,23 @@ from __future__ import annotations
 import random
 from typing import List, Tuple
 
-from .engine import BottleState, apply_pour, can_pour, is_solved
+from .engine import BottleState, apply_pour, can_pour, is_bottle_complete, is_solved
 
 
-def solved_state(color_count: int, capacity: int, empty_bottles: int = 0) -> BottleState:
+def solved_state(
+    color_count: int,
+    capacity: int,
+    empty_bottles: int = 0,
+    bottle_capacities: tuple[int, ...] | None = None,
+) -> BottleState:
     """Create a solved board with one full bottle per color plus empty bottles."""
+    capacities = bottle_capacities or (capacity,) * (color_count + empty_bottles)
+    if len(capacities) != color_count + empty_bottles:
+        raise ValueError("bottle_capacities must match the number of bottles.")
     bottles: List[Tuple[str, ...]] = []
     for index in range(color_count):
         color = f"C{index}"
-        bottles.append(tuple([color] * capacity))
+        bottles.append(tuple([color] * capacities[index]))
     bottles.extend([tuple() for _ in range(empty_bottles)])
     return tuple(bottles)
 
@@ -27,6 +35,7 @@ def generate_level(
     rng: random.Random | None = None,
     max_attempts: int = 200,
     mechanics: dict | None = None,
+    bottle_capacities: tuple[int, ...] | None = None,
 ) -> BottleState:
     """Create a solvable board by reversing legal pours from a solved state."""
     state, _ = generate_level_with_solution(
@@ -37,6 +46,7 @@ def generate_level(
         rng=rng,
         max_attempts=max_attempts,
         mechanics=mechanics,
+        bottle_capacities=bottle_capacities,
     )
     return state
 
@@ -50,16 +60,25 @@ def generate_level_with_solution(
     rng: random.Random | None = None,
     max_attempts: int = 200,
     mechanics: dict | None = None,
+    bottle_capacities: tuple[int, ...] | None = None,
 ) -> tuple[BottleState, tuple[tuple[int, int], ...]]:
     """Return a reverse-shuffled board and its proven forward solution."""
     if color_count < 1 or capacity < 1 or empty_bottles < 1:
         raise ValueError("A level requires at least one color, one layer per bottle, and one empty bottle.")
     if shuffle_steps < 1 or max_attempts < 1:
         raise ValueError("shuffle_steps and max_attempts must be positive.")
+    capacities = bottle_capacities or (capacity,) * (color_count + empty_bottles)
+    if len(capacities) != color_count + empty_bottles or any(value < capacity for value in capacities[:color_count]):
+        raise ValueError("bottle_capacities must provide sufficient capacity for every color bottle.")
     rng = rng or random.Random()
 
     for _ in range(max_attempts):
-        bottles = [list(bottle) for bottle in solved_state(color_count, capacity, empty_bottles)]
+        bottles = [
+            list(bottle)
+            for bottle in solved_state(
+                color_count, capacity, empty_bottles, tuple(capacities)
+            )
+        ]
         reverse_moves: list[tuple[int, int]] = []
         for _ in range(shuffle_steps):
             state = tuple(tuple(bottle) for bottle in bottles)
@@ -74,9 +93,10 @@ def generate_level_with_solution(
                         break
                     top_run += 1
                 for source_index, source in enumerate(bottles):
-                    if source_index == target_index or len(source) >= capacity:
+                    source_capacity = capacities[source_index]
+                    if source_index == target_index or len(source) >= source_capacity:
                         continue
-                    max_amount = min(top_run, capacity - len(source))
+                    max_amount = min(top_run, source_capacity - len(source))
                     for amount in range(1, max_amount + 1):
                         if amount == top_run and top_run < len(target):
                             continue
@@ -84,9 +104,9 @@ def generate_level_with_solution(
                         candidate[source_index].extend(candidate[target_index][-amount:])
                         del candidate[target_index][-amount:]
                         candidate_state = tuple(tuple(bottle) for bottle in candidate)
-                        if not can_pour(candidate_state, source_index, target_index, capacity, mechanics):
+                        if not can_pour(candidate_state, source_index, target_index, capacities, mechanics):
                             continue
-                        if apply_pour(candidate_state, source_index, target_index, capacity, mechanics) == state:
+                        if apply_pour(candidate_state, source_index, target_index, capacities, mechanics) == state:
                             candidates.append((candidate, (source_index, target_index)))
             if not candidates:
                 break
@@ -94,12 +114,15 @@ def generate_level_with_solution(
             reverse_moves.append(move)
 
         state = tuple(tuple(bottle) for bottle in bottles)
-        if not is_solved(state, capacity):
+        if not is_solved(state, capacities) and not any(
+            is_bottle_complete(bottle, bottle_capacity)
+            for bottle, bottle_capacity in zip(state, capacities)
+        ):
             solution = tuple(reversed(reverse_moves))
             check_state = state
             for source, target in solution:
-                check_state = apply_pour(check_state, source, target, capacity, mechanics)
-            if not is_solved(check_state, capacity):
+                check_state = apply_pour(check_state, source, target, capacities, mechanics)
+            if not is_solved(check_state, capacities):
                 raise RuntimeError("Reverse-generated solution did not solve its level.")
             return state, solution
 

@@ -2,18 +2,18 @@
 
 from __future__ import annotations
 
+import colorsys
 import json
+import math
 import os
 import time
-import colorsys
 import tkinter as tk
 import zlib
 from pathlib import Path
-from tkinter import messagebox
 
 from .campaign import LevelDefinition, generate_campaign, load_campaign
 from .audio import SoundManager
-from .engine import apply_pour, can_pour, is_solved, legal_moves
+from .engine import apply_pour, can_pour, is_bottle_complete, is_solved, legal_moves
 from .solver import solve_level
 
 TEXT = {
@@ -26,13 +26,14 @@ TEXT = {
         "language": "Language", "save": "Save settings", "back": "Back", "reset": "Reset progress",
         "campaign": "Choose a level", "level": "Level {number}", "level_solved": "Puzzle solved!",
         "dead_title": "No moves left", "dead_body": "This position has no legal moves.",
-        "restart_prompt": "Restart level", "no_hint": "No hint available for this position.",
-        "hint_move": "Try bottle {source} → bottle {target}", "hint_limit": "No hints left for this level.",
-        "solvable": "A solution is available in {count} moves.",
-        "unsolved": "Could not find a solution within the search time limit.",
         "progress_error": "Could not load saved progress: {error}",
-        "settings_saved": "Settings saved.", "progress_reset": "Progress reset.",
         "select_level": "Click a level to start", "open": "Open",
+        "next": "Next level", "minecraft": "Creeper green, redstone red, emerald sparkle.",
+        "mechanic_ice": "ICE", "mechanic_stone": "STONE", "mechanic_mystery": "MYSTERY",
+        "hint_status": "Hint: bottle {source} → bottle {target}",
+        "hint_unavailable": "No hint available for this position.",
+        "solvable_status": "Solution found: {count} moves.",
+        "unsolved_status": "No solution found within the search time limit.",
     },
     "RU": {
         "play": "Играть", "levels": "Выбор уровня", "settings": "Настройки", "exit": "Выход",
@@ -43,31 +44,33 @@ TEXT = {
         "language": "Язык", "save": "Сохранить настройки", "back": "Назад", "reset": "Сбросить прогресс",
         "campaign": "Выбор уровня", "level": "Уровень {number}", "level_solved": "Уровень пройден!",
         "dead_title": "Ходы закончились", "dead_body": "В этой позиции нет доступных ходов.",
-        "restart_prompt": "Начать заново", "no_hint": "Для этой позиции нет подсказки.",
-        "hint_move": "Попробуйте перелить из бутылки {source} в бутылку {target}",
-        "hint_limit": "Подсказки для этого уровня закончились.",
-        "solvable": "Решение найдено: {count} ходов.",
-        "unsolved": "Не удалось найти решение за отведённое время.",
         "progress_error": "Не удалось загрузить сохранение: {error}",
-        "settings_saved": "Настройки сохранены.", "progress_reset": "Прогресс сброшен.",
         "select_level": "Нажмите на номер уровня, чтобы начать", "open": "Открыть",
+        "next": "Следующий уровень", "minecraft": "Зелёный крипер, красный редстоун, сияющий изумруд.",
+        "mechanic_ice": "ЛЁД", "mechanic_stone": "КАМЕНЬ", "mechanic_mystery": "ТАЙНА",
+        "hint_status": "Подсказка: бутылка {source} → бутылка {target}",
+        "hint_unavailable": "Для этой позиции нет подсказки.",
+        "solvable_status": "Решение найдено: {count} ходов.",
+        "unsolved_status": "Решение не найдено за отведённое время.",
     },
 }
 
-COLOR_PALETTE = tuple(
-    "#{:02x}{:02x}{:02x}".format(
-        *(int(channel * 255) for channel in colorsys.hsv_to_rgb(
-            (index * 0.61803398875) % 1,
-            0.88,
-            0.78 if index % 2 else 0.96,
-        ))
-    )
-    for index in range(32)
+COLOR_PALETTE = (
+    "#D61E11", "#00F5F5", "#5A00F5", "#49F500", "#F5D236", "#F536BC",
+    "#006BB2", "#00F56E", "#B28900", "#B20077", "#00B21E", "#369FF5",
+    "#ABF500", "#BC00F5", "#0025F5", "#F56C36", "#2FD6B2", "#6FB227",
+    "#7F27B2", "#2E27B2", "#27B264", "#F5366F", "#00F500", "#3656F5",
+    "#F5A300", "#8F36F5", "#7CF536", "#36F543", "#F50045", "#B25327",
+    "#00B6D6", "#F50097",
 )
 
 
 class BottleSortApp(tk.Tk):
     def __init__(self, campaign=None):
+        if os.name == "nt":
+            import ctypes
+
+            ctypes.windll.user32.SetProcessDPIAware()
         super().__init__()
         self.title("Bottle Sort")
         self.geometry("1200x760")
@@ -77,9 +80,8 @@ class BottleSortApp(tk.Tk):
         self.language = "EN"
         self.sound_enabled = True
         self.music_enabled = True
-        self.patterns_enabled = False
+        self.patterns_enabled = True
         self.hints_remaining = 3
-        self.dead_end_dialog = None
 
         if campaign is not None:
             self.campaign = campaign
@@ -96,11 +98,14 @@ class BottleSortApp(tk.Tk):
         self.selected = None
         self.move_count = 0
         self.progress = {}
+        self.progress_load_error: str | None = None
         self.elapsed_seconds = 0.0
         self.level_started_at: float | None = None
         self.timer_job: str | None = None
         self.current_mechanics: dict = {}
         self.animating = False
+        self.revealed_hidden_bottles: set[int] = set()
+        self._menu_animation_job: str | None = None
         self.audio = SoundManager(self)
         self.save_path = Path(os.path.expanduser("~/.bottle_sort_save.json"))
 
@@ -140,6 +145,9 @@ class BottleSortApp(tk.Tk):
             self.hint_btn.config(text=self._t("hint"))
             self.check_btn.config(text=self._t("check"))
             self.menu_btn.config(text=self._t("menu"))
+            self.next_btn.config(text=self._t("next"))
+        if hasattr(self, "minecraft_label"):
+            self.minecraft_label.config(text=self._t("minecraft"))
         self._refresh_progress()
         if hasattr(self, "level_list"):
             self.level_list.delete(0, tk.END)
@@ -177,8 +185,16 @@ class BottleSortApp(tk.Tk):
         )
         self.tagline_label.pack(pady=(0, 24))
 
+        self.menu_scene = tk.Canvas(
+            self.main_container,
+            height=230,
+            bg="#eaf0f7",
+            highlightthickness=0,
+        )
+        self.menu_scene.pack(fill="x", padx=100, pady=(0, 8))
+
         self.menu_buttons = tk.Frame(self.main_container, bg="#eaf0f7")
-        self.menu_buttons.pack(pady=20)
+        self.menu_buttons.pack(pady=6)
 
         self.play_btn = self._button(self.menu_buttons, "play", self.start_level, width=24)
         self.play_btn.pack(pady=8)
@@ -199,7 +215,15 @@ class BottleSortApp(tk.Tk):
             bg="#eaf0f7",
             fg="#52677c",
         )
-        self.status_label.pack(pady=8)
+        self.status_label.pack(pady=(4, 2))
+        self.minecraft_label = tk.Label(
+            self.main_container,
+            text=self._t("minecraft"),
+            font=("Segoe UI", 10),
+            bg="#eaf0f7",
+            fg="#60748b",
+        )
+        self.minecraft_label.pack(pady=(0, 10))
 
     def _button(self, parent, key: str, command, *, width: int = 12):
         return tk.Button(
@@ -211,7 +235,7 @@ class BottleSortApp(tk.Tk):
             relief="flat",
             borderwidth=0,
             cursor="hand2",
-            font=("Segoe UI", 10, "bold"),
+            font=("Segoe UI", 10),
             fg="#ffffff",
             bg="#245c82",
             activeforeground="#ffffff",
@@ -250,6 +274,17 @@ class BottleSortApp(tk.Tk):
         self.check_btn.pack(side="left", padx=6)
         self.menu_btn = self._button(controls, "menu", self.show_menu)
         self.menu_btn.pack(side="left", padx=6)
+        self.next_btn = self._button(controls, "next", self.next_level, width=16)
+
+        self.game_status = tk.Label(
+            self.game_frame,
+            text="",
+            font=("Segoe UI", 11, "bold"),
+            bg="#eaf0f7",
+            fg="#235b3c",
+            anchor="w",
+        )
+        self.game_status.pack(fill="x", padx=26, pady=(0, 4))
 
         self.board = tk.Frame(self.game_frame, bg="#eaf0f7")
         self.board.pack(fill="both", expand=True, padx=20, pady=10)
@@ -284,12 +319,12 @@ class BottleSortApp(tk.Tk):
 
         button_row = tk.Frame(self.settings_frame, bg="#eaf0f7")
         button_row.pack(pady=24)
-        self.settings_save = self._button(button_row, "save", self.save_settings)
-        self.settings_save.pack(side="left", padx=8)
-        self.settings_back = self._button(button_row, "back", self.show_menu)
-        self.settings_back.pack(side="left", padx=8)
-        self.settings_reset = self._button(button_row, "reset", self.reset_progress)
-        self.settings_reset.pack(side="left", padx=8)
+        self.settings_save = self._button(button_row, "save", self.save_settings, width=28)
+        self.settings_save.pack(pady=5)
+        self.settings_back = self._button(button_row, "back", self.show_menu, width=28)
+        self.settings_back.pack(pady=5)
+        self.settings_reset = self._button(button_row, "reset", self.reset_progress, width=28)
+        self.settings_reset.pack(pady=5)
 
     def _build_level_select(self):
         if hasattr(self, "level_select_frame"):
@@ -336,6 +371,8 @@ class BottleSortApp(tk.Tk):
         self._hide_all_frames()
         self.main_container.pack(fill="both", expand=True)
         self._refresh_progress()
+        if self._menu_animation_job is None:
+            self._menu_animation_job = self.after_idle(self._animate_menu_scene)
 
     def show_level_select(self):
         self._build_level_select()
@@ -353,9 +390,88 @@ class BottleSortApp(tk.Tk):
             if frame is not None:
                 frame.pack_forget()
 
+    def _animate_menu_scene(self) -> None:
+        if not self.main_container.winfo_ismapped():
+            self._menu_animation_job = None
+            return
+
+        canvas = self.menu_scene
+        canvas.delete("all")
+        width = max(canvas.winfo_width(), 500)
+        elapsed = time.monotonic()
+        colors = (COLOR_PALETTE[2], COLOR_PALETTE[5], COLOR_PALETTE[9], COLOR_PALETTE[13], COLOR_PALETTE[20])
+        centers = [width * (index + 1) / 6 for index in range(len(colors))]
+        pour_period = 2.4
+        pour_cycle = elapsed % (pour_period * len(colors))
+        source_index = int(pour_cycle // pour_period)
+        target_index = (source_index + 1) % len(colors)
+        pour_time = pour_cycle % pour_period
+        pour_amount = min(0.65, pour_time / 1.5 * 0.65) if pour_time < 1.5 else 0.65
+        fills = [0.35, 0.58, 0.42, 0.62, 0.3]
+        fills[source_index] -= pour_amount
+        fills[target_index] += pour_amount
+        bottle_tops = []
+
+        for index, (center_x, color) in enumerate(zip(centers, colors)):
+            float_y = math.sin(elapsed * 1.4 + index * 1.1) * 11
+            bottle_height = 104 + (index % 3) * 14
+            top = 38 + float_y + (116 - bottle_height) / 2
+            bottom = top + bottle_height
+            body_width = 32 + (index % 2) * 8
+            neck_width = 18
+            left = center_x - body_width / 2
+            right = center_x + body_width / 2
+            neck_left = center_x - neck_width / 2
+            neck_right = center_x + neck_width / 2
+            bottle_tops.append((center_x, top + 23, bottom - 9))
+            canvas.create_polygon(
+                neck_left, top, neck_right, top, neck_right, top + 17,
+                right, top + 28, right, bottom - 8, right - 4, bottom,
+                left + 4, bottom, left, bottom - 8, left, top + 28,
+                neck_left, top + 17,
+                fill="#f8fcff",
+                outline="#8da5ba",
+                width=2,
+                smooth=True,
+                splinesteps=12,
+            )
+            liquid_top = bottom - 10 - max(0.12, min(0.88, fills[index])) * (bottle_height - 42)
+            canvas.create_rectangle(left + 5, liquid_top, right - 5, bottom - 10, fill=color, outline="")
+            canvas.create_line(left + 7, liquid_top, right - 7, liquid_top, fill="#ffffff", width=2)
+            canvas.create_line(left + 6, top + 34, left + 6, bottom - 18, fill="#ffffff", width=2)
+            for block in range(3):
+                sparkle_x = center_x + math.sin(elapsed * 1.8 + index + block) * (body_width + 10)
+                sparkle_y = top + 27 + block * 22 + math.cos(elapsed + index * block) * 5
+                canvas.create_rectangle(
+                    sparkle_x - 2, sparkle_y - 2, sparkle_x + 2, sparkle_y + 2,
+                    fill=COLOR_PALETTE[(index * 5 + block * 3) % len(COLOR_PALETTE)],
+                    outline="",
+                )
+            canvas.create_line(neck_left, top + 6, neck_right, top + 6, fill="#8da5ba", width=2)
+
+        if pour_time < 1.8:
+            x0, y0, _ = bottle_tops[source_index]
+            x1, y1, _ = bottle_tops[target_index]
+            for drop_index in range(5):
+                progress = (pour_time / 1.8 + drop_index * 0.19) % 1.0
+                x = x0 + (x1 - x0) * progress
+                y = y0 + (y1 - y0) * progress - 20 * math.sin(progress * math.pi)
+                canvas.create_oval(x - 3, y - 4, x + 3, y + 4, fill=colors[source_index], outline="")
+
+        self._menu_animation_job = self.after(40, self._animate_menu_scene)
+
     def _refresh_progress(self):
+        if self.progress_load_error:
+            self.status_label.config(
+                text=self._t("progress_error", error=self.progress_load_error),
+                fg="#a44232",
+            )
+            return
         completed = len(self.progress.get("completed", []))
-        self.status_label.config(text=self._t("progress", done=completed, total=len(self.campaign)))
+        self.status_label.config(
+            text=self._t("progress", done=completed, total=len(self.campaign)),
+            fg="#52677c",
+        )
 
     def _set_language(self):
         self.language = self.lang_var.get()
@@ -382,8 +498,8 @@ class BottleSortApp(tk.Tk):
             self.patterns_var.set(self.patterns_enabled)
             self.lang_var.set(self.language)
         except (OSError, json.JSONDecodeError, ValueError) as error:
-            messagebox.showwarning("Bottle Sort", self._t("progress_error", error=error))
             self.progress = {"completed": [], "settings": {}}
+            self.progress_load_error = str(error)
 
     def _save_progress(self):
         self.save_path.parent.mkdir(parents=True, exist_ok=True)
@@ -416,6 +532,10 @@ class BottleSortApp(tk.Tk):
         self.game_frame.pack(fill="both", expand=True)
 
         self.selected = None
+        self.revealed_hidden_bottles = set()
+        self.game_status.config(text="", fg="#235b3c")
+        self.next_btn.pack_forget()
+        self.next_btn.config(state="normal")
         snapshot_matches = self.progress.get("current_level") == level_index
         saved_state = self.progress.get("current_state") if snapshot_matches else None
         self.level_state = (
@@ -446,6 +566,10 @@ class BottleSortApp(tk.Tk):
         self.level_name.config(text=self._t("level", number=level.id))
         self.moves_label.config(text=self._t("moves", count=self.move_count))
 
+    def next_level(self):
+        if self.level_index + 1 < len(self.campaign):
+            self.start_level(self.level_index + 1)
+
     def _render_board(self):
         for child in self.board.winfo_children():
             child.destroy()
@@ -454,79 +578,145 @@ class BottleSortApp(tk.Tk):
         bottles = list(self.level_state)
         columns = max(1, min(len(bottles), max(1, (self.winfo_width() - 70) // 104)))
         self.bottle_canvases = []
+        capacities = level.capacities
+        frozen_bottles = set(self.current_mechanics.get("frozen_bottles", []))
+        stone_bottles = set(self.current_mechanics.get("stone_bottles", []))
+        decoy_bottles = set(self.current_mechanics.get("decoy_bottles", []))
+        hidden_bottles = set(self.current_mechanics.get("hidden_bottles", []))
+        giant_bottles = set(self.current_mechanics.get("giant_bottles", []))
 
         for idx, bottle in enumerate(bottles):
             bottle_frame = tk.Frame(self.board, bg="#eaf0f7", padx=3, pady=3)
             bottle_frame.grid(row=idx // columns, column=idx % columns, padx=6, pady=4)
 
-            canvas = tk.Canvas(bottle_frame, width=86, height=226, bg="#eaf0f7", highlightthickness=0)
+            scale = math.sqrt(capacities[idx] / level.capacity)
+            bottle_height = math.ceil(14 + (250 - 14) * scale)
+            canvas = tk.Canvas(
+                bottle_frame,
+                width=86,
+                height=bottle_height,
+                bg="#eaf0f7",
+                highlightthickness=0,
+            )
             canvas.pack()
             self.bottle_canvases.append(canvas)
 
-            frozen = idx in set(self.current_mechanics.get("frozen_bottles", []))
-            stone = idx in set(self.current_mechanics.get("stone_bottles", []))
-            decoy = idx in set(self.current_mechanics.get("decoy_bottles", []))
-            glass_shape = (31, 22, 55, 22, 55, 48, 64, 62, 64, 180, 59, 195, 27, 195, 22, 180, 22, 62, 31, 48)
+            def sy(value):
+                return 14 + (value - 14) * scale
+
+            frozen = idx in frozen_bottles
+            stone = idx in stone_bottles
+            decoy = idx in decoy_bottles
+            hidden = idx in hidden_bottles and idx not in self.revealed_hidden_bottles
+            glass_shape = tuple(
+                coordinate
+                for x, y in (
+                    (31, 22), (55, 22), (55, 48), (64, 62), (64, 180),
+                    (59, 195), (27, 195), (22, 180), (22, 62), (31, 48),
+                )
+                for coordinate in (x, sy(y))
+            )
             canvas.create_polygon(
                 glass_shape,
                 smooth=True,
                 splinesteps=20,
-                fill="#f9fcff",
-                outline="#a9bbcc",
+                fill="#dff7ff" if frozen else ("#9da9b6" if stone else "#f9fcff"),
+                outline="#218cb4" if frozen else ("#455565" if stone else "#8da5ba"),
                 width=2,
             )
 
             if self.selected == idx:
-                canvas.create_rectangle(18, 17, 68, 199, width=3, outline="#ed9b27")
+                canvas.create_rectangle(18, sy(17), 68, sy(199), width=3, outline="#ed9b27")
 
             if self.selected is not None and not idx == self.selected:
-                if can_pour(self.level_state, self.selected, idx, level.capacity, self.current_mechanics):
-                    canvas.create_rectangle(18, 17, 68, 199, width=3, outline="#2caa70")
+                if can_pour(self.level_state, self.selected, idx, capacities, self.current_mechanics):
+                    canvas.create_rectangle(18, sy(17), 68, sy(199), width=3, outline="#16884e")
 
-            liquid_height = 108 / max(1, level.capacity)
+            liquid_height = 108 / max(1, capacities[idx])
             for layer_idx, color in enumerate(bottle):
                 y_bottom = 179 - layer_idx * liquid_height
                 y_top = y_bottom - liquid_height
-                base_color = self._color_for(color)
-                for stripe in range(6):
-                    fraction = 0.1 + stripe * 0.075
-                    stripe_color = self._blend_color(base_color, "#ffffff", fraction)
-                    stripe_y0 = y_top + liquid_height * stripe / 6
-                    stripe_y1 = y_top + liquid_height * (stripe + 1) / 6 + 1
-                    canvas.create_rectangle(26, stripe_y0, 60, stripe_y1, fill=stripe_color, outline="")
+                base_color = "#43566b" if hidden else self._color_for(color)
+                canvas.create_rectangle(
+                    26,
+                    sy(y_top),
+                    60,
+                    sy(y_bottom) + 1,
+                    fill=base_color,
+                    outline=self._blend_color(base_color, "#15283d", 0.38),
+                    width=1,
+                )
                 if layer_idx == len(bottle) - 1:
-                    canvas.create_oval(26, y_top - 3, 60, y_top + 4, fill=self._blend_color(base_color, "#ffffff", 0.22), outline="")
+                    canvas.create_oval(
+                        26, sy(y_top - 3), 60, sy(y_top + 4),
+                        fill=self._blend_color(base_color, "#ffffff", 0.12),
+                        outline="",
+                    )
                 if self.patterns_enabled:
-                    marks = ("●", "▲", "■", "◆", "✚", "✦")
-                    pattern_ink = self._pattern_ink(base_color)
+                    marks = ("●", "▲", "■", "◆", "✚", "✦", "⬟", "✿")
+                    pattern_ink = "#ffffff" if hidden else self._pattern_ink(base_color)
                     canvas.create_text(
                         43,
-                        (y_top + y_bottom) / 2,
-                        text=marks[zlib.crc32(color.encode("utf-8")) % len(marks)],
+                        sy((y_top + y_bottom) / 2),
+                        text="?" if hidden else marks[zlib.crc32(color.encode("utf-8")) % len(marks)],
                         fill=pattern_ink,
-                        font=("Segoe UI", 9, "bold"),
+                        font=("Segoe UI", 10, "bold"),
                     )
 
-            canvas.create_polygon(glass_shape, smooth=True, splinesteps=20, fill="", outline="#8da5ba", width=2)
-            canvas.create_line(28, 72, 28, 162, fill="#ffffff", width=2)
-            canvas.create_line(31, 54, 31, 66, fill="#ffffff", width=2)
-            canvas.create_line(57, 78, 57, 160, fill="#d0dfec", width=1)
-            canvas.create_arc(28, 184, 58, 201, start=190, extent=160, outline="#d9e5ef", width=2)
+            canvas.create_polygon(
+                glass_shape,
+                smooth=True,
+                splinesteps=20,
+                fill="",
+                outline="#218cb4" if frozen else ("#455565" if stone else "#718ba2"),
+                width=3 if frozen or stone else 2,
+            )
+            canvas.create_line(28, sy(72), 28, sy(162), fill="#ffffff", width=2)
+            canvas.create_line(31, sy(54), 31, sy(66), fill="#ffffff", width=2)
+            canvas.create_line(57, sy(78), 57, sy(160), fill="#d0dfec", width=1)
+            canvas.create_arc(28, sy(184), 58, sy(201), start=190, extent=160, outline="#d9e5ef", width=2)
 
             if frozen:
-                canvas.create_rectangle(18, 18, 68, 199, outline="#35a9d8", width=3)
-                canvas.create_oval(55, 17, 78, 40, fill="#d8f6ff", outline="#269ac5", width=2)
-                canvas.create_text(66, 28, text="❄", fill="#087ba7", font=("Segoe UI", 12, "bold"))
+                for frost_y in (82, 122, 160):
+                    canvas.create_line(22, sy(frost_y), 29, sy(frost_y - 10), 35, sy(frost_y + 4), fill="#a5efff", width=2)
+                    canvas.create_line(57, sy(frost_y + 2), 64, sy(frost_y - 8), fill="#a5efff", width=2)
+                badge_text = self._t("mechanic_ice")
+                badge_fill, badge_outline = "#c8f4ff", "#178eb7"
             elif stone:
-                canvas.create_oval(55, 17, 78, 40, fill="#e1e6eb", outline="#596979", width=2)
-                canvas.create_text(66, 28, text="◆", fill="#35465a", font=("Segoe UI", 10, "bold"))
-            elif decoy:
-                canvas.create_oval(55, 17, 78, 40, fill="#fff1d6", outline="#cc7b1d", width=2)
-                canvas.create_text(66, 28, text="?", fill="#8f4c0c", font=("Segoe UI", 11, "bold"))
+                for crack_y in (86, 126, 166):
+                    canvas.create_line(23, sy(crack_y), 37, sy(crack_y + 7), 45, sy(crack_y - 4), fill="#586779", width=2)
+                    canvas.create_line(53, sy(crack_y + 4), 63, sy(crack_y + 11), fill="#586779", width=2)
+                badge_text = self._t("mechanic_stone")
+                badge_fill, badge_outline = "#d5dce3", "#526273"
+            elif hidden or decoy:
+                badge_text = self._t("mechanic_mystery")
+                badge_fill, badge_outline = "#ffe4a8", "#bd7112"
+            else:
+                badge_text, badge_fill, badge_outline = "", "", ""
+
+            if badge_text:
+                canvas.create_oval(56, sy(15), 79, sy(38), fill=badge_fill, outline=badge_outline, width=2)
+                canvas.create_text(67.5, sy(26), text="?" if hidden or decoy else ("❄" if frozen else "◆"),
+                                   fill=badge_outline, font=("Segoe UI", 10, "bold"))
+                canvas.create_text(43, sy(211), text=badge_text, fill=badge_outline, font=("Segoe UI", 10, "bold"))
+            elif idx in giant_bottles:
+                canvas.create_oval(56, sy(15), 79, sy(38), fill="#e7d8ff", outline="#674aa3", width=2)
+                canvas.create_text(67.5, sy(26), text="×3", fill="#493075", font=("Segoe UI", 10, "bold"))
+
+            if is_bottle_complete(bottle, capacities[idx]):
+                canvas.create_rectangle(
+                    30, sy(15), 56, sy(29),
+                    fill="#d4dee8",
+                    outline="#31485f",
+                    width=2,
+                )
+                canvas.create_line(33, sy(18), 53, sy(18), fill="#ffffff", width=2)
 
             canvas.bind("<ButtonPress-1>", lambda event, idx=idx: self._begin_drag(idx))
             canvas.bind("<ButtonRelease-1>", lambda event, idx=idx: self._end_drag(idx))
-            canvas.create_text(43, 211, text=str(idx + 1), fill="#52677c", font=("Segoe UI", 9, "bold"))
+            if hidden:
+                canvas.create_text(43, sy(118), text="?", fill="#ffffff", font=("Segoe UI", 27, "bold"))
+            canvas.create_text(43, sy(235), text=str(idx + 1), fill="#344b64", font=("Segoe UI", 10, "bold"))
 
     def _color_for(self, color: str) -> str:
         if color.startswith("C") and color[1:].isdigit():
@@ -565,7 +755,7 @@ class BottleSortApp(tk.Tk):
             self.level_state,
             source,
             index,
-            self.campaign[self.level_index].capacity,
+            self.campaign[self.level_index].capacities,
             self.current_mechanics,
         ):
             self.selected = None
@@ -577,13 +767,15 @@ class BottleSortApp(tk.Tk):
             return
         if source == index and self.selected is None:
             self.selected = index
+            if index in self.current_mechanics.get("hidden_bottles", []):
+                self.revealed_hidden_bottles.add(index)
             self._render_board()
             return
         if self.selected is not None and index != self.selected and can_pour(
             self.level_state,
             self.selected,
             index,
-            self.campaign[self.level_index].capacity,
+            self.campaign[self.level_index].capacities,
             self.current_mechanics,
         ):
             source = self.selected
@@ -607,6 +799,7 @@ class BottleSortApp(tk.Tk):
         self.animating = True
         started = time.monotonic()
         duration = 0.8
+        self.audio.play_pour()
 
         def animate() -> None:
             progress = min(1.0, (time.monotonic() - started) / duration)
@@ -625,58 +818,34 @@ class BottleSortApp(tk.Tk):
 
     def _apply_move(self, source, target):
         level = self.campaign[self.level_index]
+        self.game_status.config(text="")
         before = self.level_state
         self.history.append((before, self.move_count, tuple(self.solution_path)))
         if self.solution_path and self.solution_path[0] == (source, target):
             self.solution_path.pop(0)
         else:
             self.solution_path = []
-        self.level_state = apply_pour(self.level_state, source, target, level.capacity, self.current_mechanics)
+        self.revealed_hidden_bottles.update((source, target))
+        self.level_state = apply_pour(
+            self.level_state, source, target, level.capacities, self.current_mechanics
+        )
         self.move_count += 1
         self._update_game_labels(level)
         self._save_progress()
-        self.audio.play_pour()
-        if is_solved(self.level_state, level.capacity):
+        if is_solved(self.level_state, level.capacities):
             self._stop_timer()
             self._mark_completed(level)
             self._save_progress()
-            messagebox.showinfo("Bottle Sort", self._t("level_solved"))
-        elif not any(legal_moves(self.level_state, level.capacity, self.current_mechanics)):
+            self.game_status.config(text=self._t("level_solved"), fg="#16884e")
+            self.next_btn.pack(side="left", padx=6)
+            if self.level_index + 1 >= len(self.campaign):
+                self.next_btn.config(state="disabled")
+        elif not any(legal_moves(self.level_state, level.capacities, self.current_mechanics)):
             self._show_dead_end()
 
     def _show_dead_end(self):
-        if self.dead_end_dialog is not None and self.dead_end_dialog.winfo_exists():
-            return
         self._stop_timer()
-        dialog = tk.Toplevel(self)
-        self.dead_end_dialog = dialog
-        dialog.title(self._t("dead_title"))
-        dialog.transient(self)
-        dialog.resizable(False, False)
-        dialog.configure(bg="#f4f7fb")
-        tk.Label(
-            dialog,
-            text=self._t("dead_title"),
-            font=("Segoe UI", 18, "bold"),
-            fg="#17324f",
-            bg="#f4f7fb",
-        ).pack(padx=28, pady=(22, 6))
-        tk.Label(
-            dialog,
-            text=self._t("dead_body"),
-            font=("Segoe UI", 11),
-            fg="#536a80",
-            bg="#f4f7fb",
-        ).pack(padx=28, pady=(0, 18))
-        self._button(dialog, "restart_prompt", self._restart_from_dead_end, width=22).pack(pady=(0, 22))
-        dialog.protocol("WM_DELETE_WINDOW", self._restart_from_dead_end)
-        dialog.grab_set()
-
-    def _restart_from_dead_end(self):
-        if self.dead_end_dialog is not None and self.dead_end_dialog.winfo_exists():
-            self.dead_end_dialog.destroy()
-        self.dead_end_dialog = None
-        self.restart_level()
+        self.game_status.config(text=self._t("dead_body"), fg="#ad3d35")
 
     def _mark_completed(self, level: LevelDefinition):
         if level.id not in self.progress.get("completed", []):
@@ -690,6 +859,8 @@ class BottleSortApp(tk.Tk):
         self.level_state = previous_state
         self.move_count = previous_moves
         self.solution_path = list(previous_solution_path)
+        self.next_btn.pack_forget()
+        self.game_status.config(text="", fg="#235b3c")
         self._update_game_labels(self.campaign[self.level_index])
         self._save_progress()
         self._render_board()
@@ -699,6 +870,10 @@ class BottleSortApp(tk.Tk):
         self.history = []
         self.move_count = 0
         self.solution_path = list(self.campaign[self.level_index].solution)
+        self.revealed_hidden_bottles = set()
+        self.next_btn.pack_forget()
+        self.next_btn.config(state="normal")
+        self.game_status.config(text="", fg="#235b3c")
         self._stop_timer()
         self.elapsed_seconds = 0.0
         self.level_started_at = time.monotonic()
@@ -708,32 +883,40 @@ class BottleSortApp(tk.Tk):
         self._save_progress()
 
     def show_hint(self):
-        if self.hints_remaining <= 0:
-            messagebox.showinfo("Bottle Sort", self._t("hint_limit"))
-            return
         level = self.campaign[self.level_index]
+        if is_solved(self.level_state, level.capacities):
+            self.game_status.config(text=self._t("level_solved"), fg="#16884e")
+            return
+        if self.hints_remaining <= 0:
+            self.game_status.config(text=self._t("hint_limit"), fg="#ad6b19")
+            return
         solution = self.solution_path or solve_level(
-            self.level_state, level.capacity, mechanics=self.current_mechanics
+            self.level_state, level.capacities, mechanics=self.current_mechanics
         )
+        if solution is None:
+            self.game_status.config(text=self._t("hint_unavailable"), fg="#ad6b19")
+            return
         if not solution:
-            messagebox.showinfo("Bottle Sort", self._t("no_hint"))
+            self.game_status.config(text=self._t("level_solved"), fg="#16884e")
             return
         self.hints_remaining -= 1
         move = solution[0]
-        messagebox.showinfo(
-            "Bottle Sort",
-            self._t("hint_move", source=move[0] + 1, target=move[1] + 1),
+        self.game_status.config(
+            text=self._t("hint_status", source=move[0] + 1, target=move[1] + 1),
+            fg="#245c82",
         )
 
     def check_solvability(self):
         level = self.campaign[self.level_index]
         solution = self.solution_path or solve_level(
-            self.level_state, level.capacity, mechanics=self.current_mechanics
+            self.level_state, level.capacities, mechanics=self.current_mechanics
         )
         if solution is None:
-            messagebox.showinfo("Bottle Sort", self._t("unsolved"))
+            self.game_status.config(text=self._t("unsolved_status"), fg="#ad6b19")
         else:
-            messagebox.showinfo("Bottle Sort", self._t("solvable", count=len(solution)))
+            self.game_status.config(
+                text=self._t("solvable_status", count=len(solution)), fg="#16884e"
+            )
 
     def save_settings(self):
         self.sound_enabled = self.sound_var.get()
@@ -744,7 +927,6 @@ class BottleSortApp(tk.Tk):
         self._apply_language()
         self._render_board_if_available()
         self._save_progress()
-        messagebox.showinfo("Bottle Sort", self._t("settings_saved"))
 
     def _render_board_if_available(self):
         if hasattr(self, "board") and self.board.winfo_ismapped():
@@ -754,7 +936,6 @@ class BottleSortApp(tk.Tk):
         self.progress = {"completed": []}
         self._save_progress()
         self._refresh_progress()
-        messagebox.showinfo("Bottle Sort", self._t("progress_reset"))
 
     def _elapsed(self) -> float:
         if self.level_started_at is None:

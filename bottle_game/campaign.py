@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import math
+import random
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Iterable, List
@@ -26,6 +27,13 @@ class LevelDefinition:
     solution: tuple[tuple[int, int], ...] = ()
     tutorial: bool = False
     difficulty: float = 0.0
+    bottle_capacities: tuple[int, ...] = ()
+
+    @property
+    def capacities(self) -> tuple[int, ...]:
+        if self.bottle_capacities:
+            return self.bottle_capacities
+        return (self.capacity,) * len(self.state)
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -41,6 +49,7 @@ class LevelDefinition:
             "solution": [list(move) for move in self.solution],
             "tutorial": self.tutorial,
             "difficulty": self.difficulty,
+            "bottle_capacities": list(self.bottle_capacities),
         }
 
 
@@ -73,10 +82,10 @@ def _determine_mechanics(
         config["decoy_bottles"] = [empty_indices[0]]
     if level_index >= 45:
         mechanics.append("stone_layer")
-        config["stone_bottles"] = [empty_indices[1] if len(empty_indices) > 1 else 0]
+        config["stone_bottles"] = [empty_indices[1] if len(empty_indices) > 1 else empty_indices[0]]
     if level_index >= 70:
         mechanics.append("frozen_layer")
-        config["frozen_bottles"] = [empty_indices[2] if len(empty_indices) > 2 else 1]
+        config["frozen_bottles"] = [empty_indices[2] if len(empty_indices) > 2 else empty_indices[-1]]
     if capacity >= 5:
         mechanics.append("capacity_5")
     return mechanics, config
@@ -94,14 +103,29 @@ def generate_level_definition(level_index: int, *, capacity: int | None = None) 
         capacity = 4 if level_index < 71 else 5
 
     color_count = _geometric_color_count(level_index)
-    empty_bottles = 2 if level_index < 46 else 1
+    empty_bottles = 2 if level_index < 70 else 3
     mechanics, mechanics_config = _determine_mechanics(level_index, capacity, color_count, empty_bottles)
+    has_giant_bottle = level_index in {10, 30, 50, 70, 90, 110}
+    bottle_capacities = [capacity] * (color_count + empty_bottles)
+    if has_giant_bottle:
+        bottle_capacities[0] = capacity * 3
+        mechanics.append("giant_bottle_3x")
+        mechanics_config["giant_bottles"] = [0]
+    if level_index in {90, 110}:
+        mechanics.append("hidden_colors")
+        mechanics_config["hidden_bottles"] = [min(1, color_count - 1)]
     state, solution = generate_level_with_solution(
         color_count,
         capacity,
         empty_bottles=empty_bottles,
-        shuffle_steps=max(12, 6 + level_index // 3),
+        shuffle_steps=max(
+            12,
+            6 + level_index // 3,
+            color_count + 10 if has_giant_bottle else 0,
+        ),
+        rng=random.Random(level_index),
         mechanics=mechanics_config,
+        bottle_capacities=tuple(bottle_capacities) if has_giant_bottle else None,
     )
     tutorial = level_index in {1, 10, 25, 45, 70}
     title = f"Level {level_index}"
@@ -122,6 +146,7 @@ def generate_level_definition(level_index: int, *, capacity: int | None = None) 
         solution=solution,
         tutorial=tutorial,
         difficulty=difficulty,
+        bottle_capacities=tuple(bottle_capacities) if has_giant_bottle else (),
     )
 
 
@@ -159,6 +184,7 @@ def load_campaign(path: str | Path) -> list[LevelDefinition]:
                 solution=tuple(tuple(move) for move in item.get("solution", [])),
                 tutorial=item.get("tutorial", False),
                 difficulty=float(item.get("difficulty", 0.0)),
+                bottle_capacities=tuple(item.get("bottle_capacities", [])),
             )
         )
     return levels
@@ -169,6 +195,6 @@ def verify_campaign(levels: list[LevelDefinition]) -> None:
     for level in levels:
         state = level.state
         for source, target in level.solution:
-            state = apply_pour(state, source, target, level.capacity, level.mechanics_config)
-        if not is_solved(state, level.capacity):
+            state = apply_pour(state, source, target, level.capacities, level.mechanics_config)
+        if not is_solved(state, level.capacities):
             raise ValueError(f"Level {level.id} failed solution verification.")

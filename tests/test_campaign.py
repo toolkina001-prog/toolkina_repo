@@ -1,6 +1,13 @@
 import unittest
+from pathlib import Path
 
-from bottle_game.campaign import generate_campaign, generate_level_definition, verify_campaign
+from bottle_game.campaign import (
+    generate_campaign,
+    generate_level_definition,
+    load_campaign,
+    verify_campaign,
+)
+from bottle_game.engine import is_bottle_complete
 from bottle_game.solver import solve_level
 
 
@@ -23,6 +30,28 @@ class CampaignTests(unittest.TestCase):
             [level.color_count for level in levels],
             [3, 5, 8, 12, 18, 26, 28],
         )
+
+    def test_bundled_campaign_has_no_prefilled_completed_bottles(self):
+        campaign_path = Path(__file__).resolve().parents[1] / "campaign" / "levels.json"
+        levels = load_campaign(campaign_path)
+        verify_campaign(levels)
+        for level in levels:
+            self.assertFalse(
+                any(
+                    is_bottle_complete(bottle, capacity)
+                    for bottle, capacity in zip(level.state, level.capacities)
+                ),
+                f"Level {level.id} starts with a completed bottle.",
+            )
+
+    def test_giant_bottle_levels_are_three_times_capacity_and_solvable(self):
+        levels = [
+            generate_level_definition(level_id)
+            for level_id in (10, 30, 50, 70, 90, 110)
+        ]
+        verify_campaign(levels)
+        for level in levels:
+            self.assertEqual(max(level.capacities), level.capacity * 3)
 
 
 if __name__ == "__main__":

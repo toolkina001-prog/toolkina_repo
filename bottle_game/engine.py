@@ -5,6 +5,7 @@ from __future__ import annotations
 from typing import Iterable, List, Sequence, Tuple
 
 BottleState = Tuple[Tuple[str, ...], ...]
+Capacity = int | Sequence[int]
 
 
 def _normalize_state(state: Sequence[Sequence[str]]) -> BottleState:
@@ -37,11 +38,22 @@ def _top_run_length(bottle: Sequence[str]) -> int:
     return count
 
 
+def _bottle_capacity(capacity: Capacity, index: int) -> int:
+    return capacity if isinstance(capacity, int) else capacity[index]
+
+
+def is_bottle_complete(bottle: Sequence[str], capacity: int) -> bool:
+    """A full monochrome bottle is complete and cannot be poured from."""
+    return bool(bottle) and len(bottle) == capacity and all(
+        color == bottle[0] for color in bottle
+    )
+
+
 def can_pour(
     state: Sequence[Sequence[str]],
     source_index: int,
     target_index: int,
-    capacity: int,
+    capacity: Capacity,
     mechanics: dict | None = None,
 ) -> bool:
     """Return whether a pour from source to target is legal."""
@@ -64,10 +76,14 @@ def can_pour(
 
     source = bottles[source_index]
     target = bottles[target_index]
+    source_capacity = _bottle_capacity(capacity, source_index)
+    target_capacity = _bottle_capacity(capacity, target_index)
 
     if not source:
         return False
-    if len(target) >= capacity:
+    if is_bottle_complete(source, source_capacity):
+        return False
+    if len(target) >= target_capacity:
         return False
 
     source_top = _top_color(source)
@@ -85,7 +101,7 @@ def apply_pour(
     state: Sequence[Sequence[str]],
     source_index: int,
     target_index: int,
-    capacity: int,
+    capacity: Capacity,
     mechanics: dict | None = None,
 ) -> BottleState:
     """Apply one valid pour and return the resulting state."""
@@ -99,7 +115,7 @@ def apply_pour(
 
     source_top = source[-1]
     source_run = _top_run_length(source)
-    available_space = capacity - len(target)
+    available_space = _bottle_capacity(capacity, target_index) - len(target)
     transfer_count = min(source_run, available_space)
 
     if not target:
@@ -117,12 +133,12 @@ def apply_pour(
     return tuple(tuple(bottle) for bottle in next_state)
 
 
-def is_solved(state: Sequence[Sequence[str]], capacity: int) -> bool:
+def is_solved(state: Sequence[Sequence[str]], capacity: Capacity) -> bool:
     """A state is solved when every non-empty bottle is full and monochrome."""
-    for bottle in state:
+    for index, bottle in enumerate(state):
         if not bottle:
             continue
-        if len(bottle) != capacity:
+        if len(bottle) != _bottle_capacity(capacity, index):
             return False
         if any(color != bottle[0] for color in bottle):
             return False
@@ -131,7 +147,7 @@ def is_solved(state: Sequence[Sequence[str]], capacity: int) -> bool:
 
 def legal_moves(
     state: Sequence[Sequence[str]],
-    capacity: int,
+    capacity: Capacity,
     mechanics: dict | None = None,
 ) -> Iterable[Tuple[int, int]]:
     """Yield all legal moves for the current state."""

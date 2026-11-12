@@ -8,7 +8,7 @@ import time
 from collections import OrderedDict
 from typing import Sequence
 
-from .engine import BottleState, apply_pour, is_solved, legal_moves
+from .engine import BottleState, Capacity, apply_pour, is_solved, legal_moves
 
 _CACHE_LIMIT = 256
 _SOLUTION_CACHE: OrderedDict[tuple, tuple[tuple[int, int], ...] | None] = OrderedDict()
@@ -25,13 +25,20 @@ def _mechanics_key(mechanics: dict | None) -> tuple:
 
 
 def _canonicalize(
-    state: Sequence[Sequence[str]], identities: Sequence[int]
-) -> tuple[BottleState, tuple[int, ...]]:
+    state: Sequence[Sequence[str]], identities: Sequence[int], capacities: Sequence[int]
+) -> tuple[BottleState, tuple[int, ...], tuple[int, ...]]:
     ordered = sorted(
-        ((tuple(bottle), identity) for bottle, identity in zip(state, identities)),
-        key=lambda item: (len(item[0]), item[0], item[1]),
+        (
+            (tuple(bottle), identity, bottle_capacity)
+            for bottle, identity, bottle_capacity in zip(state, identities, capacities)
+        ),
+        key=lambda item: (item[2], len(item[0]), item[0], item[1]),
     )
-    return tuple(bottle for bottle, _ in ordered), tuple(identity for _, identity in ordered)
+    return (
+        tuple(bottle for bottle, _, _ in ordered),
+        tuple(identity for _, identity, _ in ordered),
+        tuple(bottle_capacity for _, _, bottle_capacity in ordered),
+    )
 
 
 def _heuristic(state: BottleState, capacity: int) -> int:
@@ -45,23 +52,28 @@ def _heuristic(state: BottleState, capacity: int) -> int:
 
 def solve_level(
     state: Sequence[Sequence[str]],
-    capacity: int,
+    capacity: Capacity,
     *,
     time_limit: float = 2.0,
     mechanics: dict | None = None,
 ) -> list[tuple[int, int]] | None:
     """Return a path of bottle indices solving the level, or None if not found in time."""
     initial = tuple(tuple(bottle) for bottle in state)
-    if capacity < 1 or any(len(bottle) > capacity for bottle in initial):
+    capacities = (capacity,) * len(initial) if isinstance(capacity, int) else tuple(capacity)
+    if (
+        len(capacities) != len(initial)
+        or any(bottle_capacity < 1 for bottle_capacity in capacities)
+        or any(len(bottle) > bottle_capacity for bottle, bottle_capacity in zip(initial, capacities))
+    ):
         return None
 
     mechanic_key = _mechanics_key(mechanics)
-    cache_key = (initial, capacity, mechanic_key)
+    cache_key = (initial, capacities, mechanic_key)
     if cache_key in _SOLUTION_CACHE:
         _SOLUTION_CACHE.move_to_end(cache_key)
         cached = _SOLUTION_CACHE[cache_key]
         return list(cached) if cached is not None else None
-    if is_solved(initial, capacity):
+    if is_solved(initial, capacities):
         _cache_result(cache_key, ())
         return []
 
@@ -71,18 +83,32 @@ def solve_level(
     }
 
     def search_key(search_state: BottleState, identities: tuple[int, ...]) -> tuple:
-        return (search_state, identities) if indexed_mechanics else search_state
+        if indexed_mechanics or len(set(capacities)) > 1:
+            return search_state, identities
+        return search_state
 
-    start_state, start_identities = _canonicalize(initial, range(len(initial)))
+    start_state, start_identities, start_capacities = _canonicalize(
+        initial, range(len(initial)), capacities
+    )
     deadline = time.monotonic() + max(0.0, time_limit)
     sequence = itertools.count()
-    frontier = [(_heuristic(start_state, capacity), 0, next(sequence), start_state, start_identities, ())]
+    frontier = [
+        (
+            _heuristic(start_state, capacity),
+            0,
+            next(sequence),
+            start_state,
+            start_identities,
+            start_capacities,
+            (),
+        )
+    ]
     best_cost = {search_key(start_state, start_identities): 0}
 
     while frontier:
         if time.monotonic() >= deadline:
             return None
-        _, cost, _, current, identities, path = heapq.heappop(frontier)
+        _, cost, _, current, identities, current_capacities, path = heapq.heappop(frontier)
         if cost != best_cost.get(search_key(current, identities)):
             continue
 
@@ -96,14 +122,18 @@ def solve_level(
             for key, original_indices in indexed_mechanics.items()
         }
 
-        for source, target in legal_moves(current, capacity, canonical_mechanics):
-            next_state = apply_pour(current, source, target, capacity, canonical_mechanics)
+        for source, target in legal_moves(current, current_capacities, canonical_mechanics):
+            next_state = apply_pour(current, source, target, current_capacities, canonical_mechanics)
             next_identities = list(identities)
-            next_state, next_identities_tuple = _canonicalize(next_state, next_identities)
+            next_state, next_identities_tuple, next_capacities = _canonicalize(
+                next_state,
+                next_identities,
+                tuple(capacities[identity] for identity in next_identities),
+            )
             next_identities = next_identities_tuple
             next_cost = cost + 1
             next_path = path + ((identities[source], identities[target]),)
-            if is_solved(next_state, capacity):
+            if is_solved(next_state, next_capacities):
                 _cache_result(cache_key, next_path)
                 return list(next_path)
 
@@ -114,7 +144,15 @@ def solve_level(
             priority = next_cost + _heuristic(next_state, capacity)
             heapq.heappush(
                 frontier,
-                (priority, next_cost, next(sequence), next_state, next_identities, next_path),
+                (
+                    priority,
+                    next_cost,
+                    next(sequence),
+                    next_state,
+                    next_identities,
+                    next_capacities,
+                    next_path,
+                ),
             )
 
     _cache_result(cache_key, None)

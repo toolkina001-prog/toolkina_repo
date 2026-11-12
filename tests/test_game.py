@@ -1,6 +1,6 @@
 import unittest
 
-from bottle_game.engine import apply_pour, can_pour, is_solved
+from bottle_game.engine import apply_pour, can_pour, is_bottle_complete, is_solved
 from bottle_game.generator import generate_level
 from bottle_game.solver import solve_level
 
@@ -29,6 +29,24 @@ class BottlePuzzleTests(unittest.TestCase):
     def test_solved_state_is_detected(self):
         state = (("R", "R", "R", "R"), ("G", "G", "G", "G"), (), ())
         self.assertTrue(is_solved(state, 4))
+
+    def test_completed_bottle_is_locked_and_large_capacity_is_supported(self):
+        state = (("R",) * 4, ("R",) * 10, ("R", "R"))
+        capacities = (4, 12, 4)
+        self.assertTrue(is_bottle_complete(state[0], capacities[0]))
+        self.assertFalse(can_pour(state, 0, 2, capacities))
+        self.assertTrue(can_pour(state, 2, 1, capacities))
+
+        result = apply_pour(state, 2, 1, capacities)
+        self.assertEqual(len(result[1]), 12)
+
+        partial_state = (("R", "R"), ("R",) * 10, ())
+        solution = solve_level(partial_state, capacities)
+        self.assertIsNotNone(solution)
+        self.assertEqual(len(solution), 1)
+        completed = apply_pour(partial_state, 0, 1, capacities)
+        self.assertTrue(is_bottle_complete(completed[1], capacities[1]))
+        self.assertTrue(is_solved(completed, capacities))
 
     def test_generate_level_is_solvable(self):
         state = generate_level(3, 4, empty_bottles=2, shuffle_steps=12)
