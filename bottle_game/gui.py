@@ -106,6 +106,7 @@ class BottleSortApp(tk.Tk):
         self.animating = False
         self.revealed_hidden_bottles: set[int] = set()
         self._menu_animation_job: str | None = None
+        self._level_animation_job: str | None = None
         self.audio = SoundManager(self)
         self.save_path = Path(os.path.expanduser("~/.bottle_sort_save.json"))
 
@@ -332,6 +333,13 @@ class BottleSortApp(tk.Tk):
 
         self.level_select_frame = tk.Frame(self, bg="#eaf0f7")
         self.level_select_frame.pack(fill="both", expand=True)
+        self.level_scene = tk.Canvas(
+            self.level_select_frame,
+            bg="#eaf0f7",
+            highlightthickness=0,
+        )
+        self.level_scene.place(relwidth=1, relheight=1)
+        self.level_scene.lower()
 
         self.level_select_title = tk.Label(self.level_select_frame, text=self._t("campaign"), font=("Segoe UI", 24, "bold"), bg="#eaf0f7", fg="#172c46")
         self.level_select_title.pack(pady=(24, 4))
@@ -343,13 +351,14 @@ class BottleSortApp(tk.Tk):
             width=48,
             height=20,
             font=("Segoe UI", 12),
-            bg="#ffffff",
+            bg="#f5f8fc",
             fg="#203650",
             selectbackground="#2d78a6",
             selectforeground="#ffffff",
             relief="flat",
-            highlightthickness=1,
-            highlightbackground="#d2deea",
+            highlightthickness=2,
+            highlightbackground="#a8c0d3",
+            highlightcolor="#3984ad",
             activestyle="none",
         )
         self.level_list.pack(fill="both", expand=True, padx=180, pady=12)
@@ -378,6 +387,8 @@ class BottleSortApp(tk.Tk):
         self._build_level_select()
         self._hide_all_frames()
         self.level_select_frame.pack(fill="both", expand=True)
+        if self._level_animation_job is None:
+            self._level_animation_job = self.after_idle(self._animate_level_scene)
 
     def show_settings(self):
         self._build_settings()
@@ -400,65 +411,223 @@ class BottleSortApp(tk.Tk):
         width = max(canvas.winfo_width(), 500)
         elapsed = time.monotonic()
         colors = (COLOR_PALETTE[2], COLOR_PALETTE[5], COLOR_PALETTE[9], COLOR_PALETTE[13], COLOR_PALETTE[20])
-        centers = [width * (index + 1) / 6 for index in range(len(colors))]
-        pour_period = 2.4
+        centers = [
+            width * (index + 1) / 6 + math.sin(elapsed * 0.55 + index * 1.8) * 9
+            for index in range(len(colors))
+        ]
+        pour_period = 2.8
         pour_cycle = elapsed % (pour_period * len(colors))
         source_index = int(pour_cycle // pour_period)
         target_index = (source_index + 1) % len(colors)
         pour_time = pour_cycle % pour_period
-        pour_amount = min(0.65, pour_time / 1.5 * 0.65) if pour_time < 1.5 else 0.65
+        pour_amount = min(0.18, pour_time / 2.4 * 0.18)
         fills = [0.35, 0.58, 0.42, 0.62, 0.3]
         fills[source_index] -= pour_amount
         fills[target_index] += pour_amount
         bottle_tops = []
 
         for index, (center_x, color) in enumerate(zip(centers, colors)):
-            float_y = math.sin(elapsed * 1.4 + index * 1.1) * 11
-            bottle_height = 104 + (index % 3) * 14
+            float_y = math.sin(elapsed * 1.05 + index * 1.3) * 13
+            bottle_height = 110 + (index % 3) * 13
             top = 38 + float_y + (116 - bottle_height) / 2
             bottom = top + bottle_height
-            body_width = 32 + (index % 2) * 8
+            body_width = 34 + (index % 3) * 7
             neck_width = 18
             left = center_x - body_width / 2
             right = center_x + body_width / 2
             neck_left = center_x - neck_width / 2
             neck_right = center_x + neck_width / 2
             bottle_tops.append((center_x, top + 23, bottom - 9))
+            if index % 3 == 0:
+                outline = (
+                    neck_left, top, neck_right, top, neck_right, top + 17,
+                    right - 2, top + 31, right, bottom - 8, right - 4, bottom,
+                    left + 4, bottom, left, bottom - 8, left + 2, top + 31,
+                    neck_left, top + 17,
+                )
+            elif index % 3 == 1:
+                outline = (
+                    neck_left, top, neck_right, top, neck_right, top + 24,
+                    right, top + 34, right, bottom, left, bottom, left, top + 34,
+                    neck_left, top + 24,
+                )
+            else:
+                outline = (
+                    neck_left, top, neck_right, top, neck_right, top + 18,
+                    center_x + body_width * 0.47, top + 35,
+                    center_x + body_width * 0.5, bottom - 22,
+                    center_x + body_width * 0.34, bottom,
+                    center_x - body_width * 0.34, bottom,
+                    center_x - body_width * 0.5, bottom - 22,
+                    center_x - body_width * 0.47, top + 35,
+                    neck_left, top + 18,
+                )
             canvas.create_polygon(
-                neck_left, top, neck_right, top, neck_right, top + 17,
-                right, top + 28, right, bottom - 8, right - 4, bottom,
-                left + 4, bottom, left, bottom - 8, left, top + 28,
-                neck_left, top + 17,
+                outline,
                 fill="#f8fcff",
                 outline="#8da5ba",
                 width=2,
-                smooth=True,
+                smooth=index % 3 == 2,
                 splinesteps=12,
             )
             liquid_top = bottom - 10 - max(0.12, min(0.88, fills[index])) * (bottle_height - 42)
             canvas.create_rectangle(left + 5, liquid_top, right - 5, bottom - 10, fill=color, outline="")
             canvas.create_line(left + 7, liquid_top, right - 7, liquid_top, fill="#ffffff", width=2)
-            canvas.create_line(left + 6, top + 34, left + 6, bottom - 18, fill="#ffffff", width=2)
-            for block in range(3):
-                sparkle_x = center_x + math.sin(elapsed * 1.8 + index + block) * (body_width + 10)
-                sparkle_y = top + 27 + block * 22 + math.cos(elapsed + index * block) * 5
-                canvas.create_rectangle(
+            texture_color = self._blend_color(color, "#ffffff", 0.42)
+            texture_bottom = bottom - 12
+            liquid_span = max(3, texture_bottom - liquid_top)
+            if index == 0:
+                for crack in range(3):
+                    crack_y = liquid_top + liquid_span * (crack + 1) / 4
+                    canvas.create_line(
+                        left + 8, crack_y, center_x - 3, crack_y - 4,
+                        center_x + 3, crack_y + 2, right - 8, crack_y - 3,
+                        fill="#ffd45c", width=2,
+                    )
+            elif index == 1:
+                for star in range(5):
+                    star_x = left + 10 + (star * 17 + index * 5) % max(12, body_width - 20)
+                    star_y = liquid_top + ((star * 23 + elapsed * 8) % liquid_span)
+                    canvas.create_text(star_x, star_y, text="✦", fill=texture_color, font=("Segoe UI", 9, "bold"))
+            elif index == 2:
+                for bubble in range(4):
+                    bubble_x = left + 10 + (bubble * 11) % max(12, body_width - 20)
+                    bubble_y = texture_bottom - ((elapsed * 17 + bubble * 19) % liquid_span)
+                    canvas.create_oval(
+                        bubble_x - 3, bubble_y - 4, bubble_x + 3, bubble_y + 4,
+                        fill=self._blend_color(color, "#fff2b0", 0.42), outline="",
+                    )
+            elif index == 3:
+                for pixel in range(4):
+                    pixel_y = liquid_top + liquid_span * (pixel + 1) / 5
+                    pixel_x = left + 9 + (pixel * 9) % max(10, body_width - 18)
+                    canvas.create_rectangle(
+                        pixel_x, pixel_y, pixel_x + 5, pixel_y + 5,
+                        fill=texture_color, outline="",
+                    )
+            else:
+                for wave in range(3):
+                    wave_y = liquid_top + liquid_span * (wave + 1) / 4
+                    points = []
+                    for point in range(7):
+                        points.extend((
+                            left + 8 + point * (body_width - 16) / 6,
+                            wave_y + math.sin(point + elapsed * 2 + wave) * 2,
+                        ))
+                    canvas.create_line(*points, fill=texture_color, width=2, smooth=True)
+
+            for bubble in range(2):
+                bubble_y = texture_bottom - ((elapsed * 13 + bubble * 31 + index * 19) % liquid_span)
+                bubble_x = center_x + math.sin(elapsed * 1.8 + bubble + index) * (body_width * 0.23)
+                canvas.create_oval(
+                    bubble_x - 2, bubble_y - 2, bubble_x + 2, bubble_y + 2,
+                    outline=texture_color, width=1,
+                )
+            canvas.create_line(left + 6, top + 36, left + 6, bottom - 18, fill="#ffffff", width=2)
+            canvas.create_line(neck_left, top + 6, neck_right, top + 6, fill="#8da5ba", width=2)
+            for sparkle in range(2):
+                sparkle_x = center_x + math.sin(elapsed * 1.8 + index + sparkle) * (body_width + 10)
+                sparkle_y = top + 27 + sparkle * 34 + math.cos(elapsed + index * sparkle) * 5
+                canvas.create_oval(
                     sparkle_x - 2, sparkle_y - 2, sparkle_x + 2, sparkle_y + 2,
-                    fill=COLOR_PALETTE[(index * 5 + block * 3) % len(COLOR_PALETTE)],
+                    fill=COLOR_PALETTE[(index * 5 + sparkle * 3) % len(COLOR_PALETTE)],
                     outline="",
                 )
-            canvas.create_line(neck_left, top + 6, neck_right, top + 6, fill="#8da5ba", width=2)
 
-        if pour_time < 1.8:
+        if pour_time < 2.4:
             x0, y0, _ = bottle_tops[source_index]
             x1, y1, _ = bottle_tops[target_index]
             for drop_index in range(5):
-                progress = (pour_time / 1.8 + drop_index * 0.19) % 1.0
+                progress = (pour_time / 2.4 + drop_index * 0.19) % 1.0
                 x = x0 + (x1 - x0) * progress
                 y = y0 + (y1 - y0) * progress - 20 * math.sin(progress * math.pi)
-                canvas.create_oval(x - 3, y - 4, x + 3, y + 4, fill=colors[source_index], outline="")
+                canvas.create_oval(
+                    x - 3, y - 4, x + 3, y + 4,
+                    fill=self._blend_color(colors[source_index], "#ffffff", 0.16),
+                    outline="",
+                )
 
         self._menu_animation_job = self.after(40, self._animate_menu_scene)
+
+    def _animate_level_scene(self) -> None:
+        if not self.level_select_frame.winfo_ismapped():
+            self._level_animation_job = None
+            return
+
+        canvas = self.level_scene
+        canvas.delete("all")
+        width = max(canvas.winfo_width(), 900)
+        height = max(canvas.winfo_height(), 600)
+        elapsed = time.monotonic()
+        background = "#eaf0f7"
+        positions = (0.055, 0.14, 0.86, 0.945)
+        for index, fraction in enumerate(positions):
+            center_x = width * fraction + math.sin(elapsed * 0.24 + index) * 7
+            center_y = height * (0.28 + (index % 2) * 0.36) + math.sin(elapsed * 0.36 + index * 2) * 14
+            bottle_height = 142 + (index % 3) * 18
+            top = center_y - bottle_height / 2
+            bottom = center_y + bottle_height / 2
+            body_width = 43 + (index % 2) * 8
+            neck_width = 20
+            left = center_x - body_width / 2
+            right = center_x + body_width / 2
+            neck_left = center_x - neck_width / 2
+            neck_right = center_x + neck_width / 2
+            color = COLOR_PALETTE[(index * 7 + 4) % len(COLOR_PALETTE)]
+            soft_color = self._blend_color(color, background, 0.77)
+            glass = self._blend_color("#6e8aa3", background, 0.3)
+            canvas.create_oval(left - 9, bottom + 5, right + 9, bottom + 15,
+                               fill=self._blend_color("#afc3d4", background, 0.5), outline="")
+            canvas.create_polygon(
+                neck_left, top, neck_right, top, neck_right, top + 21,
+                right, top + 39, right, bottom - 10, right - 5, bottom,
+                left + 5, bottom, left, bottom - 10, left, top + 39,
+                neck_left, top + 21,
+                fill="#f7fafc",
+                outline=glass,
+                width=2,
+                smooth=True,
+                splinesteps=12,
+            )
+            liquid_top = bottom - 12 - (bottle_height - 56) * (0.46 + 0.08 * math.sin(elapsed * 0.5 + index))
+            canvas.create_rectangle(left + 7, liquid_top, right - 7, bottom - 12, fill=soft_color, outline="")
+            for texture_index in range(4):
+                texture_y = liquid_top + (bottom - 12 - liquid_top) * (texture_index + 1) / 5
+                canvas.create_line(
+                    left + 8,
+                    texture_y,
+                    right - 8,
+                    texture_y + math.sin(elapsed * 0.4 + texture_index) * 2,
+                    fill=self._blend_color(color, background, 0.57),
+                    width=2,
+                )
+            for bubble_index in range(3):
+                bubble_y = bottom - 24 - ((elapsed * 10 + bubble_index * 29 + index * 17) % max(20, bottom - liquid_top - 18))
+                bubble_x = left + 12 + ((bubble_index * 13 + index * 7) % max(12, body_width - 24))
+                canvas.create_oval(
+                    bubble_x - 2,
+                    bubble_y - 2,
+                    bubble_x + 2,
+                    bubble_y + 2,
+                    fill=self._blend_color(color, background, 0.36),
+                    outline="",
+                )
+            canvas.create_line(left + 9, top + 45, left + 9, bottom - 28, fill="#ffffff", width=2)
+            canvas.create_line(neck_left, top + 7, neck_right, top + 7, fill=glass, width=2)
+
+            for pixel_index in range(3):
+                pixel_x = center_x + math.sin(elapsed * 0.3 + pixel_index + index) * (body_width + 13)
+                pixel_y = center_y + math.cos(elapsed * 0.25 + pixel_index * 2) * (bottle_height * 0.6)
+                canvas.create_rectangle(
+                    pixel_x - 2,
+                    pixel_y - 2,
+                    pixel_x + 2,
+                    pixel_y + 2,
+                    fill=self._blend_color(color, background, 0.55),
+                    outline="",
+                )
+
+        self._level_animation_job = self.after(110, self._animate_level_scene)
 
     def _refresh_progress(self):
         if self.progress_load_error:
