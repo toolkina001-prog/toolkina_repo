@@ -98,7 +98,7 @@ class RoundedButton(tk.Canvas):
             cursor=cursor,
             takefocus=True,
         )
-        self._options = {
+        self._button_options = {
             "text": text,
             "command": command,
             "font": font,
@@ -119,11 +119,11 @@ class RoundedButton(tk.Canvas):
         self._redraw()
 
     def config(self, **options):
-        unknown = set(options) - set(self._options)
+        unknown = set(options) - set(self._button_options)
         if unknown:
             super().configure(**options)
             return
-        self._options.update(options)
+        self._button_options.update(options)
         self._redraw()
 
     configure = config
@@ -138,7 +138,7 @@ class RoundedButton(tk.Canvas):
         self._redraw()
 
     def _on_press(self, _event):
-        if self._options["state"] != tk.DISABLED:
+        if self._button_options["state"] != tk.DISABLED:
             self._pressed = True
             self._redraw()
 
@@ -148,15 +148,15 @@ class RoundedButton(tk.Canvas):
         self._redraw()
         if (
             was_pressed
-            and self._options["state"] != tk.DISABLED
+            and self._button_options["state"] != tk.DISABLED
             and 0 <= event.x <= self.winfo_width()
             and 0 <= event.y <= self.winfo_height()
         ):
-            self._options["command"]()
+            self._button_options["command"]()
 
     def _on_key(self, _event):
-        if self._options["state"] != tk.DISABLED:
-            self._options["command"]()
+        if self._button_options["state"] != tk.DISABLED:
+            self._button_options["command"]()
             return "break"
 
     @staticmethod
@@ -179,11 +179,13 @@ class RoundedButton(tk.Canvas):
         self.delete("all")
         width = max(self.winfo_width(), int(self.cget("width")))
         height = max(self.winfo_height(), int(self.cget("height")))
-        disabled = self._options["state"] == tk.DISABLED
+        disabled = self._button_options["state"] == tk.DISABLED
         face = "#9caebd" if disabled else (
-            self._options["activebackground"] if self._hovered else self._options["bg"]
+            self._button_options["activebackground"]
+            if self._hovered
+            else self._button_options["bg"]
         )
-        text_color = "#e7edf2" if disabled else self._options["fg"]
+        text_color = "#e7edf2" if disabled else self._button_options["fg"]
         offset = 2 if self._pressed and not disabled else 0
         radius = min(15, height // 3)
         self.create_polygon(
@@ -198,16 +200,16 @@ class RoundedButton(tk.Canvas):
             smooth=True,
             splinesteps=12,
             fill=face,
-            outline=self._options["activebackground"] if self._hovered else face,
+            outline=self._button_options["activebackground"] if self._hovered else face,
             width=2,
         )
         self.create_line(16, 5 + offset, width - 18, 5 + offset, fill="#ffffff", width=2)
         self.create_text(
             width / 2,
             height / 2 + offset,
-            text=self._options["text"],
+            text=self._button_options["text"],
             fill=text_color,
-            font=self._options["font"],
+            font=self._button_options["font"],
             width=width - 20,
             justify="center",
         )
