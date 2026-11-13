@@ -56,6 +56,7 @@ def solve_level(
     *,
     time_limit: float = 2.0,
     mechanics: dict | None = None,
+    raise_on_timeout: bool = False,
 ) -> list[tuple[int, int]] | None:
     """Return a path of bottle indices solving the level, or None if not found in time."""
     initial = tuple(tuple(bottle) for bottle in state)
@@ -107,6 +108,8 @@ def solve_level(
 
     while frontier:
         if time.monotonic() >= deadline:
+            if raise_on_timeout:
+                raise TimeoutError("The level solver exceeded its time limit.")
             return None
         _, cost, _, current, identities, current_capacities, path = heapq.heappop(frontier)
         if cost != best_cost.get(search_key(current, identities)):

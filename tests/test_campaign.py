@@ -49,6 +49,12 @@ class CampaignTests(unittest.TestCase):
                 any(legal_moves(level.state, level.capacities, level.mechanics_config)),
                 f"Level {level.id} starts in a dead end.",
             )
+            for giant_index in level.mechanics_config.get("giant_bottles", []):
+                self.assertEqual(
+                    len(level.state[giant_index]),
+                    level.capacities[giant_index],
+                    f"Level {level.id} has a partially filled large bottle.",
+                )
 
     def test_every_mystery_level_has_a_verified_solution(self):
         campaign_path = Path(__file__).resolve().parents[1] / "campaign" / "levels.json"
@@ -70,7 +76,10 @@ class CampaignTests(unittest.TestCase):
         for level in levels:
             giant_index = level.mechanics_config["giant_bottles"][0]
             self.assertEqual(level.capacities[giant_index], level.capacity * 3)
-            self.assertLessEqual(len(level.state[giant_index]), 2)
+            self.assertEqual(len(level.state[giant_index]), level.capacities[giant_index])
+            self.assertFalse(
+                is_bottle_complete(level.state[giant_index], level.capacities[giant_index])
+            )
 
 
 if __name__ == "__main__":

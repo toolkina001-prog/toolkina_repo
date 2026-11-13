@@ -2,12 +2,14 @@ import math
 import unittest
 from types import SimpleNamespace
 
+from bottle_game.engine import legal_moves
 from bottle_game.gui import BottleSortApp, COLOR_PALETTE, TEXT
 
 
 class RecordingCanvas:
     def __init__(self):
         self.created = []
+        self.tagged_items = []
 
     def winfo_width(self):
         return 0
@@ -20,7 +22,12 @@ class RecordingCanvas:
 
     def __getattr__(self, name):
         if name.startswith("create_"):
-            return lambda *_args, **_kwargs: self.created.append(name)
+            def record(*_args, **kwargs):
+                self.created.append(name)
+                tags = kwargs.get("tags", ())
+                self.tagged_items.extend(tags if isinstance(tags, (tuple, list)) else (tags,))
+
+            return record
         raise AttributeError(name)
 
 
@@ -84,7 +91,8 @@ class GuiContentTests(unittest.TestCase):
 
         BottleSortApp._animate_level_scene(app)
 
-        self.assertGreaterEqual(canvas.created.count("create_polygon"), 8)
+        self.assertGreaterEqual(canvas.created.count("create_polygon"), 20)
+        self.assertEqual(canvas.tagged_items.count("level_bottle"), 20)
 
     def test_in_level_navigation_buttons_respect_campaign_boundaries(self):
         class ConfigWidget:
@@ -122,6 +130,24 @@ class GuiContentTests(unittest.TestCase):
             level_state=(("red", "blue"), ("green", "yellow")),
             current_mechanics={},
             _show_dead_end=lambda: shown.append(True),
+        )
+
+        self.assertTrue(BottleSortApp._check_dead_end(app))
+        self.assertEqual(shown, [True])
+
+    def test_dead_end_with_only_nonproductive_legal_move_triggers_game_over(self):
+        state = (("green", "green", "blue", "blue"), ("red", "red", "blue"))
+        capacities = (4, 4)
+        self.assertTrue(any(legal_moves(state, capacities, {})))
+        shown = []
+        app = SimpleNamespace(
+            campaign=[SimpleNamespace(capacities=capacities)],
+            level_index=0,
+            level_state=state,
+            current_mechanics={},
+            solution_path=[],
+            _show_dead_end=lambda: shown.append(True),
+            _save_progress=lambda: None,
         )
 
         self.assertTrue(BottleSortApp._check_dead_end(app))

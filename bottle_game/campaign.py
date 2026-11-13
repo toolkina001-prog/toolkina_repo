@@ -109,7 +109,7 @@ def generate_level_definition(level_index: int, *, capacity: int | None = None) 
     bottle_capacities = [capacity] * (color_count + empty_bottles)
     giant_bottle_indices: tuple[int, ...] = ()
     if has_giant_bottle:
-        giant_index = color_count + empty_bottles - 1
+        giant_index = 0
         bottle_capacities[giant_index] = capacity * 3
         giant_bottle_indices = (giant_index,)
         mechanics.append("giant_bottle_3x")
@@ -130,7 +130,7 @@ def generate_level_definition(level_index: int, *, capacity: int | None = None) 
         rng=random.Random(level_index),
         mechanics=mechanics_config,
         bottle_capacities=tuple(bottle_capacities) if has_giant_bottle else None,
-        keep_empty_bottles=giant_bottle_indices,
+        require_full_bottles=giant_bottle_indices,
     )
     tutorial = level_index in {1, 10, 25, 45, 70}
     title = f"Level {level_index}"

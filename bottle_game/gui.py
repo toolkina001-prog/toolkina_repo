@@ -19,14 +19,14 @@ from .solver import solve_level
 TEXT = {
     "EN": {
         "play": "Play", "levels": "Level selection", "settings": "Settings", "exit": "Exit",
-        "progress": "Completed: {done} / {total}", "tagline": "A calm puzzle of color and flow",
+        "progress": "Completed: {done} / {total}",
         "colors": "colors",
         "undo": "Undo", "restart": "Restart", "hint": "Hint", "check": "Check solution",
         "menu": "Main menu", "moves": "Moves: {count}", "time": "Time: {value}",
         "sound": "Sound effects", "music": "Background music", "patterns": "Color patterns",
         "language": "Language", "save": "Save settings", "back": "Back", "reset": "Reset progress",
         "campaign": "Choose a level", "level": "Level {number}", "level_solved": "Puzzle solved!",
-        "dead_title": "Game over", "dead_body": "There are no legal moves. Start the level again.",
+        "dead_title": "Game over", "dead_body": "This position cannot be solved. Start the level again.",
         "progress_error": "Could not load saved progress: {error}",
         "select_level": "Click a level to start", "open": "Open",
         "previous": "Previous", "next": "Next level",
@@ -39,14 +39,14 @@ TEXT = {
     },
     "RU": {
         "play": "Играть", "levels": "Выбор уровня", "settings": "Настройки", "exit": "Выход",
-        "progress": "Пройдено: {done} / {total}", "tagline": "Спокойная головоломка о цвете и движении",
+        "progress": "Пройдено: {done} / {total}",
         "colors": "цветов",
         "undo": "Отменить", "restart": "Заново", "hint": "Подсказка", "check": "Проверить решение",
         "menu": "Главное меню", "moves": "Ходы: {count}", "time": "Время: {value}",
         "sound": "Звуковые эффекты", "music": "Фоновая музыка", "patterns": "Узоры для цветов",
         "language": "Язык", "save": "Сохранить настройки", "back": "Назад", "reset": "Сбросить прогресс",
         "campaign": "Выбор уровня", "level": "Уровень {number}", "level_solved": "Уровень пройден!",
-        "dead_title": "Игра окончена", "dead_body": "Нет доступных ходов. Начните уровень заново.",
+        "dead_title": "Игра окончена", "dead_body": "Эту позицию нельзя решить. Начните уровень заново.",
         "progress_error": "Не удалось загрузить сохранение: {error}",
         "select_level": "Нажмите на номер уровня, чтобы начать", "open": "Открыть",
         "previous": "Предыдущий", "next": "Следующий уровень",
@@ -71,6 +71,146 @@ COLOR_PALETTE = (
 
 def concealed_bottle_indices(mechanics: dict) -> set[int]:
     return set(mechanics.get("hidden_bottles", [])) | set(mechanics.get("decoy_bottles", []))
+
+
+class RoundedButton(tk.Canvas):
+    def __init__(
+        self,
+        parent,
+        *,
+        text: str,
+        command,
+        width: int,
+        height: int,
+        font=("Segoe UI", 10, "bold"),
+        fg="#ffffff",
+        bg="#245c82",
+        activeforeground="#ffffff",
+        activebackground="#3479a5",
+        cursor="hand2",
+    ):
+        super().__init__(
+            parent,
+            width=width,
+            height=height,
+            bg=parent.cget("bg"),
+            highlightthickness=0,
+            cursor=cursor,
+            takefocus=True,
+        )
+        self._options = {
+            "text": text,
+            "command": command,
+            "font": font,
+            "fg": fg,
+            "bg": bg,
+            "activeforeground": activeforeground,
+            "activebackground": activebackground,
+            "state": tk.NORMAL,
+        }
+        self._hovered = False
+        self._pressed = False
+        self.bind("<Enter>", self._on_enter)
+        self.bind("<Leave>", self._on_leave)
+        self.bind("<ButtonPress-1>", self._on_press)
+        self.bind("<ButtonRelease-1>", self._on_release)
+        self.bind("<Return>", self._on_key)
+        self.bind("<space>", self._on_key)
+        self._redraw()
+
+    def config(self, **options):
+        unknown = set(options) - set(self._options)
+        if unknown:
+            super().configure(**options)
+            return
+        self._options.update(options)
+        self._redraw()
+
+    configure = config
+
+    def _on_enter(self, _event):
+        self._hovered = True
+        self._redraw()
+
+    def _on_leave(self, _event):
+        self._hovered = False
+        self._pressed = False
+        self._redraw()
+
+    def _on_press(self, _event):
+        if self._options["state"] != tk.DISABLED:
+            self._pressed = True
+            self._redraw()
+
+    def _on_release(self, event):
+        was_pressed = self._pressed
+        self._pressed = False
+        self._redraw()
+        if (
+            was_pressed
+            and self._options["state"] != tk.DISABLED
+            and 0 <= event.x <= self.winfo_width()
+            and 0 <= event.y <= self.winfo_height()
+        ):
+            self._options["command"]()
+
+    def _on_key(self, _event):
+        if self._options["state"] != tk.DISABLED:
+            self._options["command"]()
+            return "break"
+
+    @staticmethod
+    def _rounded_points(x1, y1, x2, y2, radius):
+        points = []
+        for center_x, center_y, start in (
+            (x2 - radius, y1 + radius, -90),
+            (x2 - radius, y2 - radius, 0),
+            (x1 + radius, y2 - radius, 90),
+            (x1 + radius, y1 + radius, 180),
+        ):
+            for step in range(7):
+                angle = math.radians(start + step * 15)
+                points.extend(
+                    (center_x + radius * math.cos(angle), center_y + radius * math.sin(angle))
+                )
+        return points
+
+    def _redraw(self):
+        self.delete("all")
+        width = max(self.winfo_width(), int(self.cget("width")))
+        height = max(self.winfo_height(), int(self.cget("height")))
+        disabled = self._options["state"] == tk.DISABLED
+        face = "#9caebd" if disabled else (
+            self._options["activebackground"] if self._hovered else self._options["bg"]
+        )
+        text_color = "#e7edf2" if disabled else self._options["fg"]
+        offset = 2 if self._pressed and not disabled else 0
+        radius = min(15, height // 3)
+        self.create_polygon(
+            self._rounded_points(4, 5, width - 4, height - 1, radius),
+            smooth=True,
+            splinesteps=12,
+            fill="#a9bac8",
+            outline="",
+        )
+        self.create_polygon(
+            self._rounded_points(3, 2 + offset, width - 5, height - 5 + offset, radius),
+            smooth=True,
+            splinesteps=12,
+            fill=face,
+            outline=self._options["activebackground"] if self._hovered else face,
+            width=2,
+        )
+        self.create_line(16, 5 + offset, width - 18, 5 + offset, fill="#ffffff", width=2)
+        self.create_text(
+            width / 2,
+            height / 2 + offset,
+            text=self._options["text"],
+            fill=text_color,
+            font=self._options["font"],
+            width=width - 20,
+            justify="center",
+        )
 
 
 class BottleSortApp(tk.Tk):
@@ -148,7 +288,6 @@ class BottleSortApp(tk.Tk):
         self.levels_btn.config(text=self._t("levels"))
         self.settings_btn.config(text=self._t("settings"))
         self.exit_btn.config(text=self._t("exit"))
-        self.tagline_label.config(text=self._t("tagline"))
         self.settings_title.config(text=self._t("settings"))
         self.sound_check.config(text=self._t("sound"))
         self.music_check.config(text=self._t("music"))
@@ -200,15 +339,6 @@ class BottleSortApp(tk.Tk):
         )
         self.header.pack(pady=(42, 4))
 
-        self.tagline_label = tk.Label(
-            self.main_container,
-            text=self._t("tagline"),
-            font=("Georgia", 14, "bold italic"),
-            bg="#eaf0f7",
-            fg="#456b70",
-        )
-        self.tagline_label.pack(pady=(0, 24))
-
         self.menu_scene = tk.Canvas(
             self.main_container,
             height=230,
@@ -243,16 +373,13 @@ class BottleSortApp(tk.Tk):
         self._animate_menu_scene()
 
     def _button(self, parent, key: str, command, *, width: int = 12):
-        return tk.Button(
+        return RoundedButton(
             parent,
             text=self._t(key),
             command=command,
-            width=width,
-            height=2,
-            relief="flat",
-            borderwidth=0,
-            cursor="hand2",
-            font=("Segoe UI", 10),
+            width=width * 10 + 30,
+            height=48,
+            font=("Segoe UI", 10, "bold"),
             fg="#ffffff",
             bg="#245c82",
             activeforeground="#ffffff",
@@ -411,15 +538,12 @@ class BottleSortApp(tk.Tk):
                 highlightbackground="#c4d4e0",
             )
             card.grid(row=idx // 4, column=idx % 4, padx=7, pady=7, sticky="nsew")
-            button = tk.Button(
+            button = RoundedButton(
                 card,
                 text="",
                 command=lambda level_index=idx: self.start_level(level_index),
-                width=13,
-                height=3,
-                relief="raised",
-                borderwidth=2,
-                cursor="hand2",
+                width=128,
+                height=82,
                 font=("Segoe UI", 11, "bold"),
                 fg="#214760",
                 bg="#f8fcff",
@@ -494,6 +618,21 @@ class BottleSortApp(tk.Tk):
         fills[target_index] += pour_amount
         bottle_tops = []
 
+        for bubble in range(24):
+            x = (bubble * 53 + elapsed * (12 + bubble % 7)) % width
+            y = 230 - ((elapsed * (18 + bubble % 9) + bubble * 29) % 250)
+            radius = 2 + bubble % 3
+            canvas.create_oval(
+                x - radius,
+                y - radius,
+                x + radius,
+                y + radius,
+                outline=self._blend_color(
+                    COLOR_PALETTE[bubble % len(COLOR_PALETTE)], "#ffffff", 0.25
+                ),
+                width=1,
+            )
+
         for index, (center_x, color) in enumerate(zip(centers, colors)):
             float_y = math.sin(elapsed * 1.05 + index * 1.3) * 13
             bottle_height = 110 + (index % 3) * 13
@@ -541,55 +680,15 @@ class BottleSortApp(tk.Tk):
             liquid_top = bottom - 10 - max(0.12, min(0.88, fills[index])) * (bottle_height - 42)
             canvas.create_rectangle(left + 5, liquid_top, right - 5, bottom - 10, fill=color, outline="")
             canvas.create_line(left + 7, liquid_top, right - 7, liquid_top, fill="#ffffff", width=2)
-            texture_color = self._blend_color(color, "#ffffff", 0.42)
-            texture_bottom = bottom - 12
-            liquid_span = max(3, texture_bottom - liquid_top)
-            if index == 0:
-                for crack in range(3):
-                    crack_y = liquid_top + liquid_span * (crack + 1) / 4
-                    canvas.create_line(
-                        left + 8, crack_y, center_x - 3, crack_y - 4,
-                        center_x + 3, crack_y + 2, right - 8, crack_y - 3,
-                        fill="#ffd45c", width=2,
-                    )
-            elif index == 1:
-                for star in range(5):
-                    star_x = left + 10 + (star * 17 + index * 5) % max(12, body_width - 20)
-                    star_y = liquid_top + ((star * 23 + elapsed * 8) % liquid_span)
-                    canvas.create_text(star_x, star_y, text="✦", fill=texture_color, font=("Segoe UI", 9, "bold"))
-            elif index == 2:
-                for bubble in range(4):
-                    bubble_x = left + 10 + (bubble * 11) % max(12, body_width - 20)
-                    bubble_y = texture_bottom - ((elapsed * 17 + bubble * 19) % liquid_span)
-                    canvas.create_oval(
-                        bubble_x - 3, bubble_y - 4, bubble_x + 3, bubble_y + 4,
-                        fill=self._blend_color(color, "#fff2b0", 0.42), outline="",
-                    )
-            elif index == 3:
-                for pixel in range(4):
-                    pixel_y = liquid_top + liquid_span * (pixel + 1) / 5
-                    pixel_x = left + 9 + (pixel * 9) % max(10, body_width - 18)
-                    canvas.create_rectangle(
-                        pixel_x, pixel_y, pixel_x + 5, pixel_y + 5,
-                        fill=texture_color, outline="",
-                    )
-            else:
-                for wave in range(3):
-                    wave_y = liquid_top + liquid_span * (wave + 1) / 4
-                    points = []
-                    for point in range(7):
-                        points.extend((
-                            left + 8 + point * (body_width - 16) / 6,
-                            wave_y + math.sin(point + elapsed * 2 + wave) * 2,
-                        ))
-                    canvas.create_line(*points, fill=texture_color, width=2, smooth=True)
+            liquid_bottom = bottom - 12
+            liquid_span = max(3, liquid_bottom - liquid_top)
 
             for bubble in range(2):
-                bubble_y = texture_bottom - ((elapsed * 13 + bubble * 31 + index * 19) % liquid_span)
+                bubble_y = liquid_bottom - ((elapsed * 13 + bubble * 31 + index * 19) % liquid_span)
                 bubble_x = center_x + math.sin(elapsed * 1.8 + bubble + index) * (body_width * 0.23)
                 canvas.create_oval(
                     bubble_x - 2, bubble_y - 2, bubble_x + 2, bubble_y + 2,
-                    outline=texture_color, width=1,
+                    outline=self._blend_color(color, "#ffffff", 0.42), width=1,
                 )
             canvas.create_line(left + 6, top + 36, left + 6, bottom - 18, fill="#ffffff", width=2)
             canvas.create_line(neck_left, top + 6, neck_right, top + 6, fill="#8da5ba", width=2)
@@ -628,70 +727,188 @@ class BottleSortApp(tk.Tk):
         height = max(canvas.winfo_height(), self.winfo_height() - 100, 600)
         elapsed = time.monotonic()
         background = "#eaf0f7"
-        positions = (0.035, 0.105, 0.175, 0.245, 0.755, 0.825, 0.895, 0.965)
-        for index, fraction in enumerate(positions):
-            center_x = width * fraction + math.sin(elapsed * 0.24 + index) * 7
-            center_y = height * (0.28 + (index % 2) * 0.36) + math.sin(elapsed * 0.36 + index * 2) * 14
-            bottle_height = 142 + (index % 3) * 18
-            top = center_y - bottle_height / 2
-            bottom = center_y + bottle_height / 2
-            body_width = 43 + (index % 2) * 8
-            neck_width = 20
+        columns = (0.045, 0.12, 0.88, 0.955)
+        rows = (0.14, 0.32, 0.5, 0.68, 0.86)
+        bottles = []
+        for row, row_position in enumerate(rows):
+            for column, column_position in enumerate(columns):
+                index = row * len(columns) + column
+                center_x = width * column_position + math.sin(elapsed * 0.3 + index) * 4
+                center_y = height * row_position + math.sin(elapsed * 0.42 + index * 1.7) * 5
+                bottle_height = 72 + (index * 17 % 43)
+                body_width = 29 + (index * 11 % 17)
+                neck_width = 10 + (index % 3) * 3
+                top = center_y - bottle_height / 2
+                bottom = center_y + bottle_height / 2
+                base_fill = 0.25 + (index * 7 % 7) * 0.075
+                bottles.append(
+                    {
+                        "index": index,
+                        "center_x": center_x,
+                        "center_y": center_y,
+                        "top": top,
+                        "bottom": bottom,
+                        "height": bottle_height,
+                        "width": body_width,
+                        "neck": neck_width,
+                        "fill": base_fill,
+                        "color": COLOR_PALETTE[(index * 5 + 2) % len(COLOR_PALETTE)],
+                    }
+                )
+
+        cycle_duration = 1.8
+        cycle = elapsed % (len(bottles) // 2 * cycle_duration)
+        active_pair = int(cycle // cycle_duration)
+        pour_progress = (cycle % cycle_duration) / cycle_duration
+        source_index = (active_pair // 2) * 4 + (active_pair % 2) * 2
+        target_index = source_index + 1
+        transfer = min(0.2, pour_progress / 0.72 * 0.2)
+        bottles[source_index]["fill"] -= transfer
+        bottles[target_index]["fill"] += transfer
+
+        for bottle in bottles:
+            index = bottle["index"]
+            center_x = bottle["center_x"]
+            center_y = bottle["center_y"]
+            top = bottle["top"]
+            bottom = bottle["bottom"]
+            bottle_height = bottle["height"]
+            body_width = bottle["width"]
+            neck_width = bottle["neck"]
+            color = bottle["color"]
+            fill = max(0.08, min(0.86, bottle["fill"]))
             left = center_x - body_width / 2
             right = center_x + body_width / 2
             neck_left = center_x - neck_width / 2
             neck_right = center_x + neck_width / 2
-            color = COLOR_PALETTE[(index * 7 + 4) % len(COLOR_PALETTE)]
-            soft_color = self._blend_color(color, background, 0.48)
+            spin = abs(math.cos(elapsed * 0.85 + index * 0.73))
+            x_scale = 0.56 + spin * 0.44
+
+            def rotate_x(x):
+                return center_x + (x - center_x) * x_scale
+
+            if index % 4 == 0:
+                outline = (
+                    neck_left, top, neck_right, top, neck_right, top + 16,
+                    right, top + 27, right, bottom - 8, right - 5, bottom,
+                    left + 5, bottom, left, bottom - 8, left, top + 27,
+                    neck_left, top + 16,
+                )
+            elif index % 4 == 1:
+                outline = (
+                    neck_left, top, neck_right, top, neck_right, top + 21,
+                    center_x + body_width * 0.48, top + 32, right, center_y + 8,
+                    right - 2, bottom - 9, center_x, bottom,
+                    left + 2, bottom - 9, left, center_y + 8,
+                    center_x - body_width * 0.48, top + 32, neck_left, top + 21,
+                )
+            elif index % 4 == 2:
+                outline = (
+                    neck_left, top, neck_right, top, neck_right, top + 14,
+                    center_x + body_width * 0.34, top + 23, right, top + 34,
+                    right, bottom - 6, right - 6, bottom,
+                    left + 6, bottom, left, bottom - 6, left, top + 34,
+                    center_x - body_width * 0.34, top + 23, neck_left, top + 14,
+                )
+            else:
+                outline = (
+                    neck_left, top, neck_right, top, neck_right, top + 24,
+                    right, top + 34, right, bottom - 12,
+                    center_x + body_width * 0.3, bottom,
+                    center_x - body_width * 0.3, bottom,
+                    left, bottom - 12, left, top + 34, neck_left, top + 24,
+                )
+            outline = tuple(
+                coordinate
+                for position in range(0, len(outline), 2)
+                for coordinate in (rotate_x(outline[position]), outline[position + 1])
+            )
             glass = self._blend_color("#6e8aa3", background, 0.3)
-            canvas.create_oval(left - 9, bottom + 5, right + 9, bottom + 15,
-                               fill=self._blend_color("#afc3d4", background, 0.5), outline="")
+            canvas.create_oval(
+                rotate_x(left - 7), bottom + 4, rotate_x(right + 7), bottom + 11,
+                fill=self._blend_color("#afc3d4", background, 0.5),
+                outline="",
+            )
             canvas.create_polygon(
-                neck_left, top, neck_right, top, neck_right, top + 21,
-                right, top + 39, right, bottom - 10, right - 5, bottom,
-                left + 5, bottom, left, bottom - 10, left, top + 39,
-                neck_left, top + 21,
+                outline,
                 fill="#f7fafc",
                 outline=glass,
                 width=2,
                 smooth=True,
                 splinesteps=12,
+                tags=("level_bottle",),
             )
-            liquid_top = bottom - 12 - (bottle_height - 56) * (0.46 + 0.08 * math.sin(elapsed * 1.4 + index))
-            canvas.create_rectangle(left + 7, liquid_top, right - 7, bottom - 12, fill=soft_color, outline="")
-            for texture_index in range(4):
-                texture_y = liquid_top + (bottom - 12 - liquid_top) * (texture_index + 1) / 5
-                canvas.create_line(
-                    left + 8,
-                    texture_y,
-                    right - 8,
-                    texture_y + math.sin(elapsed * 1.6 + texture_index) * 2,
-                    fill=self._blend_color(color, background, 0.57),
-                    width=2,
-                )
-            for bubble_index in range(3):
-                bubble_y = bottom - 24 - ((elapsed * 18 + bubble_index * 29 + index * 17) % max(20, bottom - liquid_top - 18))
-                bubble_x = left + 12 + ((bubble_index * 13 + index * 7) % max(12, body_width - 24))
-                canvas.create_oval(
-                    bubble_x - 2,
-                    bubble_y - 2,
-                    bubble_x + 2,
-                    bubble_y + 2,
-                    fill=self._blend_color(color, background, 0.36),
-                    outline="",
-                )
-            canvas.create_line(left + 9, top + 45, left + 9, bottom - 28, fill="#ffffff", width=2)
-            canvas.create_line(neck_left, top + 7, neck_right, top + 7, fill=glass, width=2)
 
-            for pixel_index in range(3):
-                pixel_x = center_x + math.sin(elapsed * 0.3 + pixel_index + index) * (body_width + 13)
-                pixel_y = center_y + math.cos(elapsed * 0.25 + pixel_index * 2) * (bottle_height * 0.6)
-                canvas.create_rectangle(
-                    pixel_x - 2,
-                    pixel_y - 2,
-                    pixel_x + 2,
-                    pixel_y + 2,
-                    fill=self._blend_color(color, background, 0.55),
+            liquid_top = bottom - 8 - (bottle_height - 28) * fill
+            liquid_left = rotate_x(left + 5)
+            liquid_right = rotate_x(right - 5)
+            canvas.create_polygon(
+                liquid_left, liquid_top,
+                liquid_right, liquid_top + math.sin(elapsed * 3 + index) * 1.5,
+                liquid_right, bottom - 8,
+                liquid_left, bottom - 8,
+                fill=self._blend_color(color, background, 0.35),
+                outline="",
+            )
+            for bubble in range(3):
+                span = max(8, bottom - liquid_top - 12)
+                bubble_y = bottom - 11 - (
+                    (elapsed * 23 + bubble * 19 + index * 13) % span
+                )
+                bubble_x = rotate_x(
+                    center_x + math.sin(elapsed * 2 + bubble + index) * body_width * 0.2
+                )
+                radius = 1.5 + bubble % 2
+                canvas.create_oval(
+                    bubble_x - radius,
+                    bubble_y - radius,
+                    bubble_x + radius,
+                    bubble_y + radius,
+                    outline=self._blend_color(color, "#ffffff", 0.45),
+                    width=1,
+                )
+            canvas.create_line(
+                rotate_x(left + body_width * 0.23),
+                top + 30,
+                rotate_x(left + body_width * 0.23),
+                bottom - 17,
+                fill="#ffffff",
+                width=2,
+            )
+            canvas.create_oval(
+                rotate_x(neck_left),
+                top - 2,
+                rotate_x(neck_right),
+                top + 5,
+                outline=glass,
+                width=2,
+            )
+            canvas.create_polygon(
+                outline,
+                fill="",
+                outline=glass,
+                width=2,
+                smooth=True,
+                splinesteps=12,
+            )
+
+        if pour_progress < 0.72:
+            source = bottles[source_index]
+            target = bottles[target_index]
+            x0, y0 = source["center_x"], source["top"] + 15
+            x1, y1 = target["center_x"], target["top"] + 18
+            stream_color = self._blend_color(source["color"], "#ffffff", 0.18)
+            canvas.create_line(x0, y0, x1, y1, fill=stream_color, width=2, smooth=True)
+            for drop in range(4):
+                progress = (pour_progress / 0.72 + drop * 0.24) % 1.0
+                x = x0 + (x1 - x0) * progress
+                y = y0 + (y1 - y0) * progress - 8 * math.sin(progress * math.pi)
+                canvas.create_oval(
+                    x - 2,
+                    y - 3,
+                    x + 2,
+                    y + 3,
+                    fill=stream_color,
                     outline="",
                 )
 
@@ -889,6 +1106,14 @@ class BottleSortApp(tk.Tk):
         if self.level_index > 0:
             self.start_level(self.level_index - 1)
 
+    @staticmethod
+    def _bottle_geometry(capacities, base_capacity: int, bottle_index: int):
+        scale = math.sqrt(capacities[bottle_index] / base_capacity)
+        max_scale = max(math.sqrt(value / base_capacity) for value in capacities)
+        baseline = 14 + (195 - 14) * max_scale
+        canvas_height = math.ceil(max(14 + (250 - 14) * max_scale, baseline + 48))
+        return scale, baseline, canvas_height
+
     def _render_board(self):
         for child in self.board.winfo_children():
             child.destroy()
@@ -907,12 +1132,13 @@ class BottleSortApp(tk.Tk):
             bottle_frame = tk.Frame(self.board, bg="#eaf0f7", padx=3, pady=3)
             bottle_frame.grid(row=idx // columns, column=idx % columns, padx=6, pady=4)
 
-            scale = math.sqrt(capacities[idx] / level.capacity)
-            bottle_height = math.ceil(14 + (250 - 14) * scale)
+            scale, baseline, canvas_height = self._bottle_geometry(
+                capacities, level.capacity, idx
+            )
             canvas = tk.Canvas(
                 bottle_frame,
                 width=86,
-                height=bottle_height,
+                height=canvas_height,
                 bg="#eaf0f7",
                 highlightthickness=0,
             )
@@ -920,7 +1146,7 @@ class BottleSortApp(tk.Tk):
             self.bottle_canvases.append(canvas)
 
             def sy(value):
-                return 14 + (value - 14) * scale
+                return baseline + (value - 195) * scale
 
             frozen = idx in frozen_bottles
             stone = idx in stone_bottles
@@ -1051,7 +1277,6 @@ class BottleSortApp(tk.Tk):
                 canvas.create_oval(56, sy(15), 79, sy(38), fill=badge_fill, outline=badge_outline, width=2)
                 canvas.create_text(67.5, sy(26), text="D" if decoy else ("❄" if frozen else "◆"),
                                    fill=badge_outline, font=("Segoe UI", 10, "bold"))
-                canvas.create_text(43, sy(211), text=badge_text, fill=badge_outline, font=("Segoe UI", 10, "bold"))
 
             if is_bottle_complete(bottle, capacities[idx]):
                 canvas.create_rectangle(
@@ -1064,7 +1289,7 @@ class BottleSortApp(tk.Tk):
 
             canvas.bind("<ButtonPress-1>", lambda event, idx=idx: self._begin_drag(idx))
             canvas.bind("<ButtonRelease-1>", lambda event, idx=idx: self._end_drag(idx))
-            canvas.create_text(43, sy(235), text=str(idx + 1), fill="#344b64", font=("Segoe UI", 10, "bold"))
+            canvas.create_text(43, baseline + 40, text=str(idx + 1), fill="#344b64", font=("Segoe UI", 10, "bold"))
 
     def _color_for(self, color: str) -> str:
         if color.startswith("C") and color[1:].isdigit():
@@ -1136,10 +1361,21 @@ class BottleSortApp(tk.Tk):
         source_canvas = self.bottle_canvases[source]
         target_canvas = self.bottle_canvases[target]
         color = self._color_for(self.level_state[source][-1])
+        level = self.campaign[self.level_index]
+        source_scale, source_baseline, _ = self._bottle_geometry(
+            level.capacities, level.capacity, source
+        )
+        target_scale, target_baseline, _ = self._bottle_geometry(
+            level.capacities, level.capacity, target
+        )
         x0 = source_canvas.winfo_rootx() + source_canvas.winfo_width() // 2 - self.winfo_rootx() - 14
-        y0 = source_canvas.winfo_rooty() + 40 - self.winfo_rooty()
+        y0 = source_canvas.winfo_rooty() + int(
+            source_baseline + (22 - 195) * source_scale + 18
+        ) - self.winfo_rooty()
         x1 = target_canvas.winfo_rootx() + target_canvas.winfo_width() // 2 - self.winfo_rootx() - 14
-        y1 = target_canvas.winfo_rooty() + 70 - self.winfo_rooty()
+        y1 = target_canvas.winfo_rooty() + int(
+            target_baseline + (70 - 195) * target_scale
+        ) - self.winfo_rooty()
         droplet = tk.Label(self, bg=color, relief="raised", borderwidth=1)
         droplet.place(x=x0, y=y0, width=28, height=16)
         self._draw_tilting_bottle(source, target)
@@ -1168,10 +1404,12 @@ class BottleSortApp(tk.Tk):
         canvas = self.bottle_canvases[source]
         level = self.campaign[self.level_index]
         capacity = level.capacities[source]
-        scale = math.sqrt(capacity / level.capacity)
+        scale, baseline, _ = self._bottle_geometry(
+            level.capacities, level.capacity, source
+        )
 
         def sy(value):
-            return 14 + (value - 14) * scale
+            return baseline + (value - 195) * scale
 
         direction = 1 if target > source else -1
         angle = direction * 0.14
@@ -1324,10 +1562,26 @@ class BottleSortApp(tk.Tk):
         level = self.campaign[self.level_index]
         if is_solved(self.level_state, level.capacities):
             return False
-        if any(legal_moves(self.level_state, level.capacities, self.current_mechanics)):
+        if not any(legal_moves(self.level_state, level.capacities, self.current_mechanics)):
+            self._show_dead_end()
+            return True
+        if self.solution_path:
             return False
-        self._show_dead_end()
-        return True
+        try:
+            solution = solve_level(
+                self.level_state,
+                level.capacities,
+                mechanics=self.current_mechanics,
+                raise_on_timeout=True,
+            )
+        except TimeoutError:
+            return False
+        if solution is None:
+            self._show_dead_end()
+            return True
+        self.solution_path = solution
+        self._save_progress()
+        return False
 
     def _mark_completed(self, level: LevelDefinition):
         if level.id not in self.progress.get("completed", []):

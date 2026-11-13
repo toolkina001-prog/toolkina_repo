@@ -36,7 +36,7 @@ def generate_level(
     max_attempts: int = 200,
     mechanics: dict | None = None,
     bottle_capacities: tuple[int, ...] | None = None,
-    keep_empty_bottles: tuple[int, ...] = (),
+    require_full_bottles: tuple[int, ...] = (),
 ) -> BottleState:
     """Create a solvable board by reversing legal pours from a solved state."""
     state, _ = generate_level_with_solution(
@@ -48,7 +48,7 @@ def generate_level(
         max_attempts=max_attempts,
         mechanics=mechanics,
         bottle_capacities=bottle_capacities,
-        keep_empty_bottles=keep_empty_bottles,
+        require_full_bottles=require_full_bottles,
     )
     return state
 
@@ -63,7 +63,7 @@ def generate_level_with_solution(
     max_attempts: int = 200,
     mechanics: dict | None = None,
     bottle_capacities: tuple[int, ...] | None = None,
-    keep_empty_bottles: tuple[int, ...] = (),
+    require_full_bottles: tuple[int, ...] = (),
 ) -> tuple[BottleState, tuple[tuple[int, int], ...]]:
     """Return a reverse-shuffled board and its proven forward solution."""
     if color_count < 1 or capacity < 1 or empty_bottles < 1:
@@ -73,9 +73,8 @@ def generate_level_with_solution(
     capacities = bottle_capacities or (capacity,) * (color_count + empty_bottles)
     if len(capacities) != color_count + empty_bottles or any(value < capacity for value in capacities[:color_count]):
         raise ValueError("bottle_capacities must provide sufficient capacity for every color bottle.")
-    if any(not 0 <= index < len(capacities) for index in keep_empty_bottles):
-        raise ValueError("keep_empty_bottles must contain valid bottle indices.")
-    fixed_empty_bottles = set(keep_empty_bottles)
+    if any(not 0 <= index < len(capacities) for index in require_full_bottles):
+        raise ValueError("require_full_bottles must contain valid bottle indices.")
     rng = rng or random.Random()
 
     for _ in range(max_attempts):
@@ -102,7 +101,6 @@ def generate_level_with_solution(
                     source_capacity = capacities[source_index]
                     if (
                         source_index == target_index
-                        or source_index in fixed_empty_bottles
                         or len(source) >= source_capacity
                     ):
                         continue
@@ -127,7 +125,7 @@ def generate_level_with_solution(
         if not is_solved(state, capacities) and not any(
             is_bottle_complete(bottle, bottle_capacity)
             for bottle, bottle_capacity in zip(state, capacities)
-        ):
+        ) and all(len(state[index]) == capacities[index] for index in require_full_bottles):
             solution = tuple(reversed(reverse_moves))
             check_state = state
             for source, target in solution:
