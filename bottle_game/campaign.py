@@ -105,7 +105,7 @@ def generate_level_definition(level_index: int, *, capacity: int | None = None) 
     color_count = _geometric_color_count(level_index)
     empty_bottles = 2 if level_index < 70 else 3
     mechanics, mechanics_config = _determine_mechanics(level_index, capacity, color_count, empty_bottles)
-    has_giant_bottle = level_index in {10, 30, 50, 70, 90, 110}
+    has_giant_bottle = level_index in {10, 30, 50, 70, 90, 110, 125, 130, 135, 140}
     bottle_capacities = [capacity] * (color_count + empty_bottles)
     if has_giant_bottle:
         bottle_capacities[0] = capacity * 3
@@ -122,6 +122,7 @@ def generate_level_definition(level_index: int, *, capacity: int | None = None) 
             12,
             6 + level_index // 3,
             color_count + 10 if has_giant_bottle else 0,
+            60 if level_index > 120 else 0,
         ),
         rng=random.Random(level_index),
         mechanics=mechanics_config,

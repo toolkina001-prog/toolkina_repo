@@ -49,6 +49,7 @@ class GuiContentTests(unittest.TestCase):
 
     def test_english_and_russian_have_matching_ui_strings(self):
         self.assertEqual(set(TEXT["EN"]), set(TEXT["RU"]))
+        self.assertNotIn("minecraft", TEXT["RU"])
 
     def test_menu_scene_draws_bottles_before_the_animation_starts(self):
         canvas = RecordingCanvas()
@@ -65,7 +66,7 @@ class GuiContentTests(unittest.TestCase):
 
         BottleSortApp._animate_menu_scene(app)
 
-        self.assertGreaterEqual(canvas.created.count("create_polygon"), 5)
+        self.assertGreaterEqual(canvas.created.count("create_polygon"), 8)
 
     def test_level_selection_scene_draws_colored_bottle_background(self):
         canvas = RecordingCanvas()
@@ -83,7 +84,50 @@ class GuiContentTests(unittest.TestCase):
 
         BottleSortApp._animate_level_scene(app)
 
-        self.assertGreaterEqual(canvas.created.count("create_polygon"), 4)
+        self.assertGreaterEqual(canvas.created.count("create_polygon"), 8)
+
+    def test_layer_textures_draw_shimmer_and_lava_details(self):
+        canvas = RecordingCanvas()
+        sy = lambda value: value
+
+        BottleSortApp._draw_layer_texture(
+            SimpleNamespace(), canvas, "C0", 10, 30, sy
+        )
+        self.assertEqual(canvas.created.count("create_line"), 2)
+
+        canvas.created.clear()
+        BottleSortApp._draw_layer_texture(
+            SimpleNamespace(), canvas, "C3", 10, 30, sy
+        )
+        self.assertEqual(canvas.created.count("create_line"), 2)
+
+    def test_in_level_navigation_buttons_respect_campaign_boundaries(self):
+        class ConfigWidget:
+            def __init__(self):
+                self.options = {}
+
+            def config(self, **options):
+                self.options.update(options)
+
+        app = SimpleNamespace(
+            level_name=ConfigWidget(),
+            moves_label=ConfigWidget(),
+            previous_btn=ConfigWidget(),
+            next_btn=ConfigWidget(),
+            campaign=[object(), object()],
+            level_index=0,
+            move_count=3,
+            _t=lambda key, **values: f"{key}:{values}",
+        )
+
+        BottleSortApp._update_game_labels(app, SimpleNamespace(id=1))
+        self.assertEqual(app.previous_btn.options["state"], "disabled")
+        self.assertEqual(app.next_btn.options["state"], "normal")
+
+        app.level_index = 1
+        BottleSortApp._update_game_labels(app, SimpleNamespace(id=2))
+        self.assertEqual(app.previous_btn.options["state"], "normal")
+        self.assertEqual(app.next_btn.options["state"], "disabled")
 
     def test_mystery_layers_reveal_when_they_reach_the_top(self):
         app = SimpleNamespace(

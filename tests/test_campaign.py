@@ -34,6 +34,8 @@ class CampaignTests(unittest.TestCase):
     def test_bundled_campaign_has_no_prefilled_completed_bottles(self):
         campaign_path = Path(__file__).resolve().parents[1] / "campaign" / "levels.json"
         levels = load_campaign(campaign_path)
+        self.assertEqual(len(levels), 140)
+        self.assertEqual([level.id for level in levels[-20:]], list(range(121, 141)))
         verify_campaign(levels)
         for level in levels:
             self.assertFalse(
@@ -58,7 +60,7 @@ class CampaignTests(unittest.TestCase):
     def test_giant_bottle_levels_are_three_times_capacity_and_solvable(self):
         levels = [
             generate_level_definition(level_id)
-            for level_id in (10, 30, 50, 70, 90, 110)
+            for level_id in (10, 30, 50, 70, 90, 110, 125, 130, 135, 140)
         ]
         verify_campaign(levels)
         for level in levels:

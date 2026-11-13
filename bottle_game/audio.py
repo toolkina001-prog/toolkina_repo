@@ -23,6 +23,7 @@ else:
 
 class SoundManager:
     _sample_rate = 22050
+    pour_duration = 0.32
 
     def __init__(self, root) -> None:
         self.root = root
@@ -84,23 +85,23 @@ class SoundManager:
             winsound.PlaySound(None, winsound.SND_PURGE)
 
     def play_click(self) -> None:
-        self._play(self.click_path, 120)
+        self._play(self.click_path)
 
     def play_pour(self) -> None:
-        self._play(self.pour_path, 500)
+        self._play(self.pour_path)
 
-    def _play(self, path: Path, resume_after_ms: int) -> None:
+    def _play(self, path: Path) -> None:
         if not self.sound_enabled:
             return
         if self._pygame is not None:
             self._pygame_sounds[path].play()
             return
-        if winsound is None:
+        if winsound is None or self.music_enabled:
             return
-        was_music_playing = self.music_enabled
-        winsound.PlaySound(str(path), winsound.SND_FILENAME | winsound.SND_ASYNC)
-        if was_music_playing:
-            self.root.after(resume_after_ms, self.start_music)
+        winsound.PlaySound(
+            str(path),
+            winsound.SND_FILENAME | winsound.SND_ASYNC,
+        )
 
     def _write_music(self) -> None:
         duration = 16.0
@@ -191,7 +192,7 @@ class SoundManager:
             output.setnchannels(1)
             output.setsampwidth(2)
             output.setframerate(self._sample_rate)
-            duration = 0.5
+            duration = self.pour_duration
             samples = bytearray()
             for index in range(int(duration * self._sample_rate)):
                 time = index / self._sample_rate
