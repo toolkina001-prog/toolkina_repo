@@ -103,8 +103,11 @@ def generate_level_definition(level_index: int, *, capacity: int | None = None) 
         capacity = 4 if level_index < 71 else 5
 
     color_count = _geometric_color_count(level_index)
-    empty_bottles = 2 if level_index < 70 else 3
-    mechanics, mechanics_config = _determine_mechanics(level_index, capacity, color_count, empty_bottles)
+    empty_bottles = 3 if level_index == 46 else (2 if level_index < 70 else 3)
+    generation_empty_bottles = empty_bottles - 1 if level_index == 46 else empty_bottles
+    mechanics, mechanics_config = _determine_mechanics(
+        level_index, capacity, color_count, generation_empty_bottles
+    )
     has_giant_bottle = level_index in {10, 30, 50, 70, 90, 110, 125, 130, 135, 140}
     bottle_capacities = [capacity] * (color_count + empty_bottles)
     giant_bottle_indices: tuple[int, ...] = ()
@@ -120,7 +123,7 @@ def generate_level_definition(level_index: int, *, capacity: int | None = None) 
     state, solution = generate_level_with_solution(
         color_count,
         capacity,
-        empty_bottles=empty_bottles,
+        empty_bottles=generation_empty_bottles,
         shuffle_steps=max(
             12,
             6 + level_index // 3,
@@ -132,6 +135,8 @@ def generate_level_definition(level_index: int, *, capacity: int | None = None) 
         bottle_capacities=tuple(bottle_capacities) if has_giant_bottle else None,
         require_full_bottles=giant_bottle_indices,
     )
+    if level_index == 46:
+        state += ((),)
     tutorial = level_index in {1, 10, 25, 45, 70}
     title = f"Level {level_index}"
     description = "Solve the board by filling each bottle with one color." if not mechanics else (

@@ -6081,11 +6081,12 @@
           "C0",
           "C10"
         ],
+        [],
         []
       ],
       "capacity": 4,
       "color_count": 13,
-      "empty_bottles": 2,
+      "empty_bottles": 3,
       "mechanics": [
         "decoy_bottle",
         "stone_layer"
@@ -6186,7 +6187,7 @@
         ]
       ],
       "tutorial": false,
-      "difficulty": 345.0,
+      "difficulty": 276.0,
       "bottle_capacities": []
     },
     {

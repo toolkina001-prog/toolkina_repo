@@ -7,7 +7,7 @@ from bottle_game.campaign import (
     load_campaign,
     verify_campaign,
 )
-from bottle_game.engine import is_bottle_complete, legal_moves
+from bottle_game.engine import apply_pour, is_bottle_complete, legal_moves
 from bottle_game.solver import solve_level
 
 
@@ -80,6 +80,24 @@ class CampaignTests(unittest.TestCase):
             self.assertFalse(
                 is_bottle_complete(level.state[giant_index], level.capacities[giant_index])
             )
+
+    def test_level_46_bottle_10_to_7_move_preserves_a_solution(self):
+        campaign_path = Path(__file__).resolve().parents[1] / "campaign" / "levels.json"
+        level = load_campaign(campaign_path)[45]
+        self.assertEqual(level.empty_bottles, 3)
+        move = (9, 6)
+        self.assertIn(move, legal_moves(level.state, level.capacities, level.mechanics_config))
+
+        state = apply_pour(level.state, *move, level.capacities, level.mechanics_config)
+        self.assertIsNotNone(
+            solve_level(
+                state,
+                level.capacities,
+                mechanics=level.mechanics_config,
+                time_limit=15.0,
+                raise_on_timeout=True,
+            )
+        )
 
 
 if __name__ == "__main__":
