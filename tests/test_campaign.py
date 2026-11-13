@@ -7,7 +7,7 @@ from bottle_game.campaign import (
     load_campaign,
     verify_campaign,
 )
-from bottle_game.engine import is_bottle_complete
+from bottle_game.engine import is_bottle_complete, legal_moves
 from bottle_game.solver import solve_level
 
 
@@ -45,6 +45,10 @@ class CampaignTests(unittest.TestCase):
                 ),
                 f"Level {level.id} starts with a completed bottle.",
             )
+            self.assertTrue(
+                any(legal_moves(level.state, level.capacities, level.mechanics_config)),
+                f"Level {level.id} starts in a dead end.",
+            )
 
     def test_every_mystery_level_has_a_verified_solution(self):
         campaign_path = Path(__file__).resolve().parents[1] / "campaign" / "levels.json"
@@ -64,7 +68,9 @@ class CampaignTests(unittest.TestCase):
         ]
         verify_campaign(levels)
         for level in levels:
-            self.assertEqual(max(level.capacities), level.capacity * 3)
+            giant_index = level.mechanics_config["giant_bottles"][0]
+            self.assertEqual(level.capacities[giant_index], level.capacity * 3)
+            self.assertLessEqual(len(level.state[giant_index]), 2)
 
 
 if __name__ == "__main__":

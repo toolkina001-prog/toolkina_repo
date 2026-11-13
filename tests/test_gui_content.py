@@ -86,21 +86,6 @@ class GuiContentTests(unittest.TestCase):
 
         self.assertGreaterEqual(canvas.created.count("create_polygon"), 8)
 
-    def test_layer_textures_draw_shimmer_and_lava_details(self):
-        canvas = RecordingCanvas()
-        sy = lambda value: value
-
-        BottleSortApp._draw_layer_texture(
-            SimpleNamespace(), canvas, "C0", 10, 30, sy
-        )
-        self.assertEqual(canvas.created.count("create_line"), 2)
-
-        canvas.created.clear()
-        BottleSortApp._draw_layer_texture(
-            SimpleNamespace(), canvas, "C3", 10, 30, sy
-        )
-        self.assertEqual(canvas.created.count("create_line"), 2)
-
     def test_in_level_navigation_buttons_respect_campaign_boundaries(self):
         class ConfigWidget:
             def __init__(self):
@@ -129,6 +114,19 @@ class GuiContentTests(unittest.TestCase):
         self.assertEqual(app.previous_btn.options["state"], "normal")
         self.assertEqual(app.next_btn.options["state"], "disabled")
 
+    def test_dead_end_position_triggers_game_over(self):
+        shown = []
+        app = SimpleNamespace(
+            campaign=[SimpleNamespace(capacities=(2, 2))],
+            level_index=0,
+            level_state=(("red", "blue"), ("green", "yellow")),
+            current_mechanics={},
+            _show_dead_end=lambda: shown.append(True),
+        )
+
+        self.assertTrue(BottleSortApp._check_dead_end(app))
+        self.assertEqual(shown, [True])
+
     def test_mystery_layers_reveal_when_they_reach_the_top(self):
         app = SimpleNamespace(
             current_mechanics={"hidden_bottles": [0]},
@@ -144,6 +142,17 @@ class GuiContentTests(unittest.TestCase):
         remaining_tokens = (("bottom",), ("top",))
         BottleSortApp._reveal_hidden_top_runs(app, remaining_state, remaining_tokens)
         self.assertEqual(app.revealed_layer_tokens, {"bottom", "top"})
+
+    def test_decoy_layers_reveal_from_black_when_they_reach_the_top(self):
+        app = SimpleNamespace(
+            current_mechanics={"decoy_bottles": [0]},
+            revealed_layer_tokens=set(),
+        )
+        state = (("red", "blue"), ())
+        tokens = (("bottom", "top"), ())
+
+        BottleSortApp._reveal_hidden_top_runs(app, state, tokens)
+        self.assertEqual(app.revealed_layer_tokens, {"top"})
 
     def test_mystery_layer_tokens_follow_pours_and_undo(self):
         level = SimpleNamespace(capacities=(2, 2, 2))
@@ -163,6 +172,7 @@ class GuiContentTests(unittest.TestCase):
             _update_game_labels=lambda _level: None,
             _save_progress=lambda: None,
             _render_board=lambda: None,
+            _check_dead_end=lambda: False,
         )
         app._reveal_hidden_top_runs = lambda state, tokens: (
             BottleSortApp._reveal_hidden_top_runs(app, state, tokens)
