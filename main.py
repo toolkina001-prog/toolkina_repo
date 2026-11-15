@@ -17,6 +17,35 @@ def _npm_command(*arguments: str) -> list[str]:
     return ["npm", *arguments]
 
 
+def _ensure_electron(project_root: Path) -> None:
+    electron_binary = project_root / "node_modules" / "electron" / "dist"
+    electron_binary /= "electron.exe" if os.name == "nt" else "electron"
+    if electron_binary.is_file():
+        return
+
+    print("Electron is missing; installing JavaScript UI dependencies...", file=sys.stderr)
+    installation = subprocess.run(
+        _npm_command("install"), cwd=project_root, check=False
+    )
+    if installation.returncode:
+        raise SystemExit(installation.returncode)
+    if electron_binary.is_file():
+        return
+
+    installer = project_root / "node_modules" / "electron" / "install.js"
+    if not installer.is_file():
+        raise SystemExit("npm install did not install Electron. Check its output and try again.")
+
+    print("Electron's binary is missing; downloading it now...", file=sys.stderr)
+    installation = subprocess.run(
+        ["node", str(installer)], cwd=project_root, check=False
+    )
+    if installation.returncode:
+        raise SystemExit(installation.returncode)
+    if not electron_binary.is_file():
+        raise SystemExit("Electron's installer finished, but its executable is still missing.")
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="Bottle Sort game")
     parser.add_argument("--console", action="store_true", help="Run the console prototype instead of the GUI.")
@@ -27,18 +56,8 @@ def main() -> None:
         return
 
     project_root = Path(__file__).resolve().parent
-    electron_binary = project_root / "node_modules" / "electron" / "dist"
-    electron_binary /= "electron.exe" if os.name == "nt" else "electron"
-
     try:
-        if not electron_binary.is_file():
-            print("Electron is missing; installing JavaScript UI dependencies...", file=sys.stderr)
-            installation = subprocess.run(
-                _npm_command("install"), cwd=project_root, check=False
-            )
-            if installation.returncode:
-                raise SystemExit(installation.returncode)
-
+        _ensure_electron(project_root)
         result = subprocess.run(
             _npm_command("start"), cwd=project_root, check=False
         )
