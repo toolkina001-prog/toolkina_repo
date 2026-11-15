@@ -32,9 +32,7 @@
       "empty_bottles": 2,
       "mechanics": [],
       "mechanics_config": {
-        "decoy_bottles": [],
-        "frozen_bottles": [],
-        "stone_bottles": []
+        "decoy_bottles": []
       },
       "solution": [
         [
@@ -112,9 +110,7 @@
       "empty_bottles": 2,
       "mechanics": [],
       "mechanics_config": {
-        "decoy_bottles": [],
-        "frozen_bottles": [],
-        "stone_bottles": []
+        "decoy_bottles": []
       },
       "solution": [
         [
@@ -196,9 +192,7 @@
       "empty_bottles": 2,
       "mechanics": [],
       "mechanics_config": {
-        "decoy_bottles": [],
-        "frozen_bottles": [],
-        "stone_bottles": []
+        "decoy_bottles": []
       },
       "solution": [
         [
@@ -288,9 +282,7 @@
       "empty_bottles": 2,
       "mechanics": [],
       "mechanics_config": {
-        "decoy_bottles": [],
-        "frozen_bottles": [],
-        "stone_bottles": []
+        "decoy_bottles": []
       },
       "solution": [
         [
@@ -372,9 +364,7 @@
       "empty_bottles": 2,
       "mechanics": [],
       "mechanics_config": {
-        "decoy_bottles": [],
-        "frozen_bottles": [],
-        "stone_bottles": []
+        "decoy_bottles": []
       },
       "solution": [
         [
@@ -475,9 +465,7 @@
       "empty_bottles": 2,
       "mechanics": [],
       "mechanics_config": {
-        "decoy_bottles": [],
-        "frozen_bottles": [],
-        "stone_bottles": []
+        "decoy_bottles": []
       },
       "solution": [
         [
@@ -577,9 +565,7 @@
       "empty_bottles": 2,
       "mechanics": [],
       "mechanics_config": {
-        "decoy_bottles": [],
-        "frozen_bottles": [],
-        "stone_bottles": []
+        "decoy_bottles": []
       },
       "solution": [
         [
@@ -679,9 +665,7 @@
       "empty_bottles": 2,
       "mechanics": [],
       "mechanics_config": {
-        "decoy_bottles": [],
-        "frozen_bottles": [],
-        "stone_bottles": []
+        "decoy_bottles": []
       },
       "solution": [
         [
@@ -781,9 +765,7 @@
       "empty_bottles": 2,
       "mechanics": [],
       "mechanics_config": {
-        "decoy_bottles": [],
-        "frozen_bottles": [],
-        "stone_bottles": []
+        "decoy_bottles": []
       },
       "solution": [
         [
@@ -894,8 +876,6 @@
       ],
       "mechanics_config": {
         "decoy_bottles": [],
-        "frozen_bottles": [],
-        "stone_bottles": [],
         "giant_bottles": [
           0
         ]
@@ -1025,9 +1005,7 @@
       "empty_bottles": 2,
       "mechanics": [],
       "mechanics_config": {
-        "decoy_bottles": [],
-        "frozen_bottles": [],
-        "stone_bottles": []
+        "decoy_bottles": []
       },
       "solution": [
         [
@@ -1133,9 +1111,7 @@
       "empty_bottles": 2,
       "mechanics": [],
       "mechanics_config": {
-        "decoy_bottles": [],
-        "frozen_bottles": [],
-        "stone_bottles": []
+        "decoy_bottles": []
       },
       "solution": [
         [
@@ -1241,9 +1217,7 @@
       "empty_bottles": 2,
       "mechanics": [],
       "mechanics_config": {
-        "decoy_bottles": [],
-        "frozen_bottles": [],
-        "stone_bottles": []
+        "decoy_bottles": []
       },
       "solution": [
         [
@@ -1349,9 +1323,7 @@
       "empty_bottles": 2,
       "mechanics": [],
       "mechanics_config": {
-        "decoy_bottles": [],
-        "frozen_bottles": [],
-        "stone_bottles": []
+        "decoy_bottles": []
       },
       "solution": [
         [
@@ -1457,9 +1429,7 @@
       "empty_bottles": 2,
       "mechanics": [],
       "mechanics_config": {
-        "decoy_bottles": [],
-        "frozen_bottles": [],
-        "stone_bottles": []
+        "decoy_bottles": []
       },
       "solution": [
         [
@@ -1571,9 +1541,7 @@
       "empty_bottles": 2,
       "mechanics": [],
       "mechanics_config": {
-        "decoy_bottles": [],
-        "frozen_bottles": [],
-        "stone_bottles": []
+        "decoy_bottles": []
       },
       "solution": [
         [
@@ -1686,9 +1654,7 @@
       "empty_bottles": 2,
       "mechanics": [],
       "mechanics_config": {
-        "decoy_bottles": [],
-        "frozen_bottles": [],
-        "stone_bottles": []
+        "decoy_bottles": []
       },
       "solution": [
         [
@@ -1801,9 +1767,7 @@
       "empty_bottles": 2,
       "mechanics": [],
       "mechanics_config": {
-        "decoy_bottles": [],
-        "frozen_bottles": [],
-        "stone_bottles": []
+        "decoy_bottles": []
       },
       "solution": [
         [
@@ -1915,9 +1879,7 @@
       "empty_bottles": 2,
       "mechanics": [],
       "mechanics_config": {
-        "decoy_bottles": [],
-        "frozen_bottles": [],
-        "stone_bottles": []
+        "decoy_bottles": []
       },
       "solution": [
         [
@@ -2030,9 +1992,7 @@
       "empty_bottles": 2,
       "mechanics": [],
       "mechanics_config": {
-        "decoy_bottles": [],
-        "frozen_bottles": [],
-        "stone_bottles": []
+        "decoy_bottles": []
       },
       "solution": [
         [
@@ -2151,9 +2111,7 @@
       "empty_bottles": 2,
       "mechanics": [],
       "mechanics_config": {
-        "decoy_bottles": [],
-        "frozen_bottles": [],
-        "stone_bottles": []
+        "decoy_bottles": []
       },
       "solution": [
         [
@@ -2276,9 +2234,7 @@
       "empty_bottles": 2,
       "mechanics": [],
       "mechanics_config": {
-        "decoy_bottles": [],
-        "frozen_bottles": [],
-        "stone_bottles": []
+        "decoy_bottles": []
       },
       "solution": [
         [
@@ -2401,9 +2357,7 @@
       "empty_bottles": 2,
       "mechanics": [],
       "mechanics_config": {
-        "decoy_bottles": [],
-        "frozen_bottles": [],
-        "stone_bottles": []
+        "decoy_bottles": []
       },
       "solution": [
         [
@@ -2526,9 +2480,7 @@
       "empty_bottles": 2,
       "mechanics": [],
       "mechanics_config": {
-        "decoy_bottles": [],
-        "frozen_bottles": [],
-        "stone_bottles": []
+        "decoy_bottles": []
       },
       "solution": [
         [
@@ -2658,9 +2610,7 @@
       "mechanics_config": {
         "decoy_bottles": [
           8
-        ],
-        "frozen_bottles": [],
-        "stone_bottles": []
+        ]
       },
       "solution": [
         [
@@ -2797,9 +2747,7 @@
       "mechanics_config": {
         "decoy_bottles": [
           9
-        ],
-        "frozen_bottles": [],
-        "stone_bottles": []
+        ]
       },
       "solution": [
         [
@@ -2936,9 +2884,7 @@
       "mechanics_config": {
         "decoy_bottles": [
           9
-        ],
-        "frozen_bottles": [],
-        "stone_bottles": []
+        ]
       },
       "solution": [
         [
@@ -3079,9 +3025,7 @@
       "mechanics_config": {
         "decoy_bottles": [
           9
-        ],
-        "frozen_bottles": [],
-        "stone_bottles": []
+        ]
       },
       "solution": [
         [
@@ -3222,9 +3166,7 @@
       "mechanics_config": {
         "decoy_bottles": [
           9
-        ],
-        "frozen_bottles": [],
-        "stone_bottles": []
+        ]
       },
       "solution": [
         [
@@ -3374,8 +3316,6 @@
         "decoy_bottles": [
           9
         ],
-        "frozen_bottles": [],
-        "stone_bottles": [],
         "giant_bottles": [
           0
         ]
@@ -3552,9 +3492,7 @@
       "mechanics_config": {
         "decoy_bottles": [
           10
-        ],
-        "frozen_bottles": [],
-        "stone_bottles": []
+        ]
       },
       "solution": [
         [
@@ -3705,9 +3643,7 @@
       "mechanics_config": {
         "decoy_bottles": [
           10
-        ],
-        "frozen_bottles": [],
-        "stone_bottles": []
+        ]
       },
       "solution": [
         [
@@ -3857,9 +3793,7 @@
       "mechanics_config": {
         "decoy_bottles": [
           10
-        ],
-        "frozen_bottles": [],
-        "stone_bottles": []
+        ]
       },
       "solution": [
         [
@@ -4013,9 +3947,7 @@
       "mechanics_config": {
         "decoy_bottles": [
           10
-        ],
-        "frozen_bottles": [],
-        "stone_bottles": []
+        ]
       },
       "solution": [
         [
@@ -4170,9 +4102,7 @@
       "mechanics_config": {
         "decoy_bottles": [
           10
-        ],
-        "frozen_bottles": [],
-        "stone_bottles": []
+        ]
       },
       "solution": [
         [
@@ -4333,9 +4263,7 @@
       "mechanics_config": {
         "decoy_bottles": [
           11
-        ],
-        "frozen_bottles": [],
-        "stone_bottles": []
+        ]
       },
       "solution": [
         [
@@ -4499,9 +4427,7 @@
       "mechanics_config": {
         "decoy_bottles": [
           11
-        ],
-        "frozen_bottles": [],
-        "stone_bottles": []
+        ]
       },
       "solution": [
         [
@@ -4666,9 +4592,7 @@
       "mechanics_config": {
         "decoy_bottles": [
           11
-        ],
-        "frozen_bottles": [],
-        "stone_bottles": []
+        ]
       },
       "solution": [
         [
@@ -4833,9 +4757,7 @@
       "mechanics_config": {
         "decoy_bottles": [
           11
-        ],
-        "frozen_bottles": [],
-        "stone_bottles": []
+        ]
       },
       "solution": [
         [
@@ -5004,9 +4926,7 @@
       "mechanics_config": {
         "decoy_bottles": [
           11
-        ],
-        "frozen_bottles": [],
-        "stone_bottles": []
+        ]
       },
       "solution": [
         [
@@ -5181,9 +5101,7 @@
       "mechanics_config": {
         "decoy_bottles": [
           12
-        ],
-        "frozen_bottles": [],
-        "stone_bottles": []
+        ]
       },
       "solution": [
         [
@@ -5358,9 +5276,7 @@
       "mechanics_config": {
         "decoy_bottles": [
           12
-        ],
-        "frozen_bottles": [],
-        "stone_bottles": []
+        ]
       },
       "solution": [
         [
@@ -5539,9 +5455,7 @@
       "mechanics_config": {
         "decoy_bottles": [
           12
-        ],
-        "frozen_bottles": [],
-        "stone_bottles": []
+        ]
       },
       "solution": [
         [
@@ -5720,9 +5634,7 @@
       "mechanics_config": {
         "decoy_bottles": [
           12
-        ],
-        "frozen_bottles": [],
-        "stone_bottles": []
+        ]
       },
       "solution": [
         [
@@ -5813,7 +5725,7 @@
     {
       "id": 45,
       "title": "Level 45",
-      "description": "Mechanics: decoy_bottle, stone_layer",
+      "description": "Mechanics: decoy_bottle",
       "state": [
         [
           "C0",
@@ -5895,16 +5807,11 @@
       "color_count": 12,
       "empty_bottles": 2,
       "mechanics": [
-        "decoy_bottle",
-        "stone_layer"
+        "decoy_bottle"
       ],
       "mechanics_config": {
         "decoy_bottles": [
           12
-        ],
-        "frozen_bottles": [],
-        "stone_bottles": [
-          13
         ]
       },
       "solution": [
@@ -5994,13 +5901,13 @@
         ]
       ],
       "tutorial": true,
-      "difficulty": 337.5,
+      "difficulty": 281.25,
       "bottle_capacities": []
     },
     {
       "id": 46,
       "title": "Level 46",
-      "description": "Mechanics: decoy_bottle, stone_layer",
+      "description": "Mechanics: decoy_bottle",
       "state": [
         [
           "C0",
@@ -6088,16 +5995,11 @@
       "color_count": 13,
       "empty_bottles": 3,
       "mechanics": [
-        "decoy_bottle",
-        "stone_layer"
+        "decoy_bottle"
       ],
       "mechanics_config": {
         "decoy_bottles": [
           13
-        ],
-        "frozen_bottles": [],
-        "stone_bottles": [
-          14
         ]
       },
       "solution": [
@@ -6187,13 +6089,13 @@
         ]
       ],
       "tutorial": false,
-      "difficulty": 276.0,
+      "difficulty": 230.0,
       "bottle_capacities": []
     },
     {
       "id": 47,
       "title": "Level 47",
-      "description": "Mechanics: decoy_bottle, stone_layer",
+      "description": "Mechanics: decoy_bottle",
       "state": [
         [
           "C0",
@@ -6281,16 +6183,11 @@
       "color_count": 13,
       "empty_bottles": 2,
       "mechanics": [
-        "decoy_bottle",
-        "stone_layer"
+        "decoy_bottle"
       ],
       "mechanics_config": {
         "decoy_bottles": [
           13
-        ],
-        "frozen_bottles": [],
-        "stone_bottles": [
-          14
         ]
       },
       "solution": [
@@ -6372,13 +6269,13 @@
         ]
       ],
       "tutorial": false,
-      "difficulty": 352.5,
+      "difficulty": 293.75,
       "bottle_capacities": []
     },
     {
       "id": 48,
       "title": "Level 48",
-      "description": "Mechanics: decoy_bottle, stone_layer",
+      "description": "Mechanics: decoy_bottle",
       "state": [
         [
           "C0",
@@ -6466,16 +6363,11 @@
       "color_count": 13,
       "empty_bottles": 2,
       "mechanics": [
-        "decoy_bottle",
-        "stone_layer"
+        "decoy_bottle"
       ],
       "mechanics_config": {
         "decoy_bottles": [
           13
-        ],
-        "frozen_bottles": [],
-        "stone_bottles": [
-          14
         ]
       },
       "solution": [
@@ -6561,13 +6453,13 @@
         ]
       ],
       "tutorial": false,
-      "difficulty": 360.0,
+      "difficulty": 300.0,
       "bottle_capacities": []
     },
     {
       "id": 49,
       "title": "Level 49",
-      "description": "Mechanics: decoy_bottle, stone_layer",
+      "description": "Mechanics: decoy_bottle",
       "state": [
         [
           "C0",
@@ -6655,16 +6547,11 @@
       "color_count": 13,
       "empty_bottles": 2,
       "mechanics": [
-        "decoy_bottle",
-        "stone_layer"
+        "decoy_bottle"
       ],
       "mechanics_config": {
         "decoy_bottles": [
           13
-        ],
-        "frozen_bottles": [],
-        "stone_bottles": [
-          14
         ]
       },
       "solution": [
@@ -6742,13 +6629,13 @@
         ]
       ],
       "tutorial": false,
-      "difficulty": 367.5,
+      "difficulty": 306.25,
       "bottle_capacities": []
     },
     {
       "id": 50,
       "title": "Level 50",
-      "description": "Mechanics: decoy_bottle, stone_layer, giant_bottle_3x",
+      "description": "Mechanics: decoy_bottle, giant_bottle_3x",
       "state": [
         [
           "C0",
@@ -6851,16 +6738,11 @@
       "empty_bottles": 2,
       "mechanics": [
         "decoy_bottle",
-        "stone_layer",
         "giant_bottle_3x"
       ],
       "mechanics_config": {
         "decoy_bottles": [
           14
-        ],
-        "frozen_bottles": [],
-        "stone_bottles": [
-          15
         ],
         "giant_bottles": [
           0
@@ -6949,7 +6831,7 @@
         ]
       ],
       "tutorial": false,
-      "difficulty": 437.5,
+      "difficulty": 375.0,
       "bottle_capacities": [
         12,
         4,
@@ -6972,7 +6854,7 @@
     {
       "id": 51,
       "title": "Level 51",
-      "description": "Mechanics: decoy_bottle, stone_layer",
+      "description": "Mechanics: decoy_bottle",
       "state": [
         [
           "C0",
@@ -7066,16 +6948,11 @@
       "color_count": 14,
       "empty_bottles": 2,
       "mechanics": [
-        "decoy_bottle",
-        "stone_layer"
+        "decoy_bottle"
       ],
       "mechanics_config": {
         "decoy_bottles": [
           14
-        ],
-        "frozen_bottles": [],
-        "stone_bottles": [
-          15
         ]
       },
       "solution": [
@@ -7173,13 +7050,13 @@
         ]
       ],
       "tutorial": false,
-      "difficulty": 382.5,
+      "difficulty": 318.75,
       "bottle_capacities": []
     },
     {
       "id": 52,
       "title": "Level 52",
-      "description": "Mechanics: decoy_bottle, stone_layer",
+      "description": "Mechanics: decoy_bottle",
       "state": [
         [
           "C0",
@@ -7273,16 +7150,11 @@
       "color_count": 14,
       "empty_bottles": 2,
       "mechanics": [
-        "decoy_bottle",
-        "stone_layer"
+        "decoy_bottle"
       ],
       "mechanics_config": {
         "decoy_bottles": [
           14
-        ],
-        "frozen_bottles": [],
-        "stone_bottles": [
-          15
         ]
       },
       "solution": [
@@ -7376,13 +7248,13 @@
         ]
       ],
       "tutorial": false,
-      "difficulty": 390.0,
+      "difficulty": 325.0,
       "bottle_capacities": []
     },
     {
       "id": 53,
       "title": "Level 53",
-      "description": "Mechanics: decoy_bottle, stone_layer",
+      "description": "Mechanics: decoy_bottle",
       "state": [
         [
           "C0",
@@ -7476,16 +7348,11 @@
       "color_count": 14,
       "empty_bottles": 2,
       "mechanics": [
-        "decoy_bottle",
-        "stone_layer"
+        "decoy_bottle"
       ],
       "mechanics_config": {
         "decoy_bottles": [
           14
-        ],
-        "frozen_bottles": [],
-        "stone_bottles": [
-          15
         ]
       },
       "solution": [
@@ -7583,13 +7450,13 @@
         ]
       ],
       "tutorial": false,
-      "difficulty": 397.5,
+      "difficulty": 331.25,
       "bottle_capacities": []
     },
     {
       "id": 54,
       "title": "Level 54",
-      "description": "Mechanics: decoy_bottle, stone_layer",
+      "description": "Mechanics: decoy_bottle",
       "state": [
         [
           "C0",
@@ -7688,16 +7555,11 @@
       "color_count": 15,
       "empty_bottles": 2,
       "mechanics": [
-        "decoy_bottle",
-        "stone_layer"
+        "decoy_bottle"
       ],
       "mechanics_config": {
         "decoy_bottles": [
           15
-        ],
-        "frozen_bottles": [],
-        "stone_bottles": [
-          16
         ]
       },
       "solution": [
@@ -7787,13 +7649,13 @@
         ]
       ],
       "tutorial": false,
-      "difficulty": 405.0,
+      "difficulty": 337.5,
       "bottle_capacities": []
     },
     {
       "id": 55,
       "title": "Level 55",
-      "description": "Mechanics: decoy_bottle, stone_layer",
+      "description": "Mechanics: decoy_bottle",
       "state": [
         [
           "C0"
@@ -7893,16 +7755,11 @@
       "color_count": 15,
       "empty_bottles": 2,
       "mechanics": [
-        "decoy_bottle",
-        "stone_layer"
+        "decoy_bottle"
       ],
       "mechanics_config": {
         "decoy_bottles": [
           15
-        ],
-        "frozen_bottles": [],
-        "stone_bottles": [
-          16
         ]
       },
       "solution": [
@@ -8000,6 +7857,2455 @@
         ],
         [
           15,
+          1
+        ]
+      ],
+      "tutorial": false,
+      "difficulty": 343.75,
+      "bottle_capacities": []
+    },
+    {
+      "id": 56,
+      "title": "Level 56",
+      "description": "Mechanics: decoy_bottle",
+      "state": [
+        [
+          "C0",
+          "C0",
+          "C0",
+          "C12"
+        ],
+        [
+          "C1",
+          "C1",
+          "C14",
+          "C13"
+        ],
+        [
+          "C2",
+          "C2",
+          "C2",
+          "C6"
+        ],
+        [
+          "C3",
+          "C3",
+          "C14",
+          "C3"
+        ],
+        [
+          "C4",
+          "C4",
+          "C4",
+          "C10"
+        ],
+        [
+          "C5",
+          "C5",
+          "C5",
+          "C10"
+        ],
+        [
+          "C6",
+          "C6",
+          "C6",
+          "C1"
+        ],
+        [
+          "C7",
+          "C7",
+          "C7",
+          "C2"
+        ],
+        [
+          "C8",
+          "C8",
+          "C8",
+          "C4"
+        ],
+        [
+          "C9",
+          "C9",
+          "C9",
+          "C10"
+        ],
+        [
+          "C10",
+          "C1",
+          "C3",
+          "C13"
+        ],
+        [
+          "C11",
+          "C0",
+          "C8",
+          "C7"
+        ],
+        [
+          "C12",
+          "C12",
+          "C12",
+          "C5"
+        ],
+        [
+          "C13"
+        ],
+        [
+          "C14",
+          "C14",
+          "C13"
+        ],
+        [
+          "C11",
+          "C11",
+          "C11",
+          "C9"
+        ],
+        []
+      ],
+      "capacity": 4,
+      "color_count": 15,
+      "empty_bottles": 2,
+      "mechanics": [
+        "decoy_bottle"
+      ],
+      "mechanics_config": {
+        "decoy_bottles": [
+          15
+        ]
+      },
+      "solution": [
+        [
+          10,
+          13
+        ],
+        [
+          13,
+          14
+        ],
+        [
+          3,
+          10
+        ],
+        [
+          1,
+          13
+        ],
+        [
+          14,
+          13
+        ],
+        [
+          3,
+          1
+        ],
+        [
+          10,
+          3
+        ],
+        [
+          1,
+          14
+        ],
+        [
+          6,
+          10
+        ],
+        [
+          2,
+          6
+        ],
+        [
+          10,
+          1
+        ],
+        [
+          4,
+          10
+        ],
+        [
+          5,
+          10
+        ],
+        [
+          7,
+          2
+        ],
+        [
+          8,
+          4
+        ],
+        [
+          11,
+          7
+        ],
+        [
+          9,
+          10
+        ],
+        [
+          12,
+          5
+        ],
+        [
+          15,
+          9
+        ],
+        [
+          0,
+          12
+        ],
+        [
+          11,
+          8
+        ],
+        [
+          11,
+          0
+        ],
+        [
+          15,
+          11
+        ]
+      ],
+      "tutorial": false,
+      "difficulty": 350.0,
+      "bottle_capacities": []
+    },
+    {
+      "id": 57,
+      "title": "Level 57",
+      "description": "Mechanics: decoy_bottle",
+      "state": [
+        [
+          "C0",
+          "C10",
+          "C10",
+          "C1"
+        ],
+        [
+          "C1",
+          "C1",
+          "C1",
+          "C12"
+        ],
+        [
+          "C2",
+          "C2",
+          "C2",
+          "C14"
+        ],
+        [
+          "C3",
+          "C3",
+          "C3",
+          "C14"
+        ],
+        [
+          "C4",
+          "C4",
+          "C4",
+          "C2"
+        ],
+        [
+          "C5",
+          "C5",
+          "C14"
+        ],
+        [
+          "C6",
+          "C6",
+          "C6",
+          "C11"
+        ],
+        [
+          "C7",
+          "C7",
+          "C7",
+          "C5"
+        ],
+        [
+          "C8",
+          "C8",
+          "C8",
+          "C12"
+        ],
+        [
+          "C9",
+          "C9",
+          "C9",
+          "C3"
+        ],
+        [
+          "C10",
+          "C10",
+          "C8",
+          "C13"
+        ],
+        [
+          "C11",
+          "C11",
+          "C11",
+          "C4"
+        ],
+        [
+          "C12",
+          "C12",
+          "C9",
+          "C5"
+        ],
+        [
+          "C13",
+          "C13",
+          "C13",
+          "C7"
+        ],
+        [
+          "C14"
+        ],
+        [
+          "C0",
+          "C0",
+          "C0",
+          "C6"
+        ],
+        []
+      ],
+      "capacity": 4,
+      "color_count": 15,
+      "empty_bottles": 2,
+      "mechanics": [
+        "decoy_bottle"
+      ],
+      "mechanics_config": {
+        "decoy_bottles": [
+          15
+        ]
+      },
+      "solution": [
+        [
+          14,
+          5
+        ],
+        [
+          5,
+          14
+        ],
+        [
+          2,
+          14
+        ],
+        [
+          3,
+          14
+        ],
+        [
+          12,
+          5
+        ],
+        [
+          9,
+          3
+        ],
+        [
+          4,
+          2
+        ],
+        [
+          7,
+          5
+        ],
+        [
+          12,
+          9
+        ],
+        [
+          8,
+          12
+        ],
+        [
+          13,
+          7
+        ],
+        [
+          10,
+          13
+        ],
+        [
+          10,
+          8
+        ],
+        [
+          1,
+          12
+        ],
+        [
+          11,
+          4
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          6,
+          11
+        ],
+        [
+          0,
+          10
+        ],
+        [
+          15,
+          6
+        ],
+        [
+          15,
+          0
+        ]
+      ],
+      "tutorial": false,
+      "difficulty": 356.25,
+      "bottle_capacities": []
+    },
+    {
+      "id": 58,
+      "title": "Level 58",
+      "description": "Mechanics: decoy_bottle",
+      "state": [
+        [
+          "C0",
+          "C0",
+          "C0",
+          "C9"
+        ],
+        [
+          "C1",
+          "C14",
+          "C2"
+        ],
+        [
+          "C2"
+        ],
+        [
+          "C3",
+          "C11",
+          "C4",
+          "C9"
+        ],
+        [
+          "C4",
+          "C4",
+          "C8",
+          "C7"
+        ],
+        [
+          "C5",
+          "C5",
+          "C5",
+          "C1"
+        ],
+        [
+          "C6",
+          "C6",
+          "C6",
+          "C15"
+        ],
+        [
+          "C7",
+          "C7",
+          "C15",
+          "C10"
+        ],
+        [
+          "C8",
+          "C8",
+          "C8",
+          "C5"
+        ],
+        [
+          "C9",
+          "C9",
+          "C7",
+          "C14"
+        ],
+        [
+          "C10",
+          "C10",
+          "C10",
+          "C6"
+        ],
+        [
+          "C11",
+          "C11",
+          "C11",
+          "C0"
+        ],
+        [
+          "C12",
+          "C12",
+          "C3",
+          "C13"
+        ],
+        [
+          "C13",
+          "C13",
+          "C13",
+          "C4"
+        ],
+        [
+          "C14",
+          "C14",
+          "C2",
+          "C2"
+        ],
+        [
+          "C15",
+          "C15",
+          "C1",
+          "C1"
+        ],
+        [
+          "C12",
+          "C12",
+          "C3",
+          "C3"
+        ],
+        []
+      ],
+      "capacity": 4,
+      "color_count": 16,
+      "empty_bottles": 2,
+      "mechanics": [
+        "decoy_bottle"
+      ],
+      "mechanics_config": {
+        "decoy_bottles": [
+          16
+        ]
+      },
+      "solution": [
+        [
+          1,
+          2
+        ],
+        [
+          14,
+          2
+        ],
+        [
+          14,
+          1
+        ],
+        [
+          1,
+          14
+        ],
+        [
+          5,
+          1
+        ],
+        [
+          15,
+          1
+        ],
+        [
+          6,
+          15
+        ],
+        [
+          8,
+          5
+        ],
+        [
+          10,
+          6
+        ],
+        [
+          7,
+          10
+        ],
+        [
+          9,
+          14
+        ],
+        [
+          7,
+          15
+        ],
+        [
+          4,
+          7
+        ],
+        [
+          9,
+          7
+        ],
+        [
+          4,
+          8
+        ],
+        [
+          3,
+          9
+        ],
+        [
+          0,
+          9
+        ],
+        [
+          13,
+          4
+        ],
+        [
+          11,
+          0
+        ],
+        [
+          3,
+          4
+        ],
+        [
+          3,
+          11
+        ],
+        [
+          12,
+          13
+        ],
+        [
+          16,
+          3
+        ],
+        [
+          12,
+          3
+        ],
+        [
+          16,
+          12
+        ]
+      ],
+      "tutorial": false,
+      "difficulty": 362.5,
+      "bottle_capacities": []
+    },
+    {
+      "id": 59,
+      "title": "Level 59",
+      "description": "Mechanics: decoy_bottle",
+      "state": [
+        [
+          "C0",
+          "C0",
+          "C6",
+          "C0"
+        ],
+        [
+          "C1",
+          "C1",
+          "C0",
+          "C13"
+        ],
+        [
+          "C2",
+          "C2",
+          "C2",
+          "C15"
+        ],
+        [
+          "C3",
+          "C12"
+        ],
+        [
+          "C4",
+          "C1",
+          "C1",
+          "C14"
+        ],
+        [
+          "C5",
+          "C3",
+          "C3",
+          "C12"
+        ],
+        [
+          "C6",
+          "C6",
+          "C6",
+          "C15"
+        ],
+        [
+          "C7",
+          "C7",
+          "C5",
+          "C5"
+        ],
+        [
+          "C8",
+          "C8",
+          "C8",
+          "C2"
+        ],
+        [
+          "C9",
+          "C9",
+          "C9",
+          "C3"
+        ],
+        [
+          "C10",
+          "C10",
+          "C7",
+          "C7"
+        ],
+        [
+          "C11",
+          "C11",
+          "C11",
+          "C8"
+        ],
+        [
+          "C12",
+          "C12"
+        ],
+        [
+          "C13",
+          "C10",
+          "C10",
+          "C13"
+        ],
+        [
+          "C14",
+          "C14",
+          "C14",
+          "C15"
+        ],
+        [
+          "C15",
+          "C13",
+          "C9",
+          "C5"
+        ],
+        [
+          "C4",
+          "C4",
+          "C4",
+          "C11"
+        ],
+        []
+      ],
+      "capacity": 4,
+      "color_count": 16,
+      "empty_bottles": 2,
+      "mechanics": [
+        "decoy_bottle"
+      ],
+      "mechanics_config": {
+        "decoy_bottles": [
+          16
+        ]
+      },
+      "solution": [
+        [
+          5,
+          3
+        ],
+        [
+          3,
+          12
+        ],
+        [
+          5,
+          3
+        ],
+        [
+          9,
+          3
+        ],
+        [
+          15,
+          5
+        ],
+        [
+          15,
+          9
+        ],
+        [
+          7,
+          5
+        ],
+        [
+          13,
+          15
+        ],
+        [
+          10,
+          7
+        ],
+        [
+          13,
+          10
+        ],
+        [
+          15,
+          13
+        ],
+        [
+          14,
+          15
+        ],
+        [
+          1,
+          13
+        ],
+        [
+          4,
+          14
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          6,
+          15
+        ],
+        [
+          6,
+          0
+        ],
+        [
+          2,
+          15
+        ],
+        [
+          0,
+          6
+        ],
+        [
+          8,
+          2
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          11,
+          8
+        ],
+        [
+          16,
+          11
+        ],
+        [
+          4,
+          1
+        ],
+        [
+          16,
+          4
+        ]
+      ],
+      "tutorial": false,
+      "difficulty": 368.75,
+      "bottle_capacities": []
+    },
+    {
+      "id": 60,
+      "title": "Level 60",
+      "description": "Mechanics: decoy_bottle",
+      "state": [
+        [
+          "C0",
+          "C0",
+          "C2",
+          "C8"
+        ],
+        [
+          "C1",
+          "C1",
+          "C1",
+          "C13"
+        ],
+        [
+          "C2",
+          "C2",
+          "C5",
+          "C11"
+        ],
+        [
+          "C3",
+          "C3",
+          "C14"
+        ],
+        [
+          "C4",
+          "C4",
+          "C4",
+          "C10"
+        ],
+        [
+          "C5",
+          "C5",
+          "C11",
+          "C3"
+        ],
+        [
+          "C6",
+          "C6",
+          "C2",
+          "C3"
+        ],
+        [
+          "C7",
+          "C7",
+          "C0",
+          "C12"
+        ],
+        [
+          "C8",
+          "C8",
+          "C8",
+          "C13"
+        ],
+        [
+          "C9",
+          "C9",
+          "C9",
+          "C1"
+        ],
+        [
+          "C10",
+          "C10",
+          "C10",
+          "C5"
+        ],
+        [
+          "C11",
+          "C11",
+          "C7",
+          "C15"
+        ],
+        [
+          "C12",
+          "C12",
+          "C12",
+          "C15"
+        ],
+        [
+          "C13",
+          "C13",
+          "C0",
+          "C15"
+        ],
+        [
+          "C14",
+          "C14",
+          "C7",
+          "C14"
+        ],
+        [
+          "C15"
+        ],
+        [
+          "C6",
+          "C6",
+          "C4",
+          "C9"
+        ],
+        []
+      ],
+      "capacity": 4,
+      "color_count": 16,
+      "empty_bottles": 2,
+      "mechanics": [
+        "decoy_bottle"
+      ],
+      "mechanics_config": {
+        "decoy_bottles": [
+          16
+        ]
+      },
+      "solution": [
+        [
+          12,
+          15
+        ],
+        [
+          11,
+          15
+        ],
+        [
+          14,
+          3
+        ],
+        [
+          13,
+          15
+        ],
+        [
+          7,
+          12
+        ],
+        [
+          13,
+          7
+        ],
+        [
+          14,
+          11
+        ],
+        [
+          3,
+          14
+        ],
+        [
+          6,
+          3
+        ],
+        [
+          8,
+          13
+        ],
+        [
+          0,
+          8
+        ],
+        [
+          5,
+          3
+        ],
+        [
+          1,
+          13
+        ],
+        [
+          0,
+          6
+        ],
+        [
+          2,
+          5
+        ],
+        [
+          9,
+          1
+        ],
+        [
+          7,
+          0
+        ],
+        [
+          11,
+          7
+        ],
+        [
+          16,
+          9
+        ],
+        [
+          5,
+          11
+        ],
+        [
+          2,
+          5
+        ],
+        [
+          10,
+          5
+        ],
+        [
+          6,
+          2
+        ],
+        [
+          4,
+          10
+        ],
+        [
+          16,
+          4
+        ],
+        [
+          16,
+          6
+        ]
+      ],
+      "tutorial": false,
+      "difficulty": 375.0,
+      "bottle_capacities": []
+    },
+    {
+      "id": 61,
+      "title": "Level 61",
+      "description": "Mechanics: decoy_bottle",
+      "state": [
+        [
+          "C0",
+          "C0",
+          "C0",
+          "C12"
+        ],
+        [
+          "C1",
+          "C1",
+          "C1",
+          "C14"
+        ],
+        [
+          "C2",
+          "C2",
+          "C9",
+          "C4"
+        ],
+        [
+          "C3",
+          "C3",
+          "C6",
+          "C8"
+        ],
+        [
+          "C4",
+          "C13"
+        ],
+        [
+          "C5",
+          "C5",
+          "C7",
+          "C0"
+        ],
+        [
+          "C6",
+          "C6",
+          "C6",
+          "C5"
+        ],
+        [
+          "C7",
+          "C7",
+          "C7",
+          "C15"
+        ],
+        [
+          "C8",
+          "C4",
+          "C13"
+        ],
+        [
+          "C9",
+          "C9",
+          "C14",
+          "C8"
+        ],
+        [
+          "C10",
+          "C10",
+          "C3",
+          "C9"
+        ],
+        [
+          "C11",
+          "C11",
+          "C11",
+          "C1"
+        ],
+        [
+          "C12",
+          "C12",
+          "C12",
+          "C11"
+        ],
+        [
+          "C13",
+          "C13",
+          "C4"
+        ],
+        [
+          "C14",
+          "C14",
+          "C5",
+          "C3"
+        ],
+        [
+          "C15",
+          "C15",
+          "C15",
+          "C8"
+        ],
+        [
+          "C10",
+          "C10",
+          "C2",
+          "C2"
+        ],
+        []
+      ],
+      "capacity": 4,
+      "color_count": 16,
+      "empty_bottles": 2,
+      "mechanics": [
+        "decoy_bottle"
+      ],
+      "mechanics_config": {
+        "decoy_bottles": [
+          16
+        ]
+      },
+      "solution": [
+        [
+          8,
+          4
+        ],
+        [
+          13,
+          8
+        ],
+        [
+          4,
+          13
+        ],
+        [
+          8,
+          4
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          9,
+          8
+        ],
+        [
+          10,
+          2
+        ],
+        [
+          15,
+          8
+        ],
+        [
+          1,
+          9
+        ],
+        [
+          3,
+          8
+        ],
+        [
+          11,
+          1
+        ],
+        [
+          12,
+          11
+        ],
+        [
+          14,
+          10
+        ],
+        [
+          0,
+          12
+        ],
+        [
+          5,
+          0
+        ],
+        [
+          6,
+          14
+        ],
+        [
+          7,
+          15
+        ],
+        [
+          5,
+          7
+        ],
+        [
+          14,
+          5
+        ],
+        [
+          3,
+          6
+        ],
+        [
+          9,
+          14
+        ],
+        [
+          10,
+          3
+        ],
+        [
+          2,
+          9
+        ],
+        [
+          16,
+          2
+        ],
+        [
+          16,
+          10
+        ]
+      ],
+      "tutorial": false,
+      "difficulty": 381.25,
+      "bottle_capacities": []
+    },
+    {
+      "id": 62,
+      "title": "Level 62",
+      "description": "Mechanics: decoy_bottle",
+      "state": [
+        [
+          "C0",
+          "C11"
+        ],
+        [
+          "C1",
+          "C1",
+          "C1",
+          "C0"
+        ],
+        [
+          "C2",
+          "C2",
+          "C2",
+          "C7"
+        ],
+        [
+          "C3",
+          "C3",
+          "C3",
+          "C6"
+        ],
+        [
+          "C4",
+          "C4",
+          "C4",
+          "C16"
+        ],
+        [
+          "C5",
+          "C5",
+          "C2",
+          "C4"
+        ],
+        [
+          "C6",
+          "C11"
+        ],
+        [
+          "C7",
+          "C7",
+          "C7",
+          "C1"
+        ],
+        [
+          "C8",
+          "C8",
+          "C6",
+          "C11"
+        ],
+        [
+          "C9",
+          "C9",
+          "C9",
+          "C15"
+        ],
+        [
+          "C10",
+          "C10",
+          "C10",
+          "C6"
+        ],
+        [
+          "C11",
+          "C0",
+          "C0",
+          "C10"
+        ],
+        [
+          "C12",
+          "C12",
+          "C12",
+          "C3"
+        ],
+        [
+          "C13",
+          "C13",
+          "C13",
+          "C8"
+        ],
+        [
+          "C14",
+          "C14",
+          "C14",
+          "C9"
+        ],
+        [
+          "C15",
+          "C15",
+          "C15",
+          "C13"
+        ],
+        [
+          "C16",
+          "C16",
+          "C16",
+          "C8"
+        ],
+        [
+          "C12",
+          "C5",
+          "C5",
+          "C14"
+        ],
+        []
+      ],
+      "capacity": 4,
+      "color_count": 17,
+      "empty_bottles": 2,
+      "mechanics": [
+        "decoy_bottle"
+      ],
+      "mechanics_config": {
+        "decoy_bottles": [
+          17
+        ]
+      },
+      "solution": [
+        [
+          8,
+          6
+        ],
+        [
+          10,
+          8
+        ],
+        [
+          11,
+          10
+        ],
+        [
+          0,
+          6
+        ],
+        [
+          11,
+          0
+        ],
+        [
+          6,
+          11
+        ],
+        [
+          8,
+          6
+        ],
+        [
+          13,
+          8
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          7,
+          1
+        ],
+        [
+          3,
+          6
+        ],
+        [
+          15,
+          13
+        ],
+        [
+          12,
+          3
+        ],
+        [
+          16,
+          8
+        ],
+        [
+          9,
+          15
+        ],
+        [
+          2,
+          7
+        ],
+        [
+          14,
+          9
+        ],
+        [
+          4,
+          16
+        ],
+        [
+          5,
+          4
+        ],
+        [
+          17,
+          14
+        ],
+        [
+          5,
+          2
+        ],
+        [
+          17,
+          5
+        ],
+        [
+          17,
+          12
+        ]
+      ],
+      "tutorial": false,
+      "difficulty": 387.5,
+      "bottle_capacities": []
+    },
+    {
+      "id": 63,
+      "title": "Level 63",
+      "description": "Mechanics: decoy_bottle",
+      "state": [
+        [
+          "C0",
+          "C0",
+          "C0",
+          "C6"
+        ],
+        [
+          "C1",
+          "C5",
+          "C10",
+          "C12"
+        ],
+        [
+          "C2",
+          "C2",
+          "C2",
+          "C11"
+        ],
+        [
+          "C3",
+          "C3",
+          "C3",
+          "C14"
+        ],
+        [
+          "C4",
+          "C4",
+          "C8",
+          "C13"
+        ],
+        [
+          "C5",
+          "C5",
+          "C5",
+          "C10"
+        ],
+        [
+          "C6",
+          "C11",
+          "C11"
+        ],
+        [
+          "C7",
+          "C7",
+          "C7",
+          "C1"
+        ],
+        [
+          "C8",
+          "C8",
+          "C8",
+          "C7"
+        ],
+        [
+          "C9",
+          "C9",
+          "C15",
+          "C16"
+        ],
+        [
+          "C10",
+          "C10",
+          "C14",
+          "C2"
+        ],
+        [
+          "C11"
+        ],
+        [
+          "C12",
+          "C12",
+          "C12",
+          "C3"
+        ],
+        [
+          "C13",
+          "C13",
+          "C13",
+          "C1"
+        ],
+        [
+          "C14",
+          "C14",
+          "C0",
+          "C6"
+        ],
+        [
+          "C15",
+          "C15",
+          "C15",
+          "C4"
+        ],
+        [
+          "C16",
+          "C16",
+          "C1",
+          "C6"
+        ],
+        [
+          "C9",
+          "C9",
+          "C4",
+          "C16"
+        ],
+        []
+      ],
+      "capacity": 4,
+      "color_count": 17,
+      "empty_bottles": 2,
+      "mechanics": [
+        "decoy_bottle"
+      ],
+      "mechanics_config": {
+        "decoy_bottles": [
+          17
+        ]
+      },
+      "solution": [
+        [
+          6,
+          11
+        ],
+        [
+          14,
+          6
+        ],
+        [
+          16,
+          6
+        ],
+        [
+          0,
+          6
+        ],
+        [
+          2,
+          11
+        ],
+        [
+          10,
+          2
+        ],
+        [
+          14,
+          0
+        ],
+        [
+          3,
+          14
+        ],
+        [
+          12,
+          3
+        ],
+        [
+          1,
+          12
+        ],
+        [
+          10,
+          14
+        ],
+        [
+          5,
+          1
+        ],
+        [
+          1,
+          10
+        ],
+        [
+          1,
+          5
+        ],
+        [
+          7,
+          1
+        ],
+        [
+          16,
+          1
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          13,
+          1
+        ],
+        [
+          4,
+          13
+        ],
+        [
+          4,
+          8
+        ],
+        [
+          15,
+          4
+        ],
+        [
+          9,
+          16
+        ],
+        [
+          17,
+          16
+        ],
+        [
+          17,
+          4
+        ],
+        [
+          9,
+          15
+        ],
+        [
+          17,
+          9
+        ]
+      ],
+      "tutorial": false,
+      "difficulty": 393.75,
+      "bottle_capacities": []
+    },
+    {
+      "id": 64,
+      "title": "Level 64",
+      "description": "Mechanics: decoy_bottle",
+      "state": [
+        [
+          "C0",
+          "C0",
+          "C0",
+          "C4"
+        ],
+        [
+          "C1",
+          "C1",
+          "C11",
+          "C7"
+        ],
+        [
+          "C2",
+          "C2",
+          "C8",
+          "C1"
+        ],
+        [
+          "C3",
+          "C9",
+          "C9",
+          "C6"
+        ],
+        [
+          "C4",
+          "C4",
+          "C2",
+          "C7"
+        ],
+        [
+          "C5",
+          "C5",
+          "C5",
+          "C12"
+        ],
+        [
+          "C6",
+          "C6",
+          "C6",
+          "C16"
+        ],
+        [
+          "C7",
+          "C14"
+        ],
+        [
+          "C8",
+          "C8",
+          "C11",
+          "C11"
+        ],
+        [
+          "C9",
+          "C9",
+          "C13",
+          "C0"
+        ],
+        [
+          "C10",
+          "C10",
+          "C10",
+          "C13"
+        ],
+        [
+          "C11",
+          "C2",
+          "C7"
+        ],
+        [
+          "C12",
+          "C12",
+          "C12",
+          "C1"
+        ],
+        [
+          "C13",
+          "C13",
+          "C5",
+          "C4"
+        ],
+        [
+          "C14",
+          "C14",
+          "C14"
+        ],
+        [
+          "C15",
+          "C15",
+          "C15",
+          "C8"
+        ],
+        [
+          "C16",
+          "C16",
+          "C16",
+          "C15"
+        ],
+        [
+          "C10",
+          "C3",
+          "C3",
+          "C3"
+        ],
+        []
+      ],
+      "capacity": 4,
+      "color_count": 17,
+      "empty_bottles": 2,
+      "mechanics": [
+        "decoy_bottle"
+      ],
+      "mechanics_config": {
+        "decoy_bottles": [
+          17
+        ]
+      },
+      "solution": [
+        [
+          14,
+          7
+        ],
+        [
+          7,
+          14
+        ],
+        [
+          1,
+          7
+        ],
+        [
+          4,
+          7
+        ],
+        [
+          11,
+          7
+        ],
+        [
+          11,
+          4
+        ],
+        [
+          8,
+          1
+        ],
+        [
+          1,
+          11
+        ],
+        [
+          8,
+          11
+        ],
+        [
+          12,
+          1
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          15,
+          2
+        ],
+        [
+          2,
+          8
+        ],
+        [
+          5,
+          12
+        ],
+        [
+          4,
+          2
+        ],
+        [
+          13,
+          4
+        ],
+        [
+          13,
+          5
+        ],
+        [
+          16,
+          15
+        ],
+        [
+          6,
+          16
+        ],
+        [
+          3,
+          6
+        ],
+        [
+          0,
+          4
+        ],
+        [
+          9,
+          0
+        ],
+        [
+          9,
+          13
+        ],
+        [
+          3,
+          9
+        ],
+        [
+          10,
+          13
+        ],
+        [
+          17,
+          3
+        ],
+        [
+          17,
+          10
+        ]
+      ],
+      "tutorial": false,
+      "difficulty": 400.0,
+      "bottle_capacities": []
+    },
+    {
+      "id": 65,
+      "title": "Level 65",
+      "description": "Mechanics: decoy_bottle",
+      "state": [
+        [
+          "C0",
+          "C0",
+          "C0",
+          "C1"
+        ],
+        [
+          "C1",
+          "C2",
+          "C2"
+        ],
+        [
+          "C2"
+        ],
+        [
+          "C3",
+          "C3",
+          "C3",
+          "C11"
+        ],
+        [
+          "C4",
+          "C4",
+          "C4",
+          "C13"
+        ],
+        [
+          "C5",
+          "C5",
+          "C5",
+          "C6"
+        ],
+        [
+          "C6",
+          "C6",
+          "C6",
+          "C1"
+        ],
+        [
+          "C7",
+          "C7",
+          "C14",
+          "C0"
+        ],
+        [
+          "C8",
+          "C10",
+          "C9",
+          "C16"
+        ],
+        [
+          "C9",
+          "C9",
+          "C9",
+          "C7"
+        ],
+        [
+          "C10",
+          "C10",
+          "C10",
+          "C4"
+        ],
+        [
+          "C11",
+          "C11",
+          "C11",
+          "C14"
+        ],
+        [
+          "C12",
+          "C12",
+          "C12",
+          "C15"
+        ],
+        [
+          "C13",
+          "C13",
+          "C13",
+          "C12"
+        ],
+        [
+          "C14",
+          "C14",
+          "C5",
+          "C2"
+        ],
+        [
+          "C15",
+          "C15",
+          "C15",
+          "C7"
+        ],
+        [
+          "C16",
+          "C16",
+          "C16",
+          "C3"
+        ],
+        [
+          "C8",
+          "C8",
+          "C8",
+          "C1"
+        ],
+        []
+      ],
+      "capacity": 4,
+      "color_count": 17,
+      "empty_bottles": 2,
+      "mechanics": [
+        "decoy_bottle"
+      ],
+      "mechanics_config": {
+        "decoy_bottles": [
+          17
+        ]
+      },
+      "solution": [
+        [
+          14,
+          2
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          6,
+          1
+        ],
+        [
+          5,
+          6
+        ],
+        [
+          7,
+          0
+        ],
+        [
+          17,
+          1
+        ],
+        [
+          14,
+          5
+        ],
+        [
+          11,
+          7
+        ],
+        [
+          7,
+          14
+        ],
+        [
+          15,
+          7
+        ],
+        [
+          12,
+          15
+        ],
+        [
+          13,
+          12
+        ],
+        [
+          4,
+          13
+        ],
+        [
+          3,
+          11
+        ],
+        [
+          9,
+          7
+        ],
+        [
+          16,
+          3
+        ],
+        [
+          8,
+          16
+        ],
+        [
+          8,
+          9
+        ],
+        [
+          10,
+          4
+        ],
+        [
+          8,
+          10
+        ],
+        [
+          17,
+          8
+        ]
+      ],
+      "tutorial": false,
+      "difficulty": 406.25,
+      "bottle_capacities": []
+    },
+    {
+      "id": 66,
+      "title": "Level 66",
+      "description": "Mechanics: decoy_bottle",
+      "state": [
+        [],
+        [
+          "C1",
+          "C1",
+          "C8",
+          "C3"
+        ],
+        [
+          "C2",
+          "C2",
+          "C2",
+          "C13"
+        ],
+        [
+          "C3",
+          "C3",
+          "C2",
+          "C13"
+        ],
+        [
+          "C4",
+          "C4",
+          "C4",
+          "C16"
+        ],
+        [
+          "C5",
+          "C5",
+          "C5",
+          "C17"
+        ],
+        [
+          "C6",
+          "C6",
+          "C6",
+          "C9"
+        ],
+        [
+          "C7",
+          "C7",
+          "C7",
+          "C6"
+        ],
+        [
+          "C8",
+          "C8",
+          "C16",
+          "C0"
+        ],
+        [
+          "C9",
+          "C9",
+          "C13",
+          "C0"
+        ],
+        [
+          "C10",
+          "C10",
+          "C14",
+          "C15"
+        ],
+        [
+          "C11",
+          "C11",
+          "C11",
+          "C14"
+        ],
+        [
+          "C12",
+          "C12",
+          "C11",
+          "C9"
+        ],
+        [
+          "C13",
+          "C16",
+          "C0",
+          "C0"
+        ],
+        [
+          "C14",
+          "C14",
+          "C5",
+          "C4"
+        ],
+        [
+          "C15",
+          "C15",
+          "C15",
+          "C7"
+        ],
+        [
+          "C16",
+          "C12",
+          "C12",
+          "C3"
+        ],
+        [
+          "C17",
+          "C17",
+          "C17",
+          "C8"
+        ],
+        [
+          "C1",
+          "C1",
+          "C10",
+          "C10"
+        ],
+        []
+      ],
+      "capacity": 4,
+      "color_count": 18,
+      "empty_bottles": 2,
+      "mechanics": [
+        "decoy_bottle"
+      ],
+      "mechanics_config": {
+        "decoy_bottles": [
+          18
+        ]
+      },
+      "solution": [
+        [
+          13,
+          0
+        ],
+        [
+          8,
+          0
+        ],
+        [
+          13,
+          8
+        ],
+        [
+          9,
+          0
+        ],
+        [
+          9,
+          13
+        ],
+        [
+          6,
+          9
+        ],
+        [
+          3,
+          13
+        ],
+        [
+          12,
+          9
+        ],
+        [
+          7,
+          6
+        ],
+        [
+          15,
+          7
+        ],
+        [
+          2,
+          13
+        ],
+        [
+          3,
+          2
+        ],
+        [
+          1,
+          3
+        ],
+        [
+          10,
+          15
+        ],
+        [
+          11,
+          10
+        ],
+        [
+          16,
+          3
+        ],
+        [
+          12,
+          11
+        ],
+        [
+          17,
+          1
+        ],
+        [
+          16,
+          12
+        ],
+        [
+          5,
+          17
+        ],
+        [
+          4,
+          16
+        ],
+        [
+          14,
+          4
+        ],
+        [
+          14,
+          5
+        ],
+        [
+          8,
+          16
+        ],
+        [
+          1,
+          8
+        ],
+        [
+          10,
+          14
+        ],
+        [
+          18,
+          10
+        ],
+        [
+          18,
           1
         ]
       ],
@@ -8008,2513 +10314,9 @@
       "bottle_capacities": []
     },
     {
-      "id": 56,
-      "title": "Level 56",
-      "description": "Mechanics: decoy_bottle, stone_layer",
-      "state": [
-        [
-          "C0",
-          "C0",
-          "C0",
-          "C12"
-        ],
-        [
-          "C1",
-          "C1",
-          "C14",
-          "C13"
-        ],
-        [
-          "C2",
-          "C2",
-          "C2",
-          "C6"
-        ],
-        [
-          "C3",
-          "C3",
-          "C14",
-          "C3"
-        ],
-        [
-          "C4",
-          "C4",
-          "C4",
-          "C10"
-        ],
-        [
-          "C5",
-          "C5",
-          "C5",
-          "C10"
-        ],
-        [
-          "C6",
-          "C6",
-          "C6",
-          "C1"
-        ],
-        [
-          "C7",
-          "C7",
-          "C7",
-          "C2"
-        ],
-        [
-          "C8",
-          "C8",
-          "C8",
-          "C4"
-        ],
-        [
-          "C9",
-          "C9",
-          "C9",
-          "C10"
-        ],
-        [
-          "C10",
-          "C1",
-          "C3",
-          "C13"
-        ],
-        [
-          "C11",
-          "C0",
-          "C8",
-          "C7"
-        ],
-        [
-          "C12",
-          "C12",
-          "C12",
-          "C5"
-        ],
-        [
-          "C13"
-        ],
-        [
-          "C14",
-          "C14",
-          "C13"
-        ],
-        [
-          "C11",
-          "C11",
-          "C11",
-          "C9"
-        ],
-        []
-      ],
-      "capacity": 4,
-      "color_count": 15,
-      "empty_bottles": 2,
-      "mechanics": [
-        "decoy_bottle",
-        "stone_layer"
-      ],
-      "mechanics_config": {
-        "decoy_bottles": [
-          15
-        ],
-        "frozen_bottles": [],
-        "stone_bottles": [
-          16
-        ]
-      },
-      "solution": [
-        [
-          10,
-          13
-        ],
-        [
-          13,
-          14
-        ],
-        [
-          3,
-          10
-        ],
-        [
-          1,
-          13
-        ],
-        [
-          14,
-          13
-        ],
-        [
-          3,
-          1
-        ],
-        [
-          10,
-          3
-        ],
-        [
-          1,
-          14
-        ],
-        [
-          6,
-          10
-        ],
-        [
-          2,
-          6
-        ],
-        [
-          10,
-          1
-        ],
-        [
-          4,
-          10
-        ],
-        [
-          5,
-          10
-        ],
-        [
-          7,
-          2
-        ],
-        [
-          8,
-          4
-        ],
-        [
-          11,
-          7
-        ],
-        [
-          9,
-          10
-        ],
-        [
-          12,
-          5
-        ],
-        [
-          15,
-          9
-        ],
-        [
-          0,
-          12
-        ],
-        [
-          11,
-          8
-        ],
-        [
-          11,
-          0
-        ],
-        [
-          15,
-          11
-        ]
-      ],
-      "tutorial": false,
-      "difficulty": 420.0,
-      "bottle_capacities": []
-    },
-    {
-      "id": 57,
-      "title": "Level 57",
-      "description": "Mechanics: decoy_bottle, stone_layer",
-      "state": [
-        [
-          "C0",
-          "C10",
-          "C10",
-          "C1"
-        ],
-        [
-          "C1",
-          "C1",
-          "C1",
-          "C12"
-        ],
-        [
-          "C2",
-          "C2",
-          "C2",
-          "C14"
-        ],
-        [
-          "C3",
-          "C3",
-          "C3",
-          "C14"
-        ],
-        [
-          "C4",
-          "C4",
-          "C4",
-          "C2"
-        ],
-        [
-          "C5",
-          "C5",
-          "C14"
-        ],
-        [
-          "C6",
-          "C6",
-          "C6",
-          "C11"
-        ],
-        [
-          "C7",
-          "C7",
-          "C7",
-          "C5"
-        ],
-        [
-          "C8",
-          "C8",
-          "C8",
-          "C12"
-        ],
-        [
-          "C9",
-          "C9",
-          "C9",
-          "C3"
-        ],
-        [
-          "C10",
-          "C10",
-          "C8",
-          "C13"
-        ],
-        [
-          "C11",
-          "C11",
-          "C11",
-          "C4"
-        ],
-        [
-          "C12",
-          "C12",
-          "C9",
-          "C5"
-        ],
-        [
-          "C13",
-          "C13",
-          "C13",
-          "C7"
-        ],
-        [
-          "C14"
-        ],
-        [
-          "C0",
-          "C0",
-          "C0",
-          "C6"
-        ],
-        []
-      ],
-      "capacity": 4,
-      "color_count": 15,
-      "empty_bottles": 2,
-      "mechanics": [
-        "decoy_bottle",
-        "stone_layer"
-      ],
-      "mechanics_config": {
-        "decoy_bottles": [
-          15
-        ],
-        "frozen_bottles": [],
-        "stone_bottles": [
-          16
-        ]
-      },
-      "solution": [
-        [
-          14,
-          5
-        ],
-        [
-          5,
-          14
-        ],
-        [
-          2,
-          14
-        ],
-        [
-          3,
-          14
-        ],
-        [
-          12,
-          5
-        ],
-        [
-          9,
-          3
-        ],
-        [
-          4,
-          2
-        ],
-        [
-          7,
-          5
-        ],
-        [
-          12,
-          9
-        ],
-        [
-          8,
-          12
-        ],
-        [
-          13,
-          7
-        ],
-        [
-          10,
-          13
-        ],
-        [
-          10,
-          8
-        ],
-        [
-          1,
-          12
-        ],
-        [
-          11,
-          4
-        ],
-        [
-          0,
-          1
-        ],
-        [
-          6,
-          11
-        ],
-        [
-          0,
-          10
-        ],
-        [
-          15,
-          6
-        ],
-        [
-          15,
-          0
-        ]
-      ],
-      "tutorial": false,
-      "difficulty": 427.5,
-      "bottle_capacities": []
-    },
-    {
-      "id": 58,
-      "title": "Level 58",
-      "description": "Mechanics: decoy_bottle, stone_layer",
-      "state": [
-        [
-          "C0",
-          "C0",
-          "C0",
-          "C9"
-        ],
-        [
-          "C1",
-          "C14",
-          "C2"
-        ],
-        [
-          "C2"
-        ],
-        [
-          "C3",
-          "C11",
-          "C4",
-          "C9"
-        ],
-        [
-          "C4",
-          "C4",
-          "C8",
-          "C7"
-        ],
-        [
-          "C5",
-          "C5",
-          "C5",
-          "C1"
-        ],
-        [
-          "C6",
-          "C6",
-          "C6",
-          "C15"
-        ],
-        [
-          "C7",
-          "C7",
-          "C15",
-          "C10"
-        ],
-        [
-          "C8",
-          "C8",
-          "C8",
-          "C5"
-        ],
-        [
-          "C9",
-          "C9",
-          "C7",
-          "C14"
-        ],
-        [
-          "C10",
-          "C10",
-          "C10",
-          "C6"
-        ],
-        [
-          "C11",
-          "C11",
-          "C11",
-          "C0"
-        ],
-        [
-          "C12",
-          "C12",
-          "C3",
-          "C13"
-        ],
-        [
-          "C13",
-          "C13",
-          "C13",
-          "C4"
-        ],
-        [
-          "C14",
-          "C14",
-          "C2",
-          "C2"
-        ],
-        [
-          "C15",
-          "C15",
-          "C1",
-          "C1"
-        ],
-        [
-          "C12",
-          "C12",
-          "C3",
-          "C3"
-        ],
-        []
-      ],
-      "capacity": 4,
-      "color_count": 16,
-      "empty_bottles": 2,
-      "mechanics": [
-        "decoy_bottle",
-        "stone_layer"
-      ],
-      "mechanics_config": {
-        "decoy_bottles": [
-          16
-        ],
-        "frozen_bottles": [],
-        "stone_bottles": [
-          17
-        ]
-      },
-      "solution": [
-        [
-          1,
-          2
-        ],
-        [
-          14,
-          2
-        ],
-        [
-          14,
-          1
-        ],
-        [
-          1,
-          14
-        ],
-        [
-          5,
-          1
-        ],
-        [
-          15,
-          1
-        ],
-        [
-          6,
-          15
-        ],
-        [
-          8,
-          5
-        ],
-        [
-          10,
-          6
-        ],
-        [
-          7,
-          10
-        ],
-        [
-          9,
-          14
-        ],
-        [
-          7,
-          15
-        ],
-        [
-          4,
-          7
-        ],
-        [
-          9,
-          7
-        ],
-        [
-          4,
-          8
-        ],
-        [
-          3,
-          9
-        ],
-        [
-          0,
-          9
-        ],
-        [
-          13,
-          4
-        ],
-        [
-          11,
-          0
-        ],
-        [
-          3,
-          4
-        ],
-        [
-          3,
-          11
-        ],
-        [
-          12,
-          13
-        ],
-        [
-          16,
-          3
-        ],
-        [
-          12,
-          3
-        ],
-        [
-          16,
-          12
-        ]
-      ],
-      "tutorial": false,
-      "difficulty": 435.0,
-      "bottle_capacities": []
-    },
-    {
-      "id": 59,
-      "title": "Level 59",
-      "description": "Mechanics: decoy_bottle, stone_layer",
-      "state": [
-        [
-          "C0",
-          "C0",
-          "C6",
-          "C0"
-        ],
-        [
-          "C1",
-          "C1",
-          "C0",
-          "C13"
-        ],
-        [
-          "C2",
-          "C2",
-          "C2",
-          "C15"
-        ],
-        [
-          "C3",
-          "C12"
-        ],
-        [
-          "C4",
-          "C1",
-          "C1",
-          "C14"
-        ],
-        [
-          "C5",
-          "C3",
-          "C3",
-          "C12"
-        ],
-        [
-          "C6",
-          "C6",
-          "C6",
-          "C15"
-        ],
-        [
-          "C7",
-          "C7",
-          "C5",
-          "C5"
-        ],
-        [
-          "C8",
-          "C8",
-          "C8",
-          "C2"
-        ],
-        [
-          "C9",
-          "C9",
-          "C9",
-          "C3"
-        ],
-        [
-          "C10",
-          "C10",
-          "C7",
-          "C7"
-        ],
-        [
-          "C11",
-          "C11",
-          "C11",
-          "C8"
-        ],
-        [
-          "C12",
-          "C12"
-        ],
-        [
-          "C13",
-          "C10",
-          "C10",
-          "C13"
-        ],
-        [
-          "C14",
-          "C14",
-          "C14",
-          "C15"
-        ],
-        [
-          "C15",
-          "C13",
-          "C9",
-          "C5"
-        ],
-        [
-          "C4",
-          "C4",
-          "C4",
-          "C11"
-        ],
-        []
-      ],
-      "capacity": 4,
-      "color_count": 16,
-      "empty_bottles": 2,
-      "mechanics": [
-        "decoy_bottle",
-        "stone_layer"
-      ],
-      "mechanics_config": {
-        "decoy_bottles": [
-          16
-        ],
-        "frozen_bottles": [],
-        "stone_bottles": [
-          17
-        ]
-      },
-      "solution": [
-        [
-          5,
-          3
-        ],
-        [
-          3,
-          12
-        ],
-        [
-          5,
-          3
-        ],
-        [
-          9,
-          3
-        ],
-        [
-          15,
-          5
-        ],
-        [
-          15,
-          9
-        ],
-        [
-          7,
-          5
-        ],
-        [
-          13,
-          15
-        ],
-        [
-          10,
-          7
-        ],
-        [
-          13,
-          10
-        ],
-        [
-          15,
-          13
-        ],
-        [
-          14,
-          15
-        ],
-        [
-          1,
-          13
-        ],
-        [
-          4,
-          14
-        ],
-        [
-          0,
-          1
-        ],
-        [
-          6,
-          15
-        ],
-        [
-          6,
-          0
-        ],
-        [
-          2,
-          15
-        ],
-        [
-          0,
-          6
-        ],
-        [
-          8,
-          2
-        ],
-        [
-          1,
-          0
-        ],
-        [
-          11,
-          8
-        ],
-        [
-          16,
-          11
-        ],
-        [
-          4,
-          1
-        ],
-        [
-          16,
-          4
-        ]
-      ],
-      "tutorial": false,
-      "difficulty": 442.5,
-      "bottle_capacities": []
-    },
-    {
-      "id": 60,
-      "title": "Level 60",
-      "description": "Mechanics: decoy_bottle, stone_layer",
-      "state": [
-        [
-          "C0",
-          "C0",
-          "C2",
-          "C8"
-        ],
-        [
-          "C1",
-          "C1",
-          "C1",
-          "C13"
-        ],
-        [
-          "C2",
-          "C2",
-          "C5",
-          "C11"
-        ],
-        [
-          "C3",
-          "C3",
-          "C14"
-        ],
-        [
-          "C4",
-          "C4",
-          "C4",
-          "C10"
-        ],
-        [
-          "C5",
-          "C5",
-          "C11",
-          "C3"
-        ],
-        [
-          "C6",
-          "C6",
-          "C2",
-          "C3"
-        ],
-        [
-          "C7",
-          "C7",
-          "C0",
-          "C12"
-        ],
-        [
-          "C8",
-          "C8",
-          "C8",
-          "C13"
-        ],
-        [
-          "C9",
-          "C9",
-          "C9",
-          "C1"
-        ],
-        [
-          "C10",
-          "C10",
-          "C10",
-          "C5"
-        ],
-        [
-          "C11",
-          "C11",
-          "C7",
-          "C15"
-        ],
-        [
-          "C12",
-          "C12",
-          "C12",
-          "C15"
-        ],
-        [
-          "C13",
-          "C13",
-          "C0",
-          "C15"
-        ],
-        [
-          "C14",
-          "C14",
-          "C7",
-          "C14"
-        ],
-        [
-          "C15"
-        ],
-        [
-          "C6",
-          "C6",
-          "C4",
-          "C9"
-        ],
-        []
-      ],
-      "capacity": 4,
-      "color_count": 16,
-      "empty_bottles": 2,
-      "mechanics": [
-        "decoy_bottle",
-        "stone_layer"
-      ],
-      "mechanics_config": {
-        "decoy_bottles": [
-          16
-        ],
-        "frozen_bottles": [],
-        "stone_bottles": [
-          17
-        ]
-      },
-      "solution": [
-        [
-          12,
-          15
-        ],
-        [
-          11,
-          15
-        ],
-        [
-          14,
-          3
-        ],
-        [
-          13,
-          15
-        ],
-        [
-          7,
-          12
-        ],
-        [
-          13,
-          7
-        ],
-        [
-          14,
-          11
-        ],
-        [
-          3,
-          14
-        ],
-        [
-          6,
-          3
-        ],
-        [
-          8,
-          13
-        ],
-        [
-          0,
-          8
-        ],
-        [
-          5,
-          3
-        ],
-        [
-          1,
-          13
-        ],
-        [
-          0,
-          6
-        ],
-        [
-          2,
-          5
-        ],
-        [
-          9,
-          1
-        ],
-        [
-          7,
-          0
-        ],
-        [
-          11,
-          7
-        ],
-        [
-          16,
-          9
-        ],
-        [
-          5,
-          11
-        ],
-        [
-          2,
-          5
-        ],
-        [
-          10,
-          5
-        ],
-        [
-          6,
-          2
-        ],
-        [
-          4,
-          10
-        ],
-        [
-          16,
-          4
-        ],
-        [
-          16,
-          6
-        ]
-      ],
-      "tutorial": false,
-      "difficulty": 450.0,
-      "bottle_capacities": []
-    },
-    {
-      "id": 61,
-      "title": "Level 61",
-      "description": "Mechanics: decoy_bottle, stone_layer",
-      "state": [
-        [
-          "C0",
-          "C0",
-          "C0",
-          "C12"
-        ],
-        [
-          "C1",
-          "C1",
-          "C1",
-          "C14"
-        ],
-        [
-          "C2",
-          "C2",
-          "C9",
-          "C4"
-        ],
-        [
-          "C3",
-          "C3",
-          "C6",
-          "C8"
-        ],
-        [
-          "C4",
-          "C13"
-        ],
-        [
-          "C5",
-          "C5",
-          "C7",
-          "C0"
-        ],
-        [
-          "C6",
-          "C6",
-          "C6",
-          "C5"
-        ],
-        [
-          "C7",
-          "C7",
-          "C7",
-          "C15"
-        ],
-        [
-          "C8",
-          "C4",
-          "C13"
-        ],
-        [
-          "C9",
-          "C9",
-          "C14",
-          "C8"
-        ],
-        [
-          "C10",
-          "C10",
-          "C3",
-          "C9"
-        ],
-        [
-          "C11",
-          "C11",
-          "C11",
-          "C1"
-        ],
-        [
-          "C12",
-          "C12",
-          "C12",
-          "C11"
-        ],
-        [
-          "C13",
-          "C13",
-          "C4"
-        ],
-        [
-          "C14",
-          "C14",
-          "C5",
-          "C3"
-        ],
-        [
-          "C15",
-          "C15",
-          "C15",
-          "C8"
-        ],
-        [
-          "C10",
-          "C10",
-          "C2",
-          "C2"
-        ],
-        []
-      ],
-      "capacity": 4,
-      "color_count": 16,
-      "empty_bottles": 2,
-      "mechanics": [
-        "decoy_bottle",
-        "stone_layer"
-      ],
-      "mechanics_config": {
-        "decoy_bottles": [
-          16
-        ],
-        "frozen_bottles": [],
-        "stone_bottles": [
-          17
-        ]
-      },
-      "solution": [
-        [
-          8,
-          4
-        ],
-        [
-          13,
-          8
-        ],
-        [
-          4,
-          13
-        ],
-        [
-          8,
-          4
-        ],
-        [
-          2,
-          4
-        ],
-        [
-          9,
-          8
-        ],
-        [
-          10,
-          2
-        ],
-        [
-          15,
-          8
-        ],
-        [
-          1,
-          9
-        ],
-        [
-          3,
-          8
-        ],
-        [
-          11,
-          1
-        ],
-        [
-          12,
-          11
-        ],
-        [
-          14,
-          10
-        ],
-        [
-          0,
-          12
-        ],
-        [
-          5,
-          0
-        ],
-        [
-          6,
-          14
-        ],
-        [
-          7,
-          15
-        ],
-        [
-          5,
-          7
-        ],
-        [
-          14,
-          5
-        ],
-        [
-          3,
-          6
-        ],
-        [
-          9,
-          14
-        ],
-        [
-          10,
-          3
-        ],
-        [
-          2,
-          9
-        ],
-        [
-          16,
-          2
-        ],
-        [
-          16,
-          10
-        ]
-      ],
-      "tutorial": false,
-      "difficulty": 457.5,
-      "bottle_capacities": []
-    },
-    {
-      "id": 62,
-      "title": "Level 62",
-      "description": "Mechanics: decoy_bottle, stone_layer",
-      "state": [
-        [
-          "C0",
-          "C11"
-        ],
-        [
-          "C1",
-          "C1",
-          "C1",
-          "C0"
-        ],
-        [
-          "C2",
-          "C2",
-          "C2",
-          "C7"
-        ],
-        [
-          "C3",
-          "C3",
-          "C3",
-          "C6"
-        ],
-        [
-          "C4",
-          "C4",
-          "C4",
-          "C16"
-        ],
-        [
-          "C5",
-          "C5",
-          "C2",
-          "C4"
-        ],
-        [
-          "C6",
-          "C11"
-        ],
-        [
-          "C7",
-          "C7",
-          "C7",
-          "C1"
-        ],
-        [
-          "C8",
-          "C8",
-          "C6",
-          "C11"
-        ],
-        [
-          "C9",
-          "C9",
-          "C9",
-          "C15"
-        ],
-        [
-          "C10",
-          "C10",
-          "C10",
-          "C6"
-        ],
-        [
-          "C11",
-          "C0",
-          "C0",
-          "C10"
-        ],
-        [
-          "C12",
-          "C12",
-          "C12",
-          "C3"
-        ],
-        [
-          "C13",
-          "C13",
-          "C13",
-          "C8"
-        ],
-        [
-          "C14",
-          "C14",
-          "C14",
-          "C9"
-        ],
-        [
-          "C15",
-          "C15",
-          "C15",
-          "C13"
-        ],
-        [
-          "C16",
-          "C16",
-          "C16",
-          "C8"
-        ],
-        [
-          "C12",
-          "C5",
-          "C5",
-          "C14"
-        ],
-        []
-      ],
-      "capacity": 4,
-      "color_count": 17,
-      "empty_bottles": 2,
-      "mechanics": [
-        "decoy_bottle",
-        "stone_layer"
-      ],
-      "mechanics_config": {
-        "decoy_bottles": [
-          17
-        ],
-        "frozen_bottles": [],
-        "stone_bottles": [
-          18
-        ]
-      },
-      "solution": [
-        [
-          8,
-          6
-        ],
-        [
-          10,
-          8
-        ],
-        [
-          11,
-          10
-        ],
-        [
-          0,
-          6
-        ],
-        [
-          11,
-          0
-        ],
-        [
-          6,
-          11
-        ],
-        [
-          8,
-          6
-        ],
-        [
-          13,
-          8
-        ],
-        [
-          1,
-          0
-        ],
-        [
-          7,
-          1
-        ],
-        [
-          3,
-          6
-        ],
-        [
-          15,
-          13
-        ],
-        [
-          12,
-          3
-        ],
-        [
-          16,
-          8
-        ],
-        [
-          9,
-          15
-        ],
-        [
-          2,
-          7
-        ],
-        [
-          14,
-          9
-        ],
-        [
-          4,
-          16
-        ],
-        [
-          5,
-          4
-        ],
-        [
-          17,
-          14
-        ],
-        [
-          5,
-          2
-        ],
-        [
-          17,
-          5
-        ],
-        [
-          17,
-          12
-        ]
-      ],
-      "tutorial": false,
-      "difficulty": 465.0,
-      "bottle_capacities": []
-    },
-    {
-      "id": 63,
-      "title": "Level 63",
-      "description": "Mechanics: decoy_bottle, stone_layer",
-      "state": [
-        [
-          "C0",
-          "C0",
-          "C0",
-          "C6"
-        ],
-        [
-          "C1",
-          "C5",
-          "C10",
-          "C12"
-        ],
-        [
-          "C2",
-          "C2",
-          "C2",
-          "C11"
-        ],
-        [
-          "C3",
-          "C3",
-          "C3",
-          "C14"
-        ],
-        [
-          "C4",
-          "C4",
-          "C8",
-          "C13"
-        ],
-        [
-          "C5",
-          "C5",
-          "C5",
-          "C10"
-        ],
-        [
-          "C6",
-          "C11",
-          "C11"
-        ],
-        [
-          "C7",
-          "C7",
-          "C7",
-          "C1"
-        ],
-        [
-          "C8",
-          "C8",
-          "C8",
-          "C7"
-        ],
-        [
-          "C9",
-          "C9",
-          "C15",
-          "C16"
-        ],
-        [
-          "C10",
-          "C10",
-          "C14",
-          "C2"
-        ],
-        [
-          "C11"
-        ],
-        [
-          "C12",
-          "C12",
-          "C12",
-          "C3"
-        ],
-        [
-          "C13",
-          "C13",
-          "C13",
-          "C1"
-        ],
-        [
-          "C14",
-          "C14",
-          "C0",
-          "C6"
-        ],
-        [
-          "C15",
-          "C15",
-          "C15",
-          "C4"
-        ],
-        [
-          "C16",
-          "C16",
-          "C1",
-          "C6"
-        ],
-        [
-          "C9",
-          "C9",
-          "C4",
-          "C16"
-        ],
-        []
-      ],
-      "capacity": 4,
-      "color_count": 17,
-      "empty_bottles": 2,
-      "mechanics": [
-        "decoy_bottle",
-        "stone_layer"
-      ],
-      "mechanics_config": {
-        "decoy_bottles": [
-          17
-        ],
-        "frozen_bottles": [],
-        "stone_bottles": [
-          18
-        ]
-      },
-      "solution": [
-        [
-          6,
-          11
-        ],
-        [
-          14,
-          6
-        ],
-        [
-          16,
-          6
-        ],
-        [
-          0,
-          6
-        ],
-        [
-          2,
-          11
-        ],
-        [
-          10,
-          2
-        ],
-        [
-          14,
-          0
-        ],
-        [
-          3,
-          14
-        ],
-        [
-          12,
-          3
-        ],
-        [
-          1,
-          12
-        ],
-        [
-          10,
-          14
-        ],
-        [
-          5,
-          1
-        ],
-        [
-          1,
-          10
-        ],
-        [
-          1,
-          5
-        ],
-        [
-          7,
-          1
-        ],
-        [
-          16,
-          1
-        ],
-        [
-          8,
-          7
-        ],
-        [
-          13,
-          1
-        ],
-        [
-          4,
-          13
-        ],
-        [
-          4,
-          8
-        ],
-        [
-          15,
-          4
-        ],
-        [
-          9,
-          16
-        ],
-        [
-          17,
-          16
-        ],
-        [
-          17,
-          4
-        ],
-        [
-          9,
-          15
-        ],
-        [
-          17,
-          9
-        ]
-      ],
-      "tutorial": false,
-      "difficulty": 472.5,
-      "bottle_capacities": []
-    },
-    {
-      "id": 64,
-      "title": "Level 64",
-      "description": "Mechanics: decoy_bottle, stone_layer",
-      "state": [
-        [
-          "C0",
-          "C0",
-          "C0",
-          "C4"
-        ],
-        [
-          "C1",
-          "C1",
-          "C11",
-          "C7"
-        ],
-        [
-          "C2",
-          "C2",
-          "C8",
-          "C1"
-        ],
-        [
-          "C3",
-          "C9",
-          "C9",
-          "C6"
-        ],
-        [
-          "C4",
-          "C4",
-          "C2",
-          "C7"
-        ],
-        [
-          "C5",
-          "C5",
-          "C5",
-          "C12"
-        ],
-        [
-          "C6",
-          "C6",
-          "C6",
-          "C16"
-        ],
-        [
-          "C7",
-          "C14"
-        ],
-        [
-          "C8",
-          "C8",
-          "C11",
-          "C11"
-        ],
-        [
-          "C9",
-          "C9",
-          "C13",
-          "C0"
-        ],
-        [
-          "C10",
-          "C10",
-          "C10",
-          "C13"
-        ],
-        [
-          "C11",
-          "C2",
-          "C7"
-        ],
-        [
-          "C12",
-          "C12",
-          "C12",
-          "C1"
-        ],
-        [
-          "C13",
-          "C13",
-          "C5",
-          "C4"
-        ],
-        [
-          "C14",
-          "C14",
-          "C14"
-        ],
-        [
-          "C15",
-          "C15",
-          "C15",
-          "C8"
-        ],
-        [
-          "C16",
-          "C16",
-          "C16",
-          "C15"
-        ],
-        [
-          "C10",
-          "C3",
-          "C3",
-          "C3"
-        ],
-        []
-      ],
-      "capacity": 4,
-      "color_count": 17,
-      "empty_bottles": 2,
-      "mechanics": [
-        "decoy_bottle",
-        "stone_layer"
-      ],
-      "mechanics_config": {
-        "decoy_bottles": [
-          17
-        ],
-        "frozen_bottles": [],
-        "stone_bottles": [
-          18
-        ]
-      },
-      "solution": [
-        [
-          14,
-          7
-        ],
-        [
-          7,
-          14
-        ],
-        [
-          1,
-          7
-        ],
-        [
-          4,
-          7
-        ],
-        [
-          11,
-          7
-        ],
-        [
-          11,
-          4
-        ],
-        [
-          8,
-          1
-        ],
-        [
-          1,
-          11
-        ],
-        [
-          8,
-          11
-        ],
-        [
-          12,
-          1
-        ],
-        [
-          2,
-          1
-        ],
-        [
-          15,
-          2
-        ],
-        [
-          2,
-          8
-        ],
-        [
-          5,
-          12
-        ],
-        [
-          4,
-          2
-        ],
-        [
-          13,
-          4
-        ],
-        [
-          13,
-          5
-        ],
-        [
-          16,
-          15
-        ],
-        [
-          6,
-          16
-        ],
-        [
-          3,
-          6
-        ],
-        [
-          0,
-          4
-        ],
-        [
-          9,
-          0
-        ],
-        [
-          9,
-          13
-        ],
-        [
-          3,
-          9
-        ],
-        [
-          10,
-          13
-        ],
-        [
-          17,
-          3
-        ],
-        [
-          17,
-          10
-        ]
-      ],
-      "tutorial": false,
-      "difficulty": 480.0,
-      "bottle_capacities": []
-    },
-    {
-      "id": 65,
-      "title": "Level 65",
-      "description": "Mechanics: decoy_bottle, stone_layer",
-      "state": [
-        [
-          "C0",
-          "C0",
-          "C0",
-          "C1"
-        ],
-        [
-          "C1",
-          "C2",
-          "C2"
-        ],
-        [
-          "C2"
-        ],
-        [
-          "C3",
-          "C3",
-          "C3",
-          "C11"
-        ],
-        [
-          "C4",
-          "C4",
-          "C4",
-          "C13"
-        ],
-        [
-          "C5",
-          "C5",
-          "C5",
-          "C6"
-        ],
-        [
-          "C6",
-          "C6",
-          "C6",
-          "C1"
-        ],
-        [
-          "C7",
-          "C7",
-          "C14",
-          "C0"
-        ],
-        [
-          "C8",
-          "C10",
-          "C9",
-          "C16"
-        ],
-        [
-          "C9",
-          "C9",
-          "C9",
-          "C7"
-        ],
-        [
-          "C10",
-          "C10",
-          "C10",
-          "C4"
-        ],
-        [
-          "C11",
-          "C11",
-          "C11",
-          "C14"
-        ],
-        [
-          "C12",
-          "C12",
-          "C12",
-          "C15"
-        ],
-        [
-          "C13",
-          "C13",
-          "C13",
-          "C12"
-        ],
-        [
-          "C14",
-          "C14",
-          "C5",
-          "C2"
-        ],
-        [
-          "C15",
-          "C15",
-          "C15",
-          "C7"
-        ],
-        [
-          "C16",
-          "C16",
-          "C16",
-          "C3"
-        ],
-        [
-          "C8",
-          "C8",
-          "C8",
-          "C1"
-        ],
-        []
-      ],
-      "capacity": 4,
-      "color_count": 17,
-      "empty_bottles": 2,
-      "mechanics": [
-        "decoy_bottle",
-        "stone_layer"
-      ],
-      "mechanics_config": {
-        "decoy_bottles": [
-          17
-        ],
-        "frozen_bottles": [],
-        "stone_bottles": [
-          18
-        ]
-      },
-      "solution": [
-        [
-          14,
-          2
-        ],
-        [
-          2,
-          1
-        ],
-        [
-          1,
-          2
-        ],
-        [
-          0,
-          1
-        ],
-        [
-          6,
-          1
-        ],
-        [
-          5,
-          6
-        ],
-        [
-          7,
-          0
-        ],
-        [
-          17,
-          1
-        ],
-        [
-          14,
-          5
-        ],
-        [
-          11,
-          7
-        ],
-        [
-          7,
-          14
-        ],
-        [
-          15,
-          7
-        ],
-        [
-          12,
-          15
-        ],
-        [
-          13,
-          12
-        ],
-        [
-          4,
-          13
-        ],
-        [
-          3,
-          11
-        ],
-        [
-          9,
-          7
-        ],
-        [
-          16,
-          3
-        ],
-        [
-          8,
-          16
-        ],
-        [
-          8,
-          9
-        ],
-        [
-          10,
-          4
-        ],
-        [
-          8,
-          10
-        ],
-        [
-          17,
-          8
-        ]
-      ],
-      "tutorial": false,
-      "difficulty": 487.5,
-      "bottle_capacities": []
-    },
-    {
-      "id": 66,
-      "title": "Level 66",
-      "description": "Mechanics: decoy_bottle, stone_layer",
-      "state": [
-        [],
-        [
-          "C1",
-          "C1",
-          "C8",
-          "C3"
-        ],
-        [
-          "C2",
-          "C2",
-          "C2",
-          "C13"
-        ],
-        [
-          "C3",
-          "C3",
-          "C2",
-          "C13"
-        ],
-        [
-          "C4",
-          "C4",
-          "C4",
-          "C16"
-        ],
-        [
-          "C5",
-          "C5",
-          "C5",
-          "C17"
-        ],
-        [
-          "C6",
-          "C6",
-          "C6",
-          "C9"
-        ],
-        [
-          "C7",
-          "C7",
-          "C7",
-          "C6"
-        ],
-        [
-          "C8",
-          "C8",
-          "C16",
-          "C0"
-        ],
-        [
-          "C9",
-          "C9",
-          "C13",
-          "C0"
-        ],
-        [
-          "C10",
-          "C10",
-          "C14",
-          "C15"
-        ],
-        [
-          "C11",
-          "C11",
-          "C11",
-          "C14"
-        ],
-        [
-          "C12",
-          "C12",
-          "C11",
-          "C9"
-        ],
-        [
-          "C13",
-          "C16",
-          "C0",
-          "C0"
-        ],
-        [
-          "C14",
-          "C14",
-          "C5",
-          "C4"
-        ],
-        [
-          "C15",
-          "C15",
-          "C15",
-          "C7"
-        ],
-        [
-          "C16",
-          "C12",
-          "C12",
-          "C3"
-        ],
-        [
-          "C17",
-          "C17",
-          "C17",
-          "C8"
-        ],
-        [
-          "C1",
-          "C1",
-          "C10",
-          "C10"
-        ],
-        []
-      ],
-      "capacity": 4,
-      "color_count": 18,
-      "empty_bottles": 2,
-      "mechanics": [
-        "decoy_bottle",
-        "stone_layer"
-      ],
-      "mechanics_config": {
-        "decoy_bottles": [
-          18
-        ],
-        "frozen_bottles": [],
-        "stone_bottles": [
-          19
-        ]
-      },
-      "solution": [
-        [
-          13,
-          0
-        ],
-        [
-          8,
-          0
-        ],
-        [
-          13,
-          8
-        ],
-        [
-          9,
-          0
-        ],
-        [
-          9,
-          13
-        ],
-        [
-          6,
-          9
-        ],
-        [
-          3,
-          13
-        ],
-        [
-          12,
-          9
-        ],
-        [
-          7,
-          6
-        ],
-        [
-          15,
-          7
-        ],
-        [
-          2,
-          13
-        ],
-        [
-          3,
-          2
-        ],
-        [
-          1,
-          3
-        ],
-        [
-          10,
-          15
-        ],
-        [
-          11,
-          10
-        ],
-        [
-          16,
-          3
-        ],
-        [
-          12,
-          11
-        ],
-        [
-          17,
-          1
-        ],
-        [
-          16,
-          12
-        ],
-        [
-          5,
-          17
-        ],
-        [
-          4,
-          16
-        ],
-        [
-          14,
-          4
-        ],
-        [
-          14,
-          5
-        ],
-        [
-          8,
-          16
-        ],
-        [
-          1,
-          8
-        ],
-        [
-          10,
-          14
-        ],
-        [
-          18,
-          10
-        ],
-        [
-          18,
-          1
-        ]
-      ],
-      "tutorial": false,
-      "difficulty": 495.0,
-      "bottle_capacities": []
-    },
-    {
       "id": 67,
       "title": "Level 67",
-      "description": "Mechanics: decoy_bottle, stone_layer",
+      "description": "Mechanics: decoy_bottle",
       "state": [
         [
           "C0",
@@ -10632,16 +10434,11 @@
       "color_count": 18,
       "empty_bottles": 2,
       "mechanics": [
-        "decoy_bottle",
-        "stone_layer"
+        "decoy_bottle"
       ],
       "mechanics_config": {
         "decoy_bottles": [
           18
-        ],
-        "frozen_bottles": [],
-        "stone_bottles": [
-          19
         ]
       },
       "solution": [
@@ -10755,13 +10552,13 @@
         ]
       ],
       "tutorial": false,
-      "difficulty": 502.5,
+      "difficulty": 418.75,
       "bottle_capacities": []
     },
     {
       "id": 68,
       "title": "Level 68",
-      "description": "Mechanics: decoy_bottle, stone_layer",
+      "description": "Mechanics: decoy_bottle",
       "state": [
         [
           "C0",
@@ -10879,16 +10676,11 @@
       "color_count": 18,
       "empty_bottles": 2,
       "mechanics": [
-        "decoy_bottle",
-        "stone_layer"
+        "decoy_bottle"
       ],
       "mechanics_config": {
         "decoy_bottles": [
           18
-        ],
-        "frozen_bottles": [],
-        "stone_bottles": [
-          19
         ]
       },
       "solution": [
@@ -11006,13 +10798,13 @@
         ]
       ],
       "tutorial": false,
-      "difficulty": 510.0,
+      "difficulty": 425.0,
       "bottle_capacities": []
     },
     {
       "id": 69,
       "title": "Level 69",
-      "description": "Mechanics: decoy_bottle, stone_layer",
+      "description": "Mechanics: decoy_bottle",
       "state": [
         [
           "C0",
@@ -11130,16 +10922,11 @@
       "color_count": 18,
       "empty_bottles": 2,
       "mechanics": [
-        "decoy_bottle",
-        "stone_layer"
+        "decoy_bottle"
       ],
       "mechanics_config": {
         "decoy_bottles": [
           18
-        ],
-        "frozen_bottles": [],
-        "stone_bottles": [
-          19
         ]
       },
       "solution": [
@@ -11261,13 +11048,13 @@
         ]
       ],
       "tutorial": false,
-      "difficulty": 517.5,
+      "difficulty": 431.25,
       "bottle_capacities": []
     },
     {
       "id": 70,
       "title": "Level 70",
-      "description": "Mechanics: decoy_bottle, stone_layer, frozen_layer, giant_bottle_3x",
+      "description": "Mechanics: decoy_bottle, giant_bottle_3x",
       "state": [
         [
           "C0",
@@ -11395,19 +11182,11 @@
       "empty_bottles": 3,
       "mechanics": [
         "decoy_bottle",
-        "stone_layer",
-        "frozen_layer",
         "giant_bottle_3x"
       ],
       "mechanics_config": {
         "decoy_bottles": [
           18
-        ],
-        "frozen_bottles": [
-          20
-        ],
-        "stone_bottles": [
-          19
         ],
         "giant_bottles": [
           0
@@ -11524,7 +11303,7 @@
         ]
       ],
       "tutorial": true,
-      "difficulty": 560.0,
+      "difficulty": 420.0,
       "bottle_capacities": [
         12,
         4,
@@ -11552,7 +11331,7 @@
     {
       "id": 71,
       "title": "Level 71",
-      "description": "Mechanics: decoy_bottle, stone_layer, frozen_layer, capacity_5",
+      "description": "Mechanics: decoy_bottle, capacity_5",
       "state": [
         [
           "C0",
@@ -11697,19 +11476,11 @@
       "empty_bottles": 3,
       "mechanics": [
         "decoy_bottle",
-        "stone_layer",
-        "frozen_layer",
         "capacity_5"
       ],
       "mechanics_config": {
         "decoy_bottles": [
           19
-        ],
-        "frozen_bottles": [
-          21
-        ],
-        "stone_bottles": [
-          20
         ]
       },
       "solution": [
@@ -11831,13 +11602,13 @@
         ]
       ],
       "tutorial": false,
-      "difficulty": 710.0,
+      "difficulty": 532.5,
       "bottle_capacities": []
     },
     {
       "id": 72,
       "title": "Level 72",
-      "description": "Mechanics: decoy_bottle, stone_layer, frozen_layer, capacity_5",
+      "description": "Mechanics: decoy_bottle, capacity_5",
       "state": [
         [
           "C0",
@@ -11982,19 +11753,11 @@
       "empty_bottles": 3,
       "mechanics": [
         "decoy_bottle",
-        "stone_layer",
-        "frozen_layer",
         "capacity_5"
       ],
       "mechanics_config": {
         "decoy_bottles": [
           19
-        ],
-        "frozen_bottles": [
-          21
-        ],
-        "stone_bottles": [
-          20
         ]
       },
       "solution": [
@@ -12120,13 +11883,13 @@
         ]
       ],
       "tutorial": false,
-      "difficulty": 720.0,
+      "difficulty": 540.0,
       "bottle_capacities": []
     },
     {
       "id": 73,
       "title": "Level 73",
-      "description": "Mechanics: decoy_bottle, stone_layer, frozen_layer, capacity_5",
+      "description": "Mechanics: decoy_bottle, capacity_5",
       "state": [
         [
           "C0",
@@ -12271,19 +12034,11 @@
       "empty_bottles": 3,
       "mechanics": [
         "decoy_bottle",
-        "stone_layer",
-        "frozen_layer",
         "capacity_5"
       ],
       "mechanics_config": {
         "decoy_bottles": [
           19
-        ],
-        "frozen_bottles": [
-          21
-        ],
-        "stone_bottles": [
-          20
         ]
       },
       "solution": [
@@ -12409,13 +12164,13 @@
         ]
       ],
       "tutorial": false,
-      "difficulty": 730.0,
+      "difficulty": 547.5,
       "bottle_capacities": []
     },
     {
       "id": 74,
       "title": "Level 74",
-      "description": "Mechanics: decoy_bottle, stone_layer, frozen_layer, capacity_5",
+      "description": "Mechanics: decoy_bottle, capacity_5",
       "state": [
         [
           "C0",
@@ -12567,19 +12322,11 @@
       "empty_bottles": 3,
       "mechanics": [
         "decoy_bottle",
-        "stone_layer",
-        "frozen_layer",
         "capacity_5"
       ],
       "mechanics_config": {
         "decoy_bottles": [
           20
-        ],
-        "frozen_bottles": [
-          22
-        ],
-        "stone_bottles": [
-          21
         ]
       },
       "solution": [
@@ -12705,13 +12452,13 @@
         ]
       ],
       "tutorial": false,
-      "difficulty": 740.0,
+      "difficulty": 555.0,
       "bottle_capacities": []
     },
     {
       "id": 75,
       "title": "Level 75",
-      "description": "Mechanics: decoy_bottle, stone_layer, frozen_layer, capacity_5",
+      "description": "Mechanics: decoy_bottle, capacity_5",
       "state": [
         [
           "C0",
@@ -12863,19 +12610,11 @@
       "empty_bottles": 3,
       "mechanics": [
         "decoy_bottle",
-        "stone_layer",
-        "frozen_layer",
         "capacity_5"
       ],
       "mechanics_config": {
         "decoy_bottles": [
           20
-        ],
-        "frozen_bottles": [
-          22
-        ],
-        "stone_bottles": [
-          21
         ]
       },
       "solution": [
@@ -13005,13 +12744,13 @@
         ]
       ],
       "tutorial": false,
-      "difficulty": 750.0,
+      "difficulty": 562.5,
       "bottle_capacities": []
     },
     {
       "id": 76,
       "title": "Level 76",
-      "description": "Mechanics: decoy_bottle, stone_layer, frozen_layer, capacity_5",
+      "description": "Mechanics: decoy_bottle, capacity_5",
       "state": [
         [
           "C0",
@@ -13163,19 +12902,11 @@
       "empty_bottles": 3,
       "mechanics": [
         "decoy_bottle",
-        "stone_layer",
-        "frozen_layer",
         "capacity_5"
       ],
       "mechanics_config": {
         "decoy_bottles": [
           20
-        ],
-        "frozen_bottles": [
-          22
-        ],
-        "stone_bottles": [
-          21
         ]
       },
       "solution": [
@@ -13305,13 +13036,13 @@
         ]
       ],
       "tutorial": false,
-      "difficulty": 760.0,
+      "difficulty": 570.0,
       "bottle_capacities": []
     },
     {
       "id": 77,
       "title": "Level 77",
-      "description": "Mechanics: decoy_bottle, stone_layer, frozen_layer, capacity_5",
+      "description": "Mechanics: decoy_bottle, capacity_5",
       "state": [
         [
           "C0",
@@ -13463,19 +13194,11 @@
       "empty_bottles": 3,
       "mechanics": [
         "decoy_bottle",
-        "stone_layer",
-        "frozen_layer",
         "capacity_5"
       ],
       "mechanics_config": {
         "decoy_bottles": [
           20
-        ],
-        "frozen_bottles": [
-          22
-        ],
-        "stone_bottles": [
-          21
         ]
       },
       "solution": [
@@ -13597,13 +13320,13 @@
         ]
       ],
       "tutorial": false,
-      "difficulty": 770.0,
+      "difficulty": 577.5,
       "bottle_capacities": []
     },
     {
       "id": 78,
       "title": "Level 78",
-      "description": "Mechanics: decoy_bottle, stone_layer, frozen_layer, capacity_5",
+      "description": "Mechanics: decoy_bottle, capacity_5",
       "state": [
         [
           "C0",
@@ -13762,19 +13485,11 @@
       "empty_bottles": 3,
       "mechanics": [
         "decoy_bottle",
-        "stone_layer",
-        "frozen_layer",
         "capacity_5"
       ],
       "mechanics_config": {
         "decoy_bottles": [
           21
-        ],
-        "frozen_bottles": [
-          23
-        ],
-        "stone_bottles": [
-          22
         ]
       },
       "solution": [
@@ -13900,13 +13615,13 @@
         ]
       ],
       "tutorial": false,
-      "difficulty": 780.0,
+      "difficulty": 585.0,
       "bottle_capacities": []
     },
     {
       "id": 79,
       "title": "Level 79",
-      "description": "Mechanics: decoy_bottle, stone_layer, frozen_layer, capacity_5",
+      "description": "Mechanics: decoy_bottle, capacity_5",
       "state": [
         [
           "C0",
@@ -14065,19 +13780,11 @@
       "empty_bottles": 3,
       "mechanics": [
         "decoy_bottle",
-        "stone_layer",
-        "frozen_layer",
         "capacity_5"
       ],
       "mechanics_config": {
         "decoy_bottles": [
           21
-        ],
-        "frozen_bottles": [
-          23
-        ],
-        "stone_bottles": [
-          22
         ]
       },
       "solution": [
@@ -14211,13 +13918,13 @@
         ]
       ],
       "tutorial": false,
-      "difficulty": 790.0,
+      "difficulty": 592.5,
       "bottle_capacities": []
     },
     {
       "id": 80,
       "title": "Level 80",
-      "description": "Mechanics: decoy_bottle, stone_layer, frozen_layer, capacity_5",
+      "description": "Mechanics: decoy_bottle, capacity_5",
       "state": [
         [
           "C0",
@@ -14376,19 +14083,11 @@
       "empty_bottles": 3,
       "mechanics": [
         "decoy_bottle",
-        "stone_layer",
-        "frozen_layer",
         "capacity_5"
       ],
       "mechanics_config": {
         "decoy_bottles": [
           21
-        ],
-        "frozen_bottles": [
-          23
-        ],
-        "stone_bottles": [
-          22
         ]
       },
       "solution": [
@@ -14522,13 +14221,13 @@
         ]
       ],
       "tutorial": false,
-      "difficulty": 800.0,
+      "difficulty": 600.0,
       "bottle_capacities": []
     },
     {
       "id": 81,
       "title": "Level 81",
-      "description": "Mechanics: decoy_bottle, stone_layer, frozen_layer, capacity_5",
+      "description": "Mechanics: decoy_bottle, capacity_5",
       "state": [
         [
           "C0",
@@ -14687,19 +14386,11 @@
       "empty_bottles": 3,
       "mechanics": [
         "decoy_bottle",
-        "stone_layer",
-        "frozen_layer",
         "capacity_5"
       ],
       "mechanics_config": {
         "decoy_bottles": [
           21
-        ],
-        "frozen_bottles": [
-          23
-        ],
-        "stone_bottles": [
-          22
         ]
       },
       "solution": [
@@ -14837,13 +14528,13 @@
         ]
       ],
       "tutorial": false,
-      "difficulty": 810.0,
+      "difficulty": 607.5,
       "bottle_capacities": []
     },
     {
       "id": 82,
       "title": "Level 82",
-      "description": "Mechanics: decoy_bottle, stone_layer, frozen_layer, capacity_5",
+      "description": "Mechanics: decoy_bottle, capacity_5",
       "state": [
         [
           "C0",
@@ -15009,19 +14700,11 @@
       "empty_bottles": 3,
       "mechanics": [
         "decoy_bottle",
-        "stone_layer",
-        "frozen_layer",
         "capacity_5"
       ],
       "mechanics_config": {
         "decoy_bottles": [
           22
-        ],
-        "frozen_bottles": [
-          24
-        ],
-        "stone_bottles": [
-          23
         ]
       },
       "solution": [
@@ -15159,13 +14842,13 @@
         ]
       ],
       "tutorial": false,
-      "difficulty": 820.0,
+      "difficulty": 615.0,
       "bottle_capacities": []
     },
     {
       "id": 83,
       "title": "Level 83",
-      "description": "Mechanics: decoy_bottle, stone_layer, frozen_layer, capacity_5",
+      "description": "Mechanics: decoy_bottle, capacity_5",
       "state": [
         [
           "C0",
@@ -15331,19 +15014,11 @@
       "empty_bottles": 3,
       "mechanics": [
         "decoy_bottle",
-        "stone_layer",
-        "frozen_layer",
         "capacity_5"
       ],
       "mechanics_config": {
         "decoy_bottles": [
           22
-        ],
-        "frozen_bottles": [
-          24
-        ],
-        "stone_bottles": [
-          23
         ]
       },
       "solution": [
@@ -15481,13 +15156,13 @@
         ]
       ],
       "tutorial": false,
-      "difficulty": 830.0,
+      "difficulty": 622.5,
       "bottle_capacities": []
     },
     {
       "id": 84,
       "title": "Level 84",
-      "description": "Mechanics: decoy_bottle, stone_layer, frozen_layer, capacity_5",
+      "description": "Mechanics: decoy_bottle, capacity_5",
       "state": [
         [
           "C0",
@@ -15653,19 +15328,11 @@
       "empty_bottles": 3,
       "mechanics": [
         "decoy_bottle",
-        "stone_layer",
-        "frozen_layer",
         "capacity_5"
       ],
       "mechanics_config": {
         "decoy_bottles": [
           22
-        ],
-        "frozen_bottles": [
-          24
-        ],
-        "stone_bottles": [
-          23
         ]
       },
       "solution": [
@@ -15807,13 +15474,13 @@
         ]
       ],
       "tutorial": false,
-      "difficulty": 840.0,
+      "difficulty": 630.0,
       "bottle_capacities": []
     },
     {
       "id": 85,
       "title": "Level 85",
-      "description": "Mechanics: decoy_bottle, stone_layer, frozen_layer, capacity_5",
+      "description": "Mechanics: decoy_bottle, capacity_5",
       "state": [
         [
           "C0",
@@ -15979,19 +15646,11 @@
       "empty_bottles": 3,
       "mechanics": [
         "decoy_bottle",
-        "stone_layer",
-        "frozen_layer",
         "capacity_5"
       ],
       "mechanics_config": {
         "decoy_bottles": [
           22
-        ],
-        "frozen_bottles": [
-          24
-        ],
-        "stone_bottles": [
-          23
         ]
       },
       "solution": [
@@ -16133,13 +15792,13 @@
         ]
       ],
       "tutorial": false,
-      "difficulty": 850.0,
+      "difficulty": 637.5,
       "bottle_capacities": []
     },
     {
       "id": 86,
       "title": "Level 86",
-      "description": "Mechanics: decoy_bottle, stone_layer, frozen_layer, capacity_5",
+      "description": "Mechanics: decoy_bottle, capacity_5",
       "state": [
         [
           "C0",
@@ -16312,19 +15971,11 @@
       "empty_bottles": 3,
       "mechanics": [
         "decoy_bottle",
-        "stone_layer",
-        "frozen_layer",
         "capacity_5"
       ],
       "mechanics_config": {
         "decoy_bottles": [
           23
-        ],
-        "frozen_bottles": [
-          25
-        ],
-        "stone_bottles": [
-          24
         ]
       },
       "solution": [
@@ -16466,13 +16117,13 @@
         ]
       ],
       "tutorial": false,
-      "difficulty": 860.0,
+      "difficulty": 645.0,
       "bottle_capacities": []
     },
     {
       "id": 87,
       "title": "Level 87",
-      "description": "Mechanics: decoy_bottle, stone_layer, frozen_layer, capacity_5",
+      "description": "Mechanics: decoy_bottle, capacity_5",
       "state": [
         [
           "C0",
@@ -16645,19 +16296,11 @@
       "empty_bottles": 3,
       "mechanics": [
         "decoy_bottle",
-        "stone_layer",
-        "frozen_layer",
         "capacity_5"
       ],
       "mechanics_config": {
         "decoy_bottles": [
           23
-        ],
-        "frozen_bottles": [
-          25
-        ],
-        "stone_bottles": [
-          24
         ]
       },
       "solution": [
@@ -16803,13 +16446,13 @@
         ]
       ],
       "tutorial": false,
-      "difficulty": 870.0,
+      "difficulty": 652.5,
       "bottle_capacities": []
     },
     {
       "id": 88,
       "title": "Level 88",
-      "description": "Mechanics: decoy_bottle, stone_layer, frozen_layer, capacity_5",
+      "description": "Mechanics: decoy_bottle, capacity_5",
       "state": [
         [
           "C0",
@@ -16982,19 +16625,11 @@
       "empty_bottles": 3,
       "mechanics": [
         "decoy_bottle",
-        "stone_layer",
-        "frozen_layer",
         "capacity_5"
       ],
       "mechanics_config": {
         "decoy_bottles": [
           23
-        ],
-        "frozen_bottles": [
-          25
-        ],
-        "stone_bottles": [
-          24
         ]
       },
       "solution": [
@@ -17136,13 +16771,13 @@
         ]
       ],
       "tutorial": false,
-      "difficulty": 880.0,
+      "difficulty": 660.0,
       "bottle_capacities": []
     },
     {
       "id": 89,
       "title": "Level 89",
-      "description": "Mechanics: decoy_bottle, stone_layer, frozen_layer, capacity_5",
+      "description": "Mechanics: decoy_bottle, capacity_5",
       "state": [
         [
           "C0",
@@ -17322,19 +16957,11 @@
       "empty_bottles": 3,
       "mechanics": [
         "decoy_bottle",
-        "stone_layer",
-        "frozen_layer",
         "capacity_5"
       ],
       "mechanics_config": {
         "decoy_bottles": [
           24
-        ],
-        "frozen_bottles": [
-          26
-        ],
-        "stone_bottles": [
-          25
         ]
       },
       "solution": [
@@ -17476,13 +17103,13 @@
         ]
       ],
       "tutorial": false,
-      "difficulty": 890.0,
+      "difficulty": 667.5,
       "bottle_capacities": []
     },
     {
       "id": 90,
       "title": "Level 90",
-      "description": "Mechanics: decoy_bottle, stone_layer, frozen_layer, capacity_5, giant_bottle_3x, hidden_colors",
+      "description": "Mechanics: decoy_bottle, capacity_5, giant_bottle_3x, hidden_colors",
       "state": [
         [
           "C0",
@@ -17672,8 +17299,6 @@
       "empty_bottles": 3,
       "mechanics": [
         "decoy_bottle",
-        "stone_layer",
-        "frozen_layer",
         "capacity_5",
         "giant_bottle_3x",
         "hidden_colors"
@@ -17681,12 +17306,6 @@
       "mechanics_config": {
         "decoy_bottles": [
           24
-        ],
-        "frozen_bottles": [
-          26
-        ],
-        "stone_bottles": [
-          25
         ],
         "giant_bottles": [
           0
@@ -17842,7 +17461,7 @@
         ]
       ],
       "tutorial": false,
-      "difficulty": 1125.0,
+      "difficulty": 900.0,
       "bottle_capacities": [
         15,
         5,
@@ -17876,7 +17495,7 @@
     {
       "id": 91,
       "title": "Level 91",
-      "description": "Mechanics: decoy_bottle, stone_layer, frozen_layer, capacity_5",
+      "description": "Mechanics: decoy_bottle, capacity_5",
       "state": [
         [
           "C0",
@@ -18056,19 +17675,11 @@
       "empty_bottles": 3,
       "mechanics": [
         "decoy_bottle",
-        "stone_layer",
-        "frozen_layer",
         "capacity_5"
       ],
       "mechanics_config": {
         "decoy_bottles": [
           24
-        ],
-        "frozen_bottles": [
-          26
-        ],
-        "stone_bottles": [
-          25
         ]
       },
       "solution": [
@@ -18218,13 +17829,13 @@
         ]
       ],
       "tutorial": false,
-      "difficulty": 910.0,
+      "difficulty": 682.5,
       "bottle_capacities": []
     },
     {
       "id": 92,
       "title": "Level 92",
-      "description": "Mechanics: decoy_bottle, stone_layer, frozen_layer, capacity_5",
+      "description": "Mechanics: decoy_bottle, capacity_5",
       "state": [
         [
           "C0",
@@ -18404,19 +18015,11 @@
       "empty_bottles": 3,
       "mechanics": [
         "decoy_bottle",
-        "stone_layer",
-        "frozen_layer",
         "capacity_5"
       ],
       "mechanics_config": {
         "decoy_bottles": [
           24
-        ],
-        "frozen_bottles": [
-          26
-        ],
-        "stone_bottles": [
-          25
         ]
       },
       "solution": [
@@ -18566,13 +18169,13 @@
         ]
       ],
       "tutorial": false,
-      "difficulty": 920.0,
+      "difficulty": 690.0,
       "bottle_capacities": []
     },
     {
       "id": 93,
       "title": "Level 93",
-      "description": "Mechanics: decoy_bottle, stone_layer, frozen_layer, capacity_5",
+      "description": "Mechanics: decoy_bottle, capacity_5",
       "state": [
         [
           "C0",
@@ -18759,19 +18362,11 @@
       "empty_bottles": 3,
       "mechanics": [
         "decoy_bottle",
-        "stone_layer",
-        "frozen_layer",
         "capacity_5"
       ],
       "mechanics_config": {
         "decoy_bottles": [
           25
-        ],
-        "frozen_bottles": [
-          27
-        ],
-        "stone_bottles": [
-          26
         ]
       },
       "solution": [
@@ -18925,13 +18520,13 @@
         ]
       ],
       "tutorial": false,
-      "difficulty": 930.0,
+      "difficulty": 697.5,
       "bottle_capacities": []
     },
     {
       "id": 94,
       "title": "Level 94",
-      "description": "Mechanics: decoy_bottle, stone_layer, frozen_layer, capacity_5",
+      "description": "Mechanics: decoy_bottle, capacity_5",
       "state": [
         [
           "C0",
@@ -19118,19 +18713,11 @@
       "empty_bottles": 3,
       "mechanics": [
         "decoy_bottle",
-        "stone_layer",
-        "frozen_layer",
         "capacity_5"
       ],
       "mechanics_config": {
         "decoy_bottles": [
           25
-        ],
-        "frozen_bottles": [
-          27
-        ],
-        "stone_bottles": [
-          26
         ]
       },
       "solution": [
@@ -19280,13 +18867,13 @@
         ]
       ],
       "tutorial": false,
-      "difficulty": 940.0,
+      "difficulty": 705.0,
       "bottle_capacities": []
     },
     {
       "id": 95,
       "title": "Level 95",
-      "description": "Mechanics: decoy_bottle, stone_layer, frozen_layer, capacity_5",
+      "description": "Mechanics: decoy_bottle, capacity_5",
       "state": [
         [
           "C0",
@@ -19473,19 +19060,11 @@
       "empty_bottles": 3,
       "mechanics": [
         "decoy_bottle",
-        "stone_layer",
-        "frozen_layer",
         "capacity_5"
       ],
       "mechanics_config": {
         "decoy_bottles": [
           25
-        ],
-        "frozen_bottles": [
-          27
-        ],
-        "stone_bottles": [
-          26
         ]
       },
       "solution": [
@@ -19639,13 +19218,13 @@
         ]
       ],
       "tutorial": false,
-      "difficulty": 950.0,
+      "difficulty": 712.5,
       "bottle_capacities": []
     },
     {
       "id": 96,
       "title": "Level 96",
-      "description": "Mechanics: decoy_bottle, stone_layer, frozen_layer, capacity_5",
+      "description": "Mechanics: decoy_bottle, capacity_5",
       "state": [
         [
           "C0",
@@ -19832,19 +19411,11 @@
       "empty_bottles": 3,
       "mechanics": [
         "decoy_bottle",
-        "stone_layer",
-        "frozen_layer",
         "capacity_5"
       ],
       "mechanics_config": {
         "decoy_bottles": [
           25
-        ],
-        "frozen_bottles": [
-          27
-        ],
-        "stone_bottles": [
-          26
         ]
       },
       "solution": [
@@ -20002,13 +19573,13 @@
         ]
       ],
       "tutorial": false,
-      "difficulty": 960.0,
+      "difficulty": 720.0,
       "bottle_capacities": []
     },
     {
       "id": 97,
       "title": "Level 97",
-      "description": "Mechanics: decoy_bottle, stone_layer, frozen_layer, capacity_5",
+      "description": "Mechanics: decoy_bottle, capacity_5",
       "state": [
         [
           "C0",
@@ -20202,19 +19773,11 @@
       "empty_bottles": 3,
       "mechanics": [
         "decoy_bottle",
-        "stone_layer",
-        "frozen_layer",
         "capacity_5"
       ],
       "mechanics_config": {
         "decoy_bottles": [
           26
-        ],
-        "frozen_bottles": [
-          28
-        ],
-        "stone_bottles": [
-          27
         ]
       },
       "solution": [
@@ -20372,13 +19935,13 @@
         ]
       ],
       "tutorial": false,
-      "difficulty": 970.0,
+      "difficulty": 727.5,
       "bottle_capacities": []
     },
     {
       "id": 98,
       "title": "Level 98",
-      "description": "Mechanics: decoy_bottle, stone_layer, frozen_layer, capacity_5",
+      "description": "Mechanics: decoy_bottle, capacity_5",
       "state": [
         [
           "C0",
@@ -20572,19 +20135,11 @@
       "empty_bottles": 3,
       "mechanics": [
         "decoy_bottle",
-        "stone_layer",
-        "frozen_layer",
         "capacity_5"
       ],
       "mechanics_config": {
         "decoy_bottles": [
           26
-        ],
-        "frozen_bottles": [
-          28
-        ],
-        "stone_bottles": [
-          27
         ]
       },
       "solution": [
@@ -20742,13 +20297,13 @@
         ]
       ],
       "tutorial": false,
-      "difficulty": 980.0,
+      "difficulty": 735.0,
       "bottle_capacities": []
     },
     {
       "id": 99,
       "title": "Level 99",
-      "description": "Mechanics: decoy_bottle, stone_layer, frozen_layer, capacity_5",
+      "description": "Mechanics: decoy_bottle, capacity_5",
       "state": [
         [
           "C0",
@@ -20942,19 +20497,11 @@
       "empty_bottles": 3,
       "mechanics": [
         "decoy_bottle",
-        "stone_layer",
-        "frozen_layer",
         "capacity_5"
       ],
       "mechanics_config": {
         "decoy_bottles": [
           26
-        ],
-        "frozen_bottles": [
-          28
-        ],
-        "stone_bottles": [
-          27
         ]
       },
       "solution": [
@@ -21116,13 +20663,13 @@
         ]
       ],
       "tutorial": false,
-      "difficulty": 990.0,
+      "difficulty": 742.5,
       "bottle_capacities": []
     },
     {
       "id": 100,
       "title": "Level 100",
-      "description": "Mechanics: decoy_bottle, stone_layer, frozen_layer, capacity_5",
+      "description": "Mechanics: decoy_bottle, capacity_5",
       "state": [
         [
           "C0",
@@ -21316,19 +20863,11 @@
       "empty_bottles": 3,
       "mechanics": [
         "decoy_bottle",
-        "stone_layer",
-        "frozen_layer",
         "capacity_5"
       ],
       "mechanics_config": {
         "decoy_bottles": [
           26
-        ],
-        "frozen_bottles": [
-          28
-        ],
-        "stone_bottles": [
-          27
         ]
       },
       "solution": [
@@ -21490,13 +21029,13 @@
         ]
       ],
       "tutorial": false,
-      "difficulty": 1000.0,
+      "difficulty": 750.0,
       "bottle_capacities": []
     },
     {
       "id": 101,
       "title": "Level 101",
-      "description": "Mechanics: decoy_bottle, stone_layer, frozen_layer, capacity_5",
+      "description": "Mechanics: decoy_bottle, capacity_5",
       "state": [
         [
           "C0",
@@ -21690,19 +21229,11 @@
       "empty_bottles": 3,
       "mechanics": [
         "decoy_bottle",
-        "stone_layer",
-        "frozen_layer",
         "capacity_5"
       ],
       "mechanics_config": {
         "decoy_bottles": [
           26
-        ],
-        "frozen_bottles": [
-          28
-        ],
-        "stone_bottles": [
-          27
         ]
       },
       "solution": [
@@ -21856,13 +21387,13 @@
         ]
       ],
       "tutorial": false,
-      "difficulty": 1010.0,
+      "difficulty": 757.5,
       "bottle_capacities": []
     },
     {
       "id": 102,
       "title": "Level 102",
-      "description": "Mechanics: decoy_bottle, stone_layer, frozen_layer, capacity_5",
+      "description": "Mechanics: decoy_bottle, capacity_5",
       "state": [
         [
           "C0",
@@ -22056,19 +21587,11 @@
       "empty_bottles": 3,
       "mechanics": [
         "decoy_bottle",
-        "stone_layer",
-        "frozen_layer",
         "capacity_5"
       ],
       "mechanics_config": {
         "decoy_bottles": [
           26
-        ],
-        "frozen_bottles": [
-          28
-        ],
-        "stone_bottles": [
-          27
         ]
       },
       "solution": [
@@ -22222,13 +21745,13 @@
         ]
       ],
       "tutorial": false,
-      "difficulty": 1020.0,
+      "difficulty": 765.0,
       "bottle_capacities": []
     },
     {
       "id": 103,
       "title": "Level 103",
-      "description": "Mechanics: decoy_bottle, stone_layer, frozen_layer, capacity_5",
+      "description": "Mechanics: decoy_bottle, capacity_5",
       "state": [
         [
           "C0",
@@ -22422,19 +21945,11 @@
       "empty_bottles": 3,
       "mechanics": [
         "decoy_bottle",
-        "stone_layer",
-        "frozen_layer",
         "capacity_5"
       ],
       "mechanics_config": {
         "decoy_bottles": [
           26
-        ],
-        "frozen_bottles": [
-          28
-        ],
-        "stone_bottles": [
-          27
         ]
       },
       "solution": [
@@ -22600,13 +22115,13 @@
         ]
       ],
       "tutorial": false,
-      "difficulty": 1030.0,
+      "difficulty": 772.5,
       "bottle_capacities": []
     },
     {
       "id": 104,
       "title": "Level 104",
-      "description": "Mechanics: decoy_bottle, stone_layer, frozen_layer, capacity_5",
+      "description": "Mechanics: decoy_bottle, capacity_5",
       "state": [
         [
           "C0",
@@ -22800,19 +22315,11 @@
       "empty_bottles": 3,
       "mechanics": [
         "decoy_bottle",
-        "stone_layer",
-        "frozen_layer",
         "capacity_5"
       ],
       "mechanics_config": {
         "decoy_bottles": [
           26
-        ],
-        "frozen_bottles": [
-          28
-        ],
-        "stone_bottles": [
-          27
         ]
       },
       "solution": [
@@ -22974,13 +22481,13 @@
         ]
       ],
       "tutorial": false,
-      "difficulty": 1040.0,
+      "difficulty": 780.0,
       "bottle_capacities": []
     },
     {
       "id": 105,
       "title": "Level 105",
-      "description": "Mechanics: decoy_bottle, stone_layer, frozen_layer, capacity_5",
+      "description": "Mechanics: decoy_bottle, capacity_5",
       "state": [
         [
           "C0",
@@ -23174,19 +22681,11 @@
       "empty_bottles": 3,
       "mechanics": [
         "decoy_bottle",
-        "stone_layer",
-        "frozen_layer",
         "capacity_5"
       ],
       "mechanics_config": {
         "decoy_bottles": [
           26
-        ],
-        "frozen_bottles": [
-          28
-        ],
-        "stone_bottles": [
-          27
         ]
       },
       "solution": [
@@ -23356,13 +22855,13 @@
         ]
       ],
       "tutorial": false,
-      "difficulty": 1050.0,
+      "difficulty": 787.5,
       "bottle_capacities": []
     },
     {
       "id": 106,
       "title": "Level 106",
-      "description": "Mechanics: decoy_bottle, stone_layer, frozen_layer, capacity_5",
+      "description": "Mechanics: decoy_bottle, capacity_5",
       "state": [
         [
           "C0",
@@ -23556,19 +23055,11 @@
       "empty_bottles": 3,
       "mechanics": [
         "decoy_bottle",
-        "stone_layer",
-        "frozen_layer",
         "capacity_5"
       ],
       "mechanics_config": {
         "decoy_bottles": [
           26
-        ],
-        "frozen_bottles": [
-          28
-        ],
-        "stone_bottles": [
-          27
         ]
       },
       "solution": [
@@ -23722,13 +23213,13 @@
         ]
       ],
       "tutorial": false,
-      "difficulty": 1060.0,
+      "difficulty": 795.0,
       "bottle_capacities": []
     },
     {
       "id": 107,
       "title": "Level 107",
-      "description": "Mechanics: decoy_bottle, stone_layer, frozen_layer, capacity_5",
+      "description": "Mechanics: decoy_bottle, capacity_5",
       "state": [
         [
           "C0",
@@ -23922,19 +23413,11 @@
       "empty_bottles": 3,
       "mechanics": [
         "decoy_bottle",
-        "stone_layer",
-        "frozen_layer",
         "capacity_5"
       ],
       "mechanics_config": {
         "decoy_bottles": [
           26
-        ],
-        "frozen_bottles": [
-          28
-        ],
-        "stone_bottles": [
-          27
         ]
       },
       "solution": [
@@ -24104,13 +23587,13 @@
         ]
       ],
       "tutorial": false,
-      "difficulty": 1070.0,
+      "difficulty": 802.5,
       "bottle_capacities": []
     },
     {
       "id": 108,
       "title": "Level 108",
-      "description": "Mechanics: decoy_bottle, stone_layer, frozen_layer, capacity_5",
+      "description": "Mechanics: decoy_bottle, capacity_5",
       "state": [
         [
           "C0",
@@ -24304,19 +23787,11 @@
       "empty_bottles": 3,
       "mechanics": [
         "decoy_bottle",
-        "stone_layer",
-        "frozen_layer",
         "capacity_5"
       ],
       "mechanics_config": {
         "decoy_bottles": [
           26
-        ],
-        "frozen_bottles": [
-          28
-        ],
-        "stone_bottles": [
-          27
         ]
       },
       "solution": [
@@ -24474,13 +23949,13 @@
         ]
       ],
       "tutorial": false,
-      "difficulty": 1080.0,
+      "difficulty": 810.0,
       "bottle_capacities": []
     },
     {
       "id": 109,
       "title": "Level 109",
-      "description": "Mechanics: decoy_bottle, stone_layer, frozen_layer, capacity_5",
+      "description": "Mechanics: decoy_bottle, capacity_5",
       "state": [
         [
           "C0",
@@ -24673,19 +24148,11 @@
       "empty_bottles": 3,
       "mechanics": [
         "decoy_bottle",
-        "stone_layer",
-        "frozen_layer",
         "capacity_5"
       ],
       "mechanics_config": {
         "decoy_bottles": [
           26
-        ],
-        "frozen_bottles": [
-          28
-        ],
-        "stone_bottles": [
-          27
         ]
       },
       "solution": [
@@ -24847,13 +24314,13 @@
         ]
       ],
       "tutorial": false,
-      "difficulty": 1090.0,
+      "difficulty": 817.5,
       "bottle_capacities": []
     },
     {
       "id": 110,
       "title": "Level 110",
-      "description": "Mechanics: decoy_bottle, stone_layer, frozen_layer, capacity_5, giant_bottle_3x, hidden_colors",
+      "description": "Mechanics: decoy_bottle, capacity_5, giant_bottle_3x, hidden_colors",
       "state": [
         [
           "C0",
@@ -25064,8 +24531,6 @@
       "empty_bottles": 3,
       "mechanics": [
         "decoy_bottle",
-        "stone_layer",
-        "frozen_layer",
         "capacity_5",
         "giant_bottle_3x",
         "hidden_colors"
@@ -25073,12 +24538,6 @@
       "mechanics_config": {
         "decoy_bottles": [
           27
-        ],
-        "frozen_bottles": [
-          29
-        ],
-        "stone_bottles": [
-          28
         ],
         "giant_bottles": [
           0
@@ -25258,7 +24717,7 @@
         ]
       ],
       "tutorial": false,
-      "difficulty": 1375.0,
+      "difficulty": 1100.0,
       "bottle_capacities": [
         15,
         5,
@@ -25295,7 +24754,7 @@
     {
       "id": 111,
       "title": "Level 111",
-      "description": "Mechanics: decoy_bottle, stone_layer, frozen_layer, capacity_5",
+      "description": "Mechanics: decoy_bottle, capacity_5",
       "state": [
         [
           "C0",
@@ -25496,19 +24955,11 @@
       "empty_bottles": 3,
       "mechanics": [
         "decoy_bottle",
-        "stone_layer",
-        "frozen_layer",
         "capacity_5"
       ],
       "mechanics_config": {
         "decoy_bottles": [
           27
-        ],
-        "frozen_bottles": [
-          29
-        ],
-        "stone_bottles": [
-          28
         ]
       },
       "solution": [
@@ -25686,13 +25137,13 @@
         ]
       ],
       "tutorial": false,
-      "difficulty": 1110.0,
+      "difficulty": 832.5,
       "bottle_capacities": []
     },
     {
       "id": 112,
       "title": "Level 112",
-      "description": "Mechanics: decoy_bottle, stone_layer, frozen_layer, capacity_5",
+      "description": "Mechanics: decoy_bottle, capacity_5",
       "state": [
         [
           "C0",
@@ -25893,19 +25344,11 @@
       "empty_bottles": 3,
       "mechanics": [
         "decoy_bottle",
-        "stone_layer",
-        "frozen_layer",
         "capacity_5"
       ],
       "mechanics_config": {
         "decoy_bottles": [
           27
-        ],
-        "frozen_bottles": [
-          29
-        ],
-        "stone_bottles": [
-          28
         ]
       },
       "solution": [
@@ -26079,13 +25522,13 @@
         ]
       ],
       "tutorial": false,
-      "difficulty": 1120.0,
+      "difficulty": 840.0,
       "bottle_capacities": []
     },
     {
       "id": 113,
       "title": "Level 113",
-      "description": "Mechanics: decoy_bottle, stone_layer, frozen_layer, capacity_5",
+      "description": "Mechanics: decoy_bottle, capacity_5",
       "state": [
         [
           "C0",
@@ -26286,19 +25729,11 @@
       "empty_bottles": 3,
       "mechanics": [
         "decoy_bottle",
-        "stone_layer",
-        "frozen_layer",
         "capacity_5"
       ],
       "mechanics_config": {
         "decoy_bottles": [
           27
-        ],
-        "frozen_bottles": [
-          29
-        ],
-        "stone_bottles": [
-          28
         ]
       },
       "solution": [
@@ -26476,13 +25911,13 @@
         ]
       ],
       "tutorial": false,
-      "difficulty": 1130.0,
+      "difficulty": 847.5,
       "bottle_capacities": []
     },
     {
       "id": 114,
       "title": "Level 114",
-      "description": "Mechanics: decoy_bottle, stone_layer, frozen_layer, capacity_5",
+      "description": "Mechanics: decoy_bottle, capacity_5",
       "state": [
         [
           "C0",
@@ -26683,19 +26118,11 @@
       "empty_bottles": 3,
       "mechanics": [
         "decoy_bottle",
-        "stone_layer",
-        "frozen_layer",
         "capacity_5"
       ],
       "mechanics_config": {
         "decoy_bottles": [
           27
-        ],
-        "frozen_bottles": [
-          29
-        ],
-        "stone_bottles": [
-          28
         ]
       },
       "solution": [
@@ -26853,13 +26280,13 @@
         ]
       ],
       "tutorial": false,
-      "difficulty": 1140.0,
+      "difficulty": 855.0,
       "bottle_capacities": []
     },
     {
       "id": 115,
       "title": "Level 115",
-      "description": "Mechanics: decoy_bottle, stone_layer, frozen_layer, capacity_5",
+      "description": "Mechanics: decoy_bottle, capacity_5",
       "state": [
         [
           "C0",
@@ -27060,19 +26487,11 @@
       "empty_bottles": 3,
       "mechanics": [
         "decoy_bottle",
-        "stone_layer",
-        "frozen_layer",
         "capacity_5"
       ],
       "mechanics_config": {
         "decoy_bottles": [
           27
-        ],
-        "frozen_bottles": [
-          29
-        ],
-        "stone_bottles": [
-          28
         ]
       },
       "solution": [
@@ -27254,13 +26673,13 @@
         ]
       ],
       "tutorial": false,
-      "difficulty": 1150.0,
+      "difficulty": 862.5,
       "bottle_capacities": []
     },
     {
       "id": 116,
       "title": "Level 116",
-      "description": "Mechanics: decoy_bottle, stone_layer, frozen_layer, capacity_5",
+      "description": "Mechanics: decoy_bottle, capacity_5",
       "state": [
         [
           "C0",
@@ -27461,19 +26880,11 @@
       "empty_bottles": 3,
       "mechanics": [
         "decoy_bottle",
-        "stone_layer",
-        "frozen_layer",
         "capacity_5"
       ],
       "mechanics_config": {
         "decoy_bottles": [
           27
-        ],
-        "frozen_bottles": [
-          29
-        ],
-        "stone_bottles": [
-          28
         ]
       },
       "solution": [
@@ -27655,13 +27066,13 @@
         ]
       ],
       "tutorial": false,
-      "difficulty": 1160.0,
+      "difficulty": 870.0,
       "bottle_capacities": []
     },
     {
       "id": 117,
       "title": "Level 117",
-      "description": "Mechanics: decoy_bottle, stone_layer, frozen_layer, capacity_5",
+      "description": "Mechanics: decoy_bottle, capacity_5",
       "state": [
         [
           "C0",
@@ -27862,19 +27273,11 @@
       "empty_bottles": 3,
       "mechanics": [
         "decoy_bottle",
-        "stone_layer",
-        "frozen_layer",
         "capacity_5"
       ],
       "mechanics_config": {
         "decoy_bottles": [
           27
-        ],
-        "frozen_bottles": [
-          29
-        ],
-        "stone_bottles": [
-          28
         ]
       },
       "solution": [
@@ -28048,13 +27451,13 @@
         ]
       ],
       "tutorial": false,
-      "difficulty": 1170.0,
+      "difficulty": 877.5,
       "bottle_capacities": []
     },
     {
       "id": 118,
       "title": "Level 118",
-      "description": "Mechanics: decoy_bottle, stone_layer, frozen_layer, capacity_5",
+      "description": "Mechanics: decoy_bottle, capacity_5",
       "state": [
         [
           "C0",
@@ -28255,19 +27658,11 @@
       "empty_bottles": 3,
       "mechanics": [
         "decoy_bottle",
-        "stone_layer",
-        "frozen_layer",
         "capacity_5"
       ],
       "mechanics_config": {
         "decoy_bottles": [
           27
-        ],
-        "frozen_bottles": [
-          29
-        ],
-        "stone_bottles": [
-          28
         ]
       },
       "solution": [
@@ -28433,13 +27828,13 @@
         ]
       ],
       "tutorial": false,
-      "difficulty": 1180.0,
+      "difficulty": 885.0,
       "bottle_capacities": []
     },
     {
       "id": 119,
       "title": "Level 119",
-      "description": "Mechanics: decoy_bottle, stone_layer, frozen_layer, capacity_5",
+      "description": "Mechanics: decoy_bottle, capacity_5",
       "state": [
         [
           "C0",
@@ -28640,19 +28035,11 @@
       "empty_bottles": 3,
       "mechanics": [
         "decoy_bottle",
-        "stone_layer",
-        "frozen_layer",
         "capacity_5"
       ],
       "mechanics_config": {
         "decoy_bottles": [
           27
-        ],
-        "frozen_bottles": [
-          29
-        ],
-        "stone_bottles": [
-          28
         ]
       },
       "solution": [
@@ -28806,13 +28193,13 @@
         ]
       ],
       "tutorial": false,
-      "difficulty": 1190.0,
+      "difficulty": 892.5,
       "bottle_capacities": []
     },
     {
       "id": 120,
       "title": "Level 120",
-      "description": "Mechanics: decoy_bottle, stone_layer, frozen_layer, capacity_5",
+      "description": "Mechanics: decoy_bottle, capacity_5",
       "state": [
         [
           "C0",
@@ -29020,19 +28407,11 @@
       "empty_bottles": 3,
       "mechanics": [
         "decoy_bottle",
-        "stone_layer",
-        "frozen_layer",
         "capacity_5"
       ],
       "mechanics_config": {
         "decoy_bottles": [
           28
-        ],
-        "frozen_bottles": [
-          30
-        ],
-        "stone_bottles": [
-          29
         ]
       },
       "solution": [
@@ -29222,13 +28601,13 @@
         ]
       ],
       "tutorial": false,
-      "difficulty": 1200.0,
+      "difficulty": 900.0,
       "bottle_capacities": []
     },
     {
       "id": 121,
       "title": "Level 121",
-      "description": "Mechanics: decoy_bottle, stone_layer, frozen_layer, capacity_5",
+      "description": "Mechanics: decoy_bottle, capacity_5",
       "state": [
         [
           "C0",
@@ -29436,19 +28815,11 @@
       "empty_bottles": 3,
       "mechanics": [
         "decoy_bottle",
-        "stone_layer",
-        "frozen_layer",
         "capacity_5"
       ],
       "mechanics_config": {
         "decoy_bottles": [
           28
-        ],
-        "frozen_bottles": [
-          30
-        ],
-        "stone_bottles": [
-          29
         ]
       },
       "solution": [
@@ -29622,13 +28993,13 @@
         ]
       ],
       "tutorial": false,
-      "difficulty": 1210.0,
+      "difficulty": 907.5,
       "bottle_capacities": []
     },
     {
       "id": 122,
       "title": "Level 122",
-      "description": "Mechanics: decoy_bottle, stone_layer, frozen_layer, capacity_5",
+      "description": "Mechanics: decoy_bottle, capacity_5",
       "state": [
         [
           "C0",
@@ -29836,19 +29207,11 @@
       "empty_bottles": 3,
       "mechanics": [
         "decoy_bottle",
-        "stone_layer",
-        "frozen_layer",
         "capacity_5"
       ],
       "mechanics_config": {
         "decoy_bottles": [
           28
-        ],
-        "frozen_bottles": [
-          30
-        ],
-        "stone_bottles": [
-          29
         ]
       },
       "solution": [
@@ -30010,13 +29373,13 @@
         ]
       ],
       "tutorial": false,
-      "difficulty": 1220.0,
+      "difficulty": 915.0,
       "bottle_capacities": []
     },
     {
       "id": 123,
       "title": "Level 123",
-      "description": "Mechanics: decoy_bottle, stone_layer, frozen_layer, capacity_5",
+      "description": "Mechanics: decoy_bottle, capacity_5",
       "state": [
         [
           "C0",
@@ -30224,19 +29587,11 @@
       "empty_bottles": 3,
       "mechanics": [
         "decoy_bottle",
-        "stone_layer",
-        "frozen_layer",
         "capacity_5"
       ],
       "mechanics_config": {
         "decoy_bottles": [
           28
-        ],
-        "frozen_bottles": [
-          30
-        ],
-        "stone_bottles": [
-          29
         ]
       },
       "solution": [
@@ -30374,13 +29729,13 @@
         ]
       ],
       "tutorial": false,
-      "difficulty": 1230.0,
+      "difficulty": 922.5,
       "bottle_capacities": []
     },
     {
       "id": 124,
       "title": "Level 124",
-      "description": "Mechanics: decoy_bottle, stone_layer, frozen_layer, capacity_5",
+      "description": "Mechanics: decoy_bottle, capacity_5",
       "state": [
         [
           "C0",
@@ -30587,19 +29942,11 @@
       "empty_bottles": 3,
       "mechanics": [
         "decoy_bottle",
-        "stone_layer",
-        "frozen_layer",
         "capacity_5"
       ],
       "mechanics_config": {
         "decoy_bottles": [
           28
-        ],
-        "frozen_bottles": [
-          30
-        ],
-        "stone_bottles": [
-          29
         ]
       },
       "solution": [
@@ -30793,13 +30140,13 @@
         ]
       ],
       "tutorial": false,
-      "difficulty": 1240.0,
+      "difficulty": 930.0,
       "bottle_capacities": []
     },
     {
       "id": 125,
       "title": "Level 125",
-      "description": "Mechanics: decoy_bottle, stone_layer, frozen_layer, capacity_5, giant_bottle_3x",
+      "description": "Mechanics: decoy_bottle, capacity_5, giant_bottle_3x",
       "state": [
         [
           "C0",
@@ -31016,20 +30363,12 @@
       "empty_bottles": 3,
       "mechanics": [
         "decoy_bottle",
-        "stone_layer",
-        "frozen_layer",
         "capacity_5",
         "giant_bottle_3x"
       ],
       "mechanics_config": {
         "decoy_bottles": [
           28
-        ],
-        "frozen_bottles": [
-          30
-        ],
-        "stone_bottles": [
-          29
         ],
         "giant_bottles": [
           0
@@ -31202,7 +30541,7 @@
         ]
       ],
       "tutorial": false,
-      "difficulty": 1406.25,
+      "difficulty": 1093.75,
       "bottle_capacities": [
         15,
         5,
@@ -31240,7 +30579,7 @@
     {
       "id": 126,
       "title": "Level 126",
-      "description": "Mechanics: decoy_bottle, stone_layer, frozen_layer, capacity_5",
+      "description": "Mechanics: decoy_bottle, capacity_5",
       "state": [
         [
           "C0",
@@ -31448,19 +30787,11 @@
       "empty_bottles": 3,
       "mechanics": [
         "decoy_bottle",
-        "stone_layer",
-        "frozen_layer",
         "capacity_5"
       ],
       "mechanics_config": {
         "decoy_bottles": [
           28
-        ],
-        "frozen_bottles": [
-          30
-        ],
-        "stone_bottles": [
-          29
         ]
       },
       "solution": [
@@ -31630,13 +30961,13 @@
         ]
       ],
       "tutorial": false,
-      "difficulty": 1260.0,
+      "difficulty": 945.0,
       "bottle_capacities": []
     },
     {
       "id": 127,
       "title": "Level 127",
-      "description": "Mechanics: decoy_bottle, stone_layer, frozen_layer, capacity_5",
+      "description": "Mechanics: decoy_bottle, capacity_5",
       "state": [
         [
           "C0",
@@ -31843,19 +31174,11 @@
       "empty_bottles": 3,
       "mechanics": [
         "decoy_bottle",
-        "stone_layer",
-        "frozen_layer",
         "capacity_5"
       ],
       "mechanics_config": {
         "decoy_bottles": [
           28
-        ],
-        "frozen_bottles": [
-          30
-        ],
-        "stone_bottles": [
-          29
         ]
       },
       "solution": [
@@ -32069,13 +31392,13 @@
         ]
       ],
       "tutorial": false,
-      "difficulty": 1270.0,
+      "difficulty": 952.5,
       "bottle_capacities": []
     },
     {
       "id": 128,
       "title": "Level 128",
-      "description": "Mechanics: decoy_bottle, stone_layer, frozen_layer, capacity_5",
+      "description": "Mechanics: decoy_bottle, capacity_5",
       "state": [
         [
           "C0",
@@ -32283,19 +31606,11 @@
       "empty_bottles": 3,
       "mechanics": [
         "decoy_bottle",
-        "stone_layer",
-        "frozen_layer",
         "capacity_5"
       ],
       "mechanics_config": {
         "decoy_bottles": [
           28
-        ],
-        "frozen_bottles": [
-          30
-        ],
-        "stone_bottles": [
-          29
         ]
       },
       "solution": [
@@ -32477,13 +31792,13 @@
         ]
       ],
       "tutorial": false,
-      "difficulty": 1280.0,
+      "difficulty": 960.0,
       "bottle_capacities": []
     },
     {
       "id": 129,
       "title": "Level 129",
-      "description": "Mechanics: decoy_bottle, stone_layer, frozen_layer, capacity_5",
+      "description": "Mechanics: decoy_bottle, capacity_5",
       "state": [
         [
           "C0",
@@ -32690,19 +32005,11 @@
       "empty_bottles": 3,
       "mechanics": [
         "decoy_bottle",
-        "stone_layer",
-        "frozen_layer",
         "capacity_5"
       ],
       "mechanics_config": {
         "decoy_bottles": [
           28
-        ],
-        "frozen_bottles": [
-          30
-        ],
-        "stone_bottles": [
-          29
         ]
       },
       "solution": [
@@ -32872,13 +32179,13 @@
         ]
       ],
       "tutorial": false,
-      "difficulty": 1290.0,
+      "difficulty": 967.5,
       "bottle_capacities": []
     },
     {
       "id": 130,
       "title": "Level 130",
-      "description": "Mechanics: decoy_bottle, stone_layer, frozen_layer, capacity_5, giant_bottle_3x",
+      "description": "Mechanics: decoy_bottle, capacity_5, giant_bottle_3x",
       "state": [
         [
           "C0",
@@ -33102,20 +32409,12 @@
       "empty_bottles": 3,
       "mechanics": [
         "decoy_bottle",
-        "stone_layer",
-        "frozen_layer",
         "capacity_5",
         "giant_bottle_3x"
       ],
       "mechanics_config": {
         "decoy_bottles": [
           29
-        ],
-        "frozen_bottles": [
-          31
-        ],
-        "stone_bottles": [
-          30
         ],
         "giant_bottles": [
           0
@@ -33284,7 +32583,7 @@
         ]
       ],
       "tutorial": false,
-      "difficulty": 1462.5,
+      "difficulty": 1137.5,
       "bottle_capacities": [
         15,
         5,
@@ -33323,7 +32622,7 @@
     {
       "id": 131,
       "title": "Level 131",
-      "description": "Mechanics: decoy_bottle, stone_layer, frozen_layer, capacity_5",
+      "description": "Mechanics: decoy_bottle, capacity_5",
       "state": [
         [
           "C0",
@@ -33538,19 +32837,11 @@
       "empty_bottles": 3,
       "mechanics": [
         "decoy_bottle",
-        "stone_layer",
-        "frozen_layer",
         "capacity_5"
       ],
       "mechanics_config": {
         "decoy_bottles": [
           29
-        ],
-        "frozen_bottles": [
-          31
-        ],
-        "stone_bottles": [
-          30
         ]
       },
       "solution": [
@@ -33728,13 +33019,13 @@
         ]
       ],
       "tutorial": false,
-      "difficulty": 1310.0,
+      "difficulty": 982.5,
       "bottle_capacities": []
     },
     {
       "id": 132,
       "title": "Level 132",
-      "description": "Mechanics: decoy_bottle, stone_layer, frozen_layer, capacity_5",
+      "description": "Mechanics: decoy_bottle, capacity_5",
       "state": [
         [
           "C0",
@@ -33949,19 +33240,11 @@
       "empty_bottles": 3,
       "mechanics": [
         "decoy_bottle",
-        "stone_layer",
-        "frozen_layer",
         "capacity_5"
       ],
       "mechanics_config": {
         "decoy_bottles": [
           29
-        ],
-        "frozen_bottles": [
-          31
-        ],
-        "stone_bottles": [
-          30
         ]
       },
       "solution": [
@@ -34139,13 +33422,13 @@
         ]
       ],
       "tutorial": false,
-      "difficulty": 1320.0,
+      "difficulty": 990.0,
       "bottle_capacities": []
     },
     {
       "id": 133,
       "title": "Level 133",
-      "description": "Mechanics: decoy_bottle, stone_layer, frozen_layer, capacity_5",
+      "description": "Mechanics: decoy_bottle, capacity_5",
       "state": [
         [
           "C0",
@@ -34360,19 +33643,11 @@
       "empty_bottles": 3,
       "mechanics": [
         "decoy_bottle",
-        "stone_layer",
-        "frozen_layer",
         "capacity_5"
       ],
       "mechanics_config": {
         "decoy_bottles": [
           29
-        ],
-        "frozen_bottles": [
-          31
-        ],
-        "stone_bottles": [
-          30
         ]
       },
       "solution": [
@@ -34562,13 +33837,13 @@
         ]
       ],
       "tutorial": false,
-      "difficulty": 1330.0,
+      "difficulty": 997.5,
       "bottle_capacities": []
     },
     {
       "id": 134,
       "title": "Level 134",
-      "description": "Mechanics: decoy_bottle, stone_layer, frozen_layer, capacity_5",
+      "description": "Mechanics: decoy_bottle, capacity_5",
       "state": [
         [
           "C0",
@@ -34783,19 +34058,11 @@
       "empty_bottles": 3,
       "mechanics": [
         "decoy_bottle",
-        "stone_layer",
-        "frozen_layer",
         "capacity_5"
       ],
       "mechanics_config": {
         "decoy_bottles": [
           29
-        ],
-        "frozen_bottles": [
-          31
-        ],
-        "stone_bottles": [
-          30
         ]
       },
       "solution": [
@@ -34957,13 +34224,13 @@
         ]
       ],
       "tutorial": false,
-      "difficulty": 1340.0,
+      "difficulty": 1005.0,
       "bottle_capacities": []
     },
     {
       "id": 135,
       "title": "Level 135",
-      "description": "Mechanics: decoy_bottle, stone_layer, frozen_layer, capacity_5, giant_bottle_3x",
+      "description": "Mechanics: decoy_bottle, capacity_5, giant_bottle_3x",
       "state": [
         [
           "C0",
@@ -35188,20 +34455,12 @@
       "empty_bottles": 3,
       "mechanics": [
         "decoy_bottle",
-        "stone_layer",
-        "frozen_layer",
         "capacity_5",
         "giant_bottle_3x"
       ],
       "mechanics_config": {
         "decoy_bottles": [
           29
-        ],
-        "frozen_bottles": [
-          31
-        ],
-        "stone_bottles": [
-          30
         ],
         "giant_bottles": [
           0
@@ -35422,7 +34681,7 @@
         ]
       ],
       "tutorial": false,
-      "difficulty": 1518.75,
+      "difficulty": 1181.25,
       "bottle_capacities": [
         15,
         5,
@@ -35461,7 +34720,7 @@
     {
       "id": 136,
       "title": "Level 136",
-      "description": "Mechanics: decoy_bottle, stone_layer, frozen_layer, capacity_5",
+      "description": "Mechanics: decoy_bottle, capacity_5",
       "state": [
         [
           "C0",
@@ -35676,19 +34935,11 @@
       "empty_bottles": 3,
       "mechanics": [
         "decoy_bottle",
-        "stone_layer",
-        "frozen_layer",
         "capacity_5"
       ],
       "mechanics_config": {
         "decoy_bottles": [
           29
-        ],
-        "frozen_bottles": [
-          31
-        ],
-        "stone_bottles": [
-          30
         ]
       },
       "solution": [
@@ -35874,13 +35125,13 @@
         ]
       ],
       "tutorial": false,
-      "difficulty": 1360.0,
+      "difficulty": 1020.0,
       "bottle_capacities": []
     },
     {
       "id": 137,
       "title": "Level 137",
-      "description": "Mechanics: decoy_bottle, stone_layer, frozen_layer, capacity_5",
+      "description": "Mechanics: decoy_bottle, capacity_5",
       "state": [
         [
           "C0",
@@ -36095,19 +35346,11 @@
       "empty_bottles": 3,
       "mechanics": [
         "decoy_bottle",
-        "stone_layer",
-        "frozen_layer",
         "capacity_5"
       ],
       "mechanics_config": {
         "decoy_bottles": [
           29
-        ],
-        "frozen_bottles": [
-          31
-        ],
-        "stone_bottles": [
-          30
         ]
       },
       "solution": [
@@ -36321,13 +35564,13 @@
         ]
       ],
       "tutorial": false,
-      "difficulty": 1370.0,
+      "difficulty": 1027.5,
       "bottle_capacities": []
     },
     {
       "id": 138,
       "title": "Level 138",
-      "description": "Mechanics: decoy_bottle, stone_layer, frozen_layer, capacity_5",
+      "description": "Mechanics: decoy_bottle, capacity_5",
       "state": [
         [
           "C0",
@@ -36542,19 +35785,11 @@
       "empty_bottles": 3,
       "mechanics": [
         "decoy_bottle",
-        "stone_layer",
-        "frozen_layer",
         "capacity_5"
       ],
       "mechanics_config": {
         "decoy_bottles": [
           29
-        ],
-        "frozen_bottles": [
-          31
-        ],
-        "stone_bottles": [
-          30
         ]
       },
       "solution": [
@@ -36732,13 +35967,13 @@
         ]
       ],
       "tutorial": false,
-      "difficulty": 1380.0,
+      "difficulty": 1035.0,
       "bottle_capacities": []
     },
     {
       "id": 139,
       "title": "Level 139",
-      "description": "Mechanics: decoy_bottle, stone_layer, frozen_layer, capacity_5",
+      "description": "Mechanics: decoy_bottle, capacity_5",
       "state": [
         [
           "C0",
@@ -36953,19 +36188,11 @@
       "empty_bottles": 3,
       "mechanics": [
         "decoy_bottle",
-        "stone_layer",
-        "frozen_layer",
         "capacity_5"
       ],
       "mechanics_config": {
         "decoy_bottles": [
           29
-        ],
-        "frozen_bottles": [
-          31
-        ],
-        "stone_bottles": [
-          30
         ]
       },
       "solution": [
@@ -37135,13 +36362,13 @@
         ]
       ],
       "tutorial": false,
-      "difficulty": 1390.0,
+      "difficulty": 1042.5,
       "bottle_capacities": []
     },
     {
       "id": 140,
       "title": "Level 140",
-      "description": "Mechanics: decoy_bottle, stone_layer, frozen_layer, capacity_5, giant_bottle_3x",
+      "description": "Mechanics: decoy_bottle, capacity_5, giant_bottle_3x",
       "state": [
         [
           "C0",
@@ -37373,20 +36600,12 @@
       "empty_bottles": 3,
       "mechanics": [
         "decoy_bottle",
-        "stone_layer",
-        "frozen_layer",
         "capacity_5",
         "giant_bottle_3x"
       ],
       "mechanics_config": {
         "decoy_bottles": [
           30
-        ],
-        "frozen_bottles": [
-          32
-        ],
-        "stone_bottles": [
-          31
         ],
         "giant_bottles": [
           0
@@ -37567,7 +36786,7 @@
         ]
       ],
       "tutorial": false,
-      "difficulty": 1575.0,
+      "difficulty": 1225.0,
       "bottle_capacities": [
         15,
         5,

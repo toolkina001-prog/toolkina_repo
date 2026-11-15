@@ -102,8 +102,6 @@ h3 { margin-bottom: 8px; }
 .icon-btn { display: inline-grid; place-items: center; width: 42px; padding: 0; font-size: 18px; }
 
 .home-page { justify-content: center; }
-.home-header { margin-bottom: 35px; }
-.home-header p { max-width: 480px; margin-bottom: 0; color: var(--muted); font-size: 17px; line-height: 1.65; }
 .home-layout { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 22px; align-items: stretch; }
 .hero-card, .scene-card, .panel, .settings-card {
   border: 1px solid rgba(201, 219, 217, 0.82);
@@ -124,9 +122,26 @@ h3 { margin-bottom: 8px; }
   justify-content: center;
   background: linear-gradient(147deg, #d9eee8, #f8fbf8 66%);
 }
-.demo-row { display: flex; align-items: end; justify-content: center; gap: 14px; width: 100%; }
-.demo-row .bottle { width: 52px; height: 148px; }
-.demo-row .bottle-shell { width: 47px; height: 119px; }
+.demo-stage { position: relative; display: grid; width: 100%; min-height: 260px; place-items: center; }
+.demo-row { position: relative; z-index: 1; display: flex; align-items: end; justify-content: center; gap: 4px; width: 100%; height: 100%; }
+.home-floater { display: block; animation: bottle-flight 3.8s ease-in-out infinite; animation-delay: var(--float-delay, 0s); }
+.home-bottle { width: 68px; height: var(--bottle-height); padding: 0; cursor: default; }
+.home-bottle:hover { transform: none; }
+.home-bottle .bottle-shell { width: 55px; }
+.home-pouring { z-index: 5; animation: home-pour 1.55s cubic-bezier(.3,.1,.2,1) both; transform-origin: 50% 26%; }
+.home-receiving { z-index: 4; animation: home-receive 1.4s ease both; }
+.home-pour-stream, .pour-stream {
+  position: absolute;
+  z-index: 6;
+  height: 6px;
+  border-radius: 99px;
+  background: linear-gradient(90deg, transparent, var(--pour-color, #52d8b2) 12%, #f5ffff 48%, var(--pour-color, #52d8b2) 88%, transparent);
+  box-shadow: 0 0 11px var(--pour-color, #52d8b2);
+  opacity: 0;
+  pointer-events: none;
+  transform-origin: left center;
+}
+.home-pour-stream.active { opacity: .9; animation: stream-flow .42s linear infinite; }
 .home-footer { display: flex; justify-content: space-between; gap: 12px; margin-top: 20px; color: var(--muted); font-size: 13px; }
 
 .page-heading { display: flex; align-items: end; justify-content: space-between; gap: 20px; margin-bottom: 22px; }
@@ -167,7 +182,6 @@ h3 { margin-bottom: 8px; }
 .game-topbar { margin-bottom: 16px; }
 .game-heading { display: flex; align-items: center; gap: 13px; }
 .game-heading h2 { margin: 0; }
-.game-subtitle { margin: 5px 0 0 55px; color: var(--muted); font-size: 13px; }
 .stats { display: flex; align-items: center; gap: 8px; }
 .stat {
   min-width: 88px;
@@ -192,6 +206,7 @@ h3 { margin-bottom: 8px; }
 }
 .status.error { color: #ad5144; }
 .board-wrap {
+  position: relative;
   flex: 1;
   min-height: 350px;
   display: flex;
@@ -214,16 +229,16 @@ h3 { margin-bottom: 8px; }
 .bottle {
   position: relative;
   width: 76px;
-  height: 218px;
+  height: var(--bottle-height, 218px);
   border: 0;
-  padding: 24px 6px 6px;
+  padding: 12px 6px 6px;
   background: transparent;
-  transition: transform 150ms ease, filter 150ms ease;
+  transition: transform 180ms ease, filter 180ms ease;
 }
 .bottle:hover { transform: translateY(-4px); }
 .bottle.selected { transform: translateY(-13px); }
-.bottle.selected .bottle-shell { border-color: #39a18a; box-shadow: 0 0 0 4px rgba(57, 161, 138, 0.18), 0 12px 25px rgba(24, 92, 82, 0.18); }
-.bottle.valid-target .bottle-shell { border-color: #62b99b; box-shadow: 0 0 0 3px rgba(98, 185, 155, 0.16); }
+.bottle.selected .bottle-shell { filter: drop-shadow(0 0 5px rgba(57, 161, 138, .85)); }
+.bottle.valid-target .bottle-shell { filter: drop-shadow(0 0 5px rgba(98, 185, 155, .8)); }
 .bottle:disabled { cursor: default; }
 .bottle:disabled:hover { transform: none; }
 .bottle-label { position: absolute; top: 0; left: 0; right: 0; color: #819298; font-size: 11px; font-weight: 700; }
@@ -231,39 +246,129 @@ h3 { margin-bottom: 8px; }
   position: relative;
   display: block;
   width: 62px;
-  height: 176px;
+  height: var(--shell-height, 176px);
   margin: auto;
-  border: 2px solid rgba(126, 158, 158, 0.6);
-  border-top: 0;
-  border-radius: 7px 7px 19px 19px;
-  background: linear-gradient(90deg, rgba(255, 255, 255, 0.56), rgba(224, 240, 238, 0.22) 23%, rgba(255, 255, 255, 0.36) 76%, rgba(196, 220, 217, 0.18));
-  box-shadow: inset 3px 0 6px rgba(255, 255, 255, 0.72), inset -3px 0 5px rgba(146, 174, 170, 0.12), 0 8px 13px rgba(51, 91, 87, 0.08);
+  overflow: visible;
+}
+.bottle-neck-outline, .bottle-neck, .bottle-shoulders-outline, .bottle-shoulders,
+.bottle-body-outline, .bottle-body, .bottle-mouth, .bottle-cap {
+  position: absolute;
+  display: block;
+}
+.bottle-neck-outline, .bottle-neck {
+  top: 0;
+  left: 34%;
+  width: 32%;
+  height: 29%;
+  border-radius: 6px 6px 0 0;
+}
+.bottle-neck-outline { background: rgba(119, 150, 151, .76); }
+.bottle-neck {
+  top: 2px;
+  left: calc(34% + 2px);
+  width: calc(32% - 4px);
+  height: calc(29% - 1px);
+  background: linear-gradient(90deg, rgba(255,255,255,.64), rgba(220,240,237,.18) 45%, rgba(255,255,255,.48));
+}
+.bottle-shoulders-outline, .bottle-shoulders {
+  top: 19%;
+  left: 4%;
+  width: 92%;
+  height: 27%;
+  clip-path: polygon(27% 0, 73% 0, 100% 100%, 0 100%);
+}
+.bottle-shoulders-outline { background: rgba(119, 150, 151, .76); }
+.bottle-shoulders {
+  top: calc(19% + 2px);
+  left: calc(4% + 2px);
+  width: calc(92% - 4px);
+  height: calc(27% - 3px);
+  background: linear-gradient(90deg, rgba(255,255,255,.5), rgba(220,240,237,.12) 48%, rgba(255,255,255,.38));
+}
+.bottle-body-outline, .bottle-body {
+  top: 39%;
+  left: 4%;
+  width: 92%;
+  bottom: 0;
+  clip-path: polygon(0 0, 100% 0, 100% 91%, 89% 100%, 11% 100%, 0 91%);
+}
+.bottle-body-outline { background: rgba(119, 150, 151, .8); }
+.bottle-body {
+  top: calc(39% + 2px);
+  left: calc(4% + 2px);
+  width: calc(92% - 4px);
+  bottom: 2px;
+  background: linear-gradient(90deg, rgba(255, 255, 255, .52), rgba(224, 240, 238, .16) 24%, rgba(255, 255, 255, .34) 76%, rgba(196, 220, 217, .14));
   overflow: hidden;
 }
-.bottle-shell::before {
-  content: "";
+.bottle-liquid-area {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  clip-path: polygon(0 0, 100% 0, 100% 91%, 89% 100%, 11% 100%, 0 91%);
+}
+.bottle-glint {
   position: absolute;
   z-index: 3;
-  top: 0;
-  left: 12px;
-  width: 34px;
-  height: 8px;
-  border: 2px solid rgba(126, 158, 158, 0.58);
-  border-bottom-width: 1px;
-  border-radius: 5px 5px 2px 2px;
-  background: rgba(241, 249, 247, 0.88);
-}
-.bottle-shell::after {
-  content: "";
-  position: absolute;
-  z-index: 2;
-  left: 7px;
-  top: 23px;
-  bottom: 11px;
+  top: 9%;
+  bottom: 8%;
+  left: 9%;
   width: 3px;
   border-radius: 3px;
-  background: rgba(255, 255, 255, 0.65);
+  background: rgba(255, 255, 255, .66);
   pointer-events: none;
+}
+.bottle-mouth {
+  z-index: 5;
+  top: -2px;
+  left: 30%;
+  width: 40%;
+  height: 8px;
+  border: 2px solid rgba(119, 150, 151, .82);
+  border-radius: 4px;
+  background: linear-gradient(90deg, #f8ffff, #c8dcd9 50%, #f8ffff);
+}
+.bottle-cap {
+  z-index: 7;
+  top: -5px;
+  left: 30%;
+  width: 40%;
+  height: 13px;
+  border: 2px solid #536a70;
+  border-radius: 3px 3px 4px 4px;
+  background: repeating-linear-gradient(90deg, #d6e0e0 0 3px, #aab9ba 3px 5px);
+  box-shadow: 0 2px 3px rgba(23, 47, 59, .25);
+}
+.bottle-cap::after {
+  content: "";
+  position: absolute;
+  left: 2px;
+  right: 2px;
+  top: 2px;
+  height: 2px;
+  background: rgba(255, 255, 255, .82);
+}
+.bottle.pouring {
+  z-index: 5;
+  transform-origin: 50% 20%;
+}
+.bottle.pouring-right { animation: bottle-pour-right 680ms cubic-bezier(.35,.05,.22,1) both; }
+.bottle.pouring-left { animation: bottle-pour-left 680ms cubic-bezier(.35,.05,.22,1) both; }
+.bottle.receiving { animation: bottle-receive 680ms ease both; }
+.pour-stream { animation: stream-flow 280ms linear infinite; }
+.pour-stream.active { opacity: .95; }
+.bottle.pouring .bottle-shell, .bottle.receiving .bottle-shell { filter: drop-shadow(0 5px 12px rgba(30, 75, 68, .25)); }
+.bottle.pouring .bottle-cap { display: none; }
+.bottle.complete .bottle-mouth { display: none; }
+.secret-mark {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  font-size: clamp(9px, 1.2vw, 14px);
+  font-weight: 900;
+  text-shadow: 0 1px 3px #000;
 }
 .liquid {
   position: absolute;
@@ -272,13 +377,49 @@ h3 { margin-bottom: 8px; }
   z-index: 1;
   border-top: 1px solid rgba(255, 255, 255, 0.5);
   opacity: 0.95;
+  overflow: hidden;
 }
 .liquid.pattern-1 { background-image: repeating-linear-gradient(135deg, transparent 0 6px, rgba(255,255,255,.2) 6px 8px); }
 .liquid.pattern-2 { background-image: radial-gradient(rgba(255,255,255,.35) 1px, transparent 1.5px); background-size: 8px 8px; }
 .liquid.pattern-3 { background-image: repeating-linear-gradient(0deg, transparent 0 7px, rgba(255,255,255,.23) 7px 9px); }
 .liquid.pattern-4 { background-image: repeating-linear-gradient(45deg, transparent 0 8px, rgba(255,255,255,.2) 8px 10px); }
 .liquid.pattern-5 { background-image: radial-gradient(ellipse, rgba(255,255,255,.28) 1px, transparent 2px); background-size: 11px 8px; }
-.empty-hint { color: #9cadad; font-size: 20px; font-weight: 300; }
+.liquid.texture-snow {
+  background-image:
+    radial-gradient(circle, rgba(255,255,255,.96) 0 1px, transparent 1.7px),
+    radial-gradient(circle, rgba(255,255,255,.7) 0 1px, transparent 1.8px);
+  background-size: 13px 13px, 19px 18px;
+  background-position: 0 0, 7px 8px;
+  animation: snow-glide 4s linear infinite;
+}
+.liquid.texture-lava {
+  background-image:
+    radial-gradient(ellipse at 70% 25%, rgba(255,237,141,.88), transparent 25%),
+    radial-gradient(ellipse at 25% 80%, rgba(255,96,26,.76), transparent 48%),
+    repeating-linear-gradient(160deg, transparent 0 9px, rgba(255,190,67,.28) 9px 12px);
+  background-size: 130% 180%;
+  animation: lava-glow 2.8s ease-in-out infinite alternate;
+}
+.liquid.texture-glitter {
+  background-image:
+    radial-gradient(circle, rgba(255,255,255,.95) 0 1px, transparent 1.7px),
+    radial-gradient(circle, rgba(255,244,181,.9) 0 1px, transparent 1.8px),
+    radial-gradient(circle, rgba(255,255,255,.75) 0 1px, transparent 1.6px);
+  background-size: 17px 17px, 23px 21px, 29px 27px;
+  background-position: 0 0, 7px 11px, 15px 3px;
+  animation: glitter-shift 2.1s steps(3, end) infinite;
+}
+.liquid.texture-secret { background-image: none; }
+.secret-mark { pointer-events: none; }
+.empty-hint {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: #9cadad;
+  font-size: 20px;
+  font-weight: 300;
+}
 .game-bottom { display: flex; justify-content: space-between; gap: 12px; padding-top: 13px; color: var(--muted); font-size: 12px; }
 .loading-card { min-height: 100vh; display: grid; align-content: center; justify-items: center; text-align: center; color: var(--muted); }
 .loading-card h1 { margin: 15px 0 8px; color: var(--ink); font-size: 34px; letter-spacing: -1px; }
@@ -300,7 +441,47 @@ h3 { margin-bottom: 8px; }
   transition: opacity 180ms ease, transform 180ms ease;
 }
 #toast.visible { transform: translateY(0); opacity: 1; }
-body.patterns-off .liquid { background-image: none; }
+body.patterns-off .liquid { background-image: none; animation: none; }
+
+@keyframes bottle-flight {
+  0%, 100% { transform: translate3d(0, 0, 0) rotate(-2deg); }
+  35% { transform: translate3d(5px, -15px, 0) rotate(2deg); }
+  70% { transform: translate3d(-4px, -7px, 0) rotate(-1deg); }
+}
+@keyframes home-pour {
+  0%, 14%, 100% { transform: rotate(0) translateY(0); }
+  45%, 70% { transform: rotate(38deg) translateY(-8px); }
+}
+@keyframes home-receive {
+  0%, 100% { transform: translateY(0) scale(1); }
+  48% { transform: translateY(7px) scale(1.05); }
+}
+@keyframes bottle-pour-right {
+  0%, 100% { transform: rotate(0) translateY(0); }
+  42%, 72% { transform: rotate(43deg) translate(7px, -6px); }
+}
+@keyframes bottle-pour-left {
+  0%, 100% { transform: rotate(0) translateY(0); }
+  42%, 72% { transform: rotate(-43deg) translate(-7px, -6px); }
+}
+@keyframes bottle-receive {
+  0%, 100% { transform: translateY(0) scale(1); }
+  48% { transform: translateY(6px) scale(1.04); }
+}
+@keyframes stream-flow {
+  from { background-position: 0 0; filter: brightness(1); }
+  to { background-position: 24px 0; filter: brightness(1.3); }
+}
+@keyframes snow-glide {
+  to { background-position: 20px 14px, -10px 24px; }
+}
+@keyframes lava-glow {
+  from { filter: brightness(.9) saturate(1.1); background-position: 0 0; }
+  to { filter: brightness(1.25) saturate(1.4); background-position: 0 100%; }
+}
+@keyframes glitter-shift {
+  to { background-position: 7px 5px, 0 18px, 23px -7px; filter: brightness(1.25); }
+}
 
 @media (max-width: 900px) {
   .page { width: min(100% - 36px, 760px); }
@@ -332,9 +513,15 @@ body.patterns-off .liquid { background-image: none; }
   .game-toolbar .btn { flex: 1; padding-inline: 9px; font-size: 12px; }
   .board-wrap { min-height: 310px; padding: 16px 6px; }
   .board { grid-template-columns: repeat(auto-fit, minmax(58px, 1fr)); gap: 24px 0; }
-  .bottle { width: 60px; height: 184px; }
-  .bottle-shell { width: 48px; height: 145px; }
-  .bottle-shell::before { left: 9px; width: 27px; }
-  .bottle-shell::after { left: 5px; top: 21px; }
+  .bottle { width: 60px; }
+  .bottle-shell { width: 48px; }
   .game-bottom { flex-direction: column; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
 }

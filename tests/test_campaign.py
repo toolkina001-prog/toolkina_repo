@@ -7,7 +7,8 @@ from bottle_game.campaign import (
     load_campaign,
     verify_campaign,
 )
-from bottle_game.engine import apply_pour, is_bottle_complete, legal_moves
+from bottle_game.engine import apply_pour, is_bottle_complete, is_solved, legal_moves
+from bottle_game.mechanics import build_mechanics
 from bottle_game.solver import solve_level
 
 
@@ -31,6 +32,12 @@ class CampaignTests(unittest.TestCase):
             [3, 5, 8, 12, 18, 26, 28],
         )
 
+    def test_progression_never_generates_stone_or_frozen_bottles(self):
+        for level_index in range(1, 141):
+            mechanics = build_mechanics(level_index)
+            self.assertFalse(mechanics.stone_bottles, f"Level {level_index} contains stone.")
+            self.assertFalse(mechanics.frozen_bottles, f"Level {level_index} contains ice.")
+
     def test_bundled_campaign_has_no_prefilled_completed_bottles(self):
         campaign_path = Path(__file__).resolve().parents[1] / "campaign" / "levels.json"
         levels = load_campaign(campaign_path)
@@ -38,6 +45,16 @@ class CampaignTests(unittest.TestCase):
         self.assertEqual([level.id for level in levels[-20:]], list(range(121, 141)))
         verify_campaign(levels)
         for level in levels:
+            self.assertFalse(
+                level.mechanics_config.get("frozen_bottles", []),
+                f"Level {level.id} contains frozen bottles.",
+            )
+            self.assertFalse(
+                level.mechanics_config.get("stone_bottles", []),
+                f"Level {level.id} contains stone bottles.",
+            )
+            self.assertNotIn("frozen_layer", level.mechanics, f"Level {level.id} uses ice.")
+            self.assertNotIn("stone_layer", level.mechanics, f"Level {level.id} uses stone.")
             self.assertFalse(
                 any(
                     is_bottle_complete(bottle, capacity)
@@ -81,23 +98,17 @@ class CampaignTests(unittest.TestCase):
                 is_bottle_complete(level.state[giant_index], level.capacities[giant_index])
             )
 
-    def test_level_46_bottle_10_to_7_move_preserves_a_solution(self):
+    def test_level_46_solution_move_preserves_a_solution(self):
         campaign_path = Path(__file__).resolve().parents[1] / "campaign" / "levels.json"
         level = load_campaign(campaign_path)[45]
         self.assertEqual(level.empty_bottles, 3)
-        move = (9, 6)
+        move = level.solution[0]
         self.assertIn(move, legal_moves(level.state, level.capacities, level.mechanics_config))
 
         state = apply_pour(level.state, *move, level.capacities, level.mechanics_config)
-        self.assertIsNotNone(
-            solve_level(
-                state,
-                level.capacities,
-                mechanics=level.mechanics_config,
-                time_limit=15.0,
-                raise_on_timeout=True,
-            )
-        )
+        for source, target in level.solution[1:]:
+            state = apply_pour(state, source, target, level.capacities, level.mechanics_config)
+        self.assertTrue(is_solved(state, level.capacities))
 
 
 if __name__ == "__main__":

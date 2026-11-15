@@ -1,6 +1,5 @@
 const TEXT = {
   EN: {
-    tagline: "A little space, a little patience, and everything finds its place.",
     play: "Continue playing", levels: "Choose a level", settings: "Settings", exit: "Exit",
     completed: "Levels completed", campaign: "The campaign", pickLevel: "Pick up where you left off",
     back: "Back", level: "Level {number}", colors: "{count} colors", moves: "Moves",
@@ -23,7 +22,6 @@ const TEXT = {
     bottleLabel: "Bottle {number}",
   },
   RU: {
-    tagline: "Немного свободного места, терпения — и всё встанет на свои места.",
     play: "Продолжить игру", levels: "Выбор уровня", settings: "Настройки", exit: "Выход",
     completed: "Пройдено уровней", campaign: "Кампания", pickLevel: "Выберите уровень",
     back: "Назад", level: "Уровень {number}", colors: "цветов: {count}", moves: "Ходы",
@@ -81,11 +79,17 @@ let elapsedSeconds = 0;
 let startedAt = null;
 let timerHandle = null;
 let toastHandle = null;
+let homeAnimationTimer = null;
+let homeAnimationTimeout = null;
 let statusMessage = "";
 let statusIsError = false;
+let activePour = null;
 let audioContext;
-let musicOscillator;
+let musicOscillators = [];
 let musicGain;
+let musicTimer = null;
+let musicNoteIndex = 0;
+let audioUnlocked = false;
 
 const settings = {
   language: "EN",
@@ -146,7 +150,7 @@ function persistProgress() {
 
 function applySettings() {
   document.body.classList.toggle("patterns-off", !settings.patterns_enabled);
-  if (settings.music_enabled) startMusic();
+  if (settings.music_enabled && audioUnlocked) startMusic();
   else stopMusic();
 }
 
@@ -178,14 +182,23 @@ function ensureAudio() {
     if (!Context) return null;
     audioContext = new Context();
   }
-  if (audioContext.state === "suspended") audioContext.resume();
   return audioContext;
+}
+
+function unlockAudio() {
+  const context = ensureAudio();
+  if (!context || audioUnlocked) return;
+  context.resume().then(() => {
+    audioUnlocked = context.state === "running";
+    if (settings.music_enabled) startMusic();
+  }).catch((error) => showToast(`Audio could not start: ${error.message}`));
 }
 
 function playTone(frequency, duration = 0.07, type = "sine", volume = 0.035) {
   if (!settings.sound_enabled) return;
   const context = ensureAudio();
   if (!context) return;
+  if (context.state === "suspended") context.resume();
   const oscillator = context.createOscillator();
   const gain = context.createGain();
   oscillator.type = type;
@@ -198,28 +211,62 @@ function playTone(frequency, duration = 0.07, type = "sine", volume = 0.035) {
   oscillator.stop(context.currentTime + duration);
 }
 
+const MUSIC_NOTES = [261.63, 329.63, 392, 440, 523.25, 440, 392, 329.63];
+
+function playMusicNote() {
+  if (!settings.music_enabled || !audioUnlocked || !audioContext || audioContext.state !== "running") return;
+  const oscillator = audioContext.createOscillator();
+  const envelope = audioContext.createGain();
+  const start = audioContext.currentTime;
+  oscillator.type = "sine";
+  oscillator.frequency.value = MUSIC_NOTES[musicNoteIndex % MUSIC_NOTES.length];
+  envelope.gain.setValueAtTime(0.0001, start);
+  envelope.gain.exponentialRampToValueAtTime(0.45, start + 0.35);
+  envelope.gain.exponentialRampToValueAtTime(0.0001, start + 2.55);
+  oscillator.connect(envelope);
+  envelope.connect(musicGain);
+  oscillator.start(start);
+  oscillator.stop(start + 2.6);
+  musicNoteIndex += 1;
+}
+
 function startMusic() {
-  if (!settings.music_enabled || musicOscillator) return;
+  if (!settings.music_enabled || !audioUnlocked || musicOscillators.length) return;
   const context = ensureAudio();
-  if (!context) return;
-  musicOscillator = context.createOscillator();
+  if (!context || context.state !== "running") return;
   musicGain = context.createGain();
-  musicOscillator.type = "sine";
-  musicOscillator.frequency.value = 110;
-  musicGain.gain.value = 0.008;
-  musicOscillator.connect(musicGain);
+  musicGain.gain.value = 0.16;
   musicGain.connect(context.destination);
-  musicOscillator.start();
+
+  for (const frequency of [110, 164.81]) {
+    const oscillator = context.createOscillator();
+    const voice = context.createGain();
+    oscillator.type = "sine";
+    oscillator.frequency.value = frequency;
+    voice.gain.value = 0.12;
+    oscillator.connect(voice);
+    voice.connect(musicGain);
+    oscillator.start();
+    musicOscillators.push(oscillator, voice);
+  }
+  playMusicNote();
+  musicTimer = setInterval(playMusicNote, 2600);
 }
 
 function stopMusic() {
-  if (!musicOscillator) return;
-  musicOscillator.stop();
-  musicOscillator.disconnect();
-  musicGain.disconnect();
-  musicOscillator = null;
+  clearInterval(musicTimer);
+  musicTimer = null;
+  for (const node of musicOscillators) {
+    if (node instanceof OscillatorNode) node.stop();
+    node.disconnect();
+  }
+  musicOscillators = [];
+  musicGain?.disconnect();
   musicGain = null;
 }
+
+document.addEventListener("pointerdown", unlockAudio, { once: true });
+document.addEventListener("keydown", unlockAudio, { once: true });
 
 function makeLayerTokens(id, state) {
   return state.map((bottle, bottleIndex) =>
@@ -264,7 +311,19 @@ function startTimer() {
 function renderBottle(index, bottle, capacities, options = {}) {
   const selected = options.selected === index;
   const isTarget = options.targets?.has(index);
-  const classes = ["bottle", selected ? "selected" : "", isTarget ? "valid-target" : ""]
+  const isPouring = options.pouring === index;
+  const isReceiving = options.receiving === index;
+  const capacity = capacities[index];
+  const complete = bottle.length === capacity && bottle.length > 0 &&
+    bottle.every((color) => color === bottle[0]);
+  const baseCapacity = options.baseCapacity || 4;
+  const scale = options.scale ?? Math.min(1.8, Math.max(1, Math.sqrt(capacity / baseCapacity)));
+  const classes = [
+    "bottle", options.className || "", selected ? "selected" : "",
+    isTarget ? "valid-target" : "", isPouring ? "pouring" : "",
+    isPouring ? `pouring-${options.pourDirection || "right"}` : "",
+    isReceiving ? "receiving" : "", complete ? "complete" : "",
+  ]
     .filter(Boolean).join(" ");
   const layers = bottle.map((color, layerIndex) => {
     const token = options.tokens?.[index]?.[layerIndex];
@@ -273,17 +332,31 @@ function renderBottle(index, bottle, capacities, options = {}) {
     const colorIndex = colorId
       ? Number(colorId[1]) % PALETTE.length
       : Math.abs([...color].reduce((hash, character) => (hash * 31 + character.charCodeAt(0)) | 0, 0)) % PALETTE.length;
-    const fill = concealed ? "#40515a" : (PALETTE[colorIndex % PALETTE.length] || "#56b9a2");
+    const fill = concealed ? "#080b0f" : (PALETTE[colorIndex] || "#56b9a2");
+    const texture = concealed ? "texture-secret" : ["texture-snow", "texture-lava", "texture-glitter"][colorIndex % 3];
     const bottom = (layerIndex / capacities[index]) * 100;
     const height = 100 / capacities[index];
-    return `<span class="liquid pattern-${colorIndex % 6}" aria-hidden="true"
-      style="bottom:${bottom}%;height:${height}%;background-color:${fill}"></span>`;
+    return `<span class="liquid pattern-${colorIndex % 6} ${texture}" aria-hidden="true"
+      style="bottom:${bottom}%;height:${height}%;background-color:${fill}">${concealed ? '<span class="secret-mark">?</span>' : ""}</span>`;
   }).join("");
+  const emptyHint = bottle.length === 0 ? '<span class="empty-hint">+</span>' : "";
+  const shell = `<span class="bottle-shell">
+    <span class="bottle-neck-outline"></span><span class="bottle-neck"></span>
+    <span class="bottle-shoulders-outline"></span><span class="bottle-shoulders"></span>
+    <span class="bottle-body-outline"></span>
+    <span class="bottle-body"><span class="bottle-liquid-area">${layers}${emptyHint}</span>
+      <span class="bottle-glint"></span></span>
+    <span class="bottle-mouth"></span>${complete ? '<span class="bottle-cap"></span>' : ""}
+  </span>`;
+  const sizing = `--bottle-height:${Math.round(218 * scale)}px;--shell-height:${Math.round(176 * scale)}px`;
+  if (options.decorative) {
+    const homeIndex = Number.isInteger(options.homeIndex) ? `data-home-bottle="${options.homeIndex}"` : "";
+    return `<div class="${classes}" style="${sizing}" ${homeIndex} aria-hidden="true">${shell}</div>`;
+  }
   const label = `${t("bottleLabel", { number: index + 1 })}, ${bottle.length}`;
-  const shell = `<span class="bottle-shell">${layers}${bottle.length === 0 ? '<span class="empty-hint">+</span>' : ""}</span>`;
-  return `<button type="button" class="${classes}" data-bottle="${index}" aria-label="${escapeHtml(label)}"
-      aria-pressed="${selected}" ${movePending ? "disabled" : ""}>
-    <span class="bottle-label">${String(index + 1).padStart(2, "0")}</span>${shell}
+  return `<button type="button" class="${classes}" style="${sizing}" data-bottle="${index}"
+      aria-label="${escapeHtml(label)}" aria-pressed="${selected}" ${movePending ? "disabled" : ""}>
+    ${options.showLabel === false ? "" : `<span class="bottle-label">${String(index + 1).padStart(2, "0")}</span>`}${shell}
   </button>`;
 }
 
@@ -299,45 +372,108 @@ function topbar(right = "") {
 
 function renderHome() {
   screen = "home";
+  stopHomeAnimation();
   const completed = progress.completed.length;
   const level = Math.min(Number(progress.current_level) || 0, campaign.length - 1);
   const sample = [
-    ["#ef6f51", "#ef6f51", "#52a9a0", "#52a9a0"],
-    ["#efc465", "#efc465", "#9184c7", "#9184c7"],
-    ["#52a9a0", "#52a9a0", "#ef6f51", "#ef6f51"],
-    ["#9184c7", "#9184c7", "#efc465", "#efc465"],
-    [], [],
+    ["C0", "C1", "C0"],
+    ["C1", "C2"],
+    ["C2", "C1", "C3"],
+    ["C3", "C0"],
+    [],
   ];
-  const demo = sample.map((layers, index) => {
-    const liquid = layers.map((color, layer) =>
-      `<span class="liquid pattern-${index % 6}" style="bottom:${layer * 25}%;height:25%;background-color:${color}"></span>`
-    ).join("");
-    return `<div class="bottle" aria-hidden="true"><span class="bottle-shell">${liquid}</span></div>`;
-  }).join("");
+  const demo = sample.map((layers, index) =>
+    `<span class="home-floater" style="--float-delay:${index * -0.7}s">
+      ${renderBottle(index, layers, sample.map(() => 4), {
+        decorative: true, homeIndex: index, className: "home-bottle",
+        scale: 0.78, showLabel: false,
+      })}
+    </span>`
+  ).join("");
   root.innerHTML = `<section class="page home-page">
     ${topbar(`<button class="btn btn-quiet" data-action="settings">${escapeHtml(t("settings"))}</button>
       <button class="btn btn-quiet" data-action="exit">${escapeHtml(t("exit"))}</button>`)}
     <div class="home-layout">
       <section class="hero-card">
-        <p class="eyebrow">${escapeHtml(t("campaign"))} · ${campaign.length}</p>
         <h1>${escapeHtml(t("appName"))}</h1>
-        <p>${escapeHtml(t("tagline"))}</p>
         <div class="hero-actions">
           <button class="btn btn-primary" data-action="continue">${escapeHtml(t("play"))}</button>
           <button class="btn" data-action="levels">${escapeHtml(t("levels"))}</button>
         </div>
       </section>
-      <aside class="scene-card"><div class="demo-row">${demo}</div></aside>
+      <aside class="scene-card" aria-hidden="true">
+        <div class="demo-stage"><div class="demo-row">${demo}</div><span class="home-pour-stream"></span></div>
+      </aside>
     </div>
     <footer class="home-footer">
       <span>${escapeHtml(t("completed"))}: <strong>${completed} / ${campaign.length}</strong></span>
       <span>${progressLoadError ? escapeHtml(t("progressError", { error: progressLoadError })) : `${escapeHtml(t("pickLevel"))}: ${escapeHtml(t("level", { number: (campaign[level]?.id ?? 1) }))}`}</span>
     </footer>
   </section>`;
+  startHomeAnimation();
+}
+
+function stopHomeAnimation() {
+  clearInterval(homeAnimationTimer);
+  clearTimeout(homeAnimationTimeout);
+  homeAnimationTimer = null;
+  homeAnimationTimeout = null;
+}
+
+function positionPourStream(stream, source, target, container, color) {
+  if (!stream || !source || !target || !container) return;
+  const sourceRect = source.getBoundingClientRect();
+  const targetRect = target.getBoundingClientRect();
+  const containerRect = container.getBoundingClientRect();
+  const direction = targetRect.left >= sourceRect.left ? 1 : -1;
+  const startX = sourceRect.left + sourceRect.width * (direction > 0 ? 0.68 : 0.32);
+  const endX = targetRect.left + targetRect.width * (direction > 0 ? 0.32 : 0.68);
+  const startY = sourceRect.top + sourceRect.height * 0.22;
+  const endY = targetRect.top + targetRect.height * 0.22;
+  const dx = endX - startX;
+  const dy = endY - startY;
+  stream.style.left = `${startX - containerRect.left}px`;
+  stream.style.top = `${startY - containerRect.top}px`;
+  stream.style.width = `${Math.max(14, Math.hypot(dx, dy))}px`;
+  stream.style.transform = `rotate(${Math.atan2(dy, dx)}rad)`;
+  stream.style.setProperty("--pour-color", color);
+}
+
+function startHomeAnimation() {
+  const bottles = [...root.querySelectorAll(".home-bottle")];
+  const stream = root.querySelector(".home-pour-stream");
+  const stage = root.querySelector(".demo-stage");
+  if (bottles.length < 2 || !stream || !stage) return;
+
+  let pair = 0;
+  const pour = () => {
+    bottles.forEach((bottle) => bottle.classList.remove("home-pouring", "home-receiving"));
+    stream.classList.remove("active");
+    const sourceIndex = pair % (bottles.length - 1);
+    const targetIndex = sourceIndex + 1;
+    const source = bottles[sourceIndex];
+    const target = bottles[targetIndex];
+    const layers = source.querySelectorAll(".liquid");
+    const color = layers.length ? getComputedStyle(layers[layers.length - 1]).backgroundColor : "#5dd8b1";
+    source.classList.add("home-pouring");
+    target.classList.add("home-receiving");
+    positionPourStream(stream, source, target, stage, color);
+    stream.classList.add("active");
+    homeAnimationTimeout = setTimeout(() => {
+      source.classList.remove("home-pouring");
+      target.classList.remove("home-receiving");
+      stream.classList.remove("active");
+    }, 1700);
+    pair += 1;
+  };
+
+  pour();
+  homeAnimationTimer = setInterval(pour, 3400);
 }
 
 function renderLevels() {
   screen = "levels";
+  stopHomeAnimation();
   const completed = new Set(progress.completed);
   root.innerHTML = `<section class="page">
     ${topbar(`<button class="btn btn-quiet" data-action="home">${escapeHtml(t("back"))}</button>`)}
@@ -356,6 +492,7 @@ function renderLevels() {
 
 function renderSettings() {
   screen = "settings";
+  stopHomeAnimation();
   const row = (key, title, detail, checked) => `<label class="setting-row">
     <span class="setting-label"><strong>${escapeHtml(t(title))}</strong><small>${escapeHtml(t(detail))}</small></span>
     <input class="toggle" type="checkbox" data-setting="${key}" ${checked ? "checked" : ""}>
@@ -402,6 +539,7 @@ function completeBottleCount() {
 
 function renderGame() {
   screen = "game";
+  stopHomeAnimation();
   const level = campaign[levelIndex];
   const targets = selectedBottle === null ? new Set() : new Set(
     legalMoves.filter(([source]) => source === selectedBottle).map(([, target]) => target)
@@ -419,7 +557,6 @@ function renderGame() {
     <div class="game-topbar">
       <div class="game-heading"><span class="brand-mark">BS</span><h2>${escapeHtml(t("level", { number: level.id }))}</h2></div>
     </div>
-    <p class="game-subtitle">${escapeHtml(level.description || "")}</p>
     ${mechanicLabels.length ? `<div class="mechanics">${mechanicLabels.map((label) => `<span class="mechanic-badge">${escapeHtml(label)}</span>`).join("")}</div>` : ""}
     <nav class="game-toolbar" aria-label="Game controls">
       <button class="btn" data-action="undo" ${history.length ? "" : "disabled"}>${escapeHtml(t("undo"))}</button>
@@ -433,14 +570,30 @@ function renderGame() {
     </nav>
     <p class="${statusClass}">${escapeHtml(statusMessage)}</p>
     <section class="board-wrap" aria-label="${escapeHtml(t("level", { number: level.id }))}">
+      ${activePour ? '<span class="pour-stream active" aria-hidden="true"></span>' : ""}
       <div class="board">${levelState.map((bottle, index) => renderBottle(index, bottle, level.capacities, {
         selected: selectedBottle, targets, tokens: layerIds,
-        secrets: secretLayerIds, revealed: revealedLayerIds,
+        secrets: secretLayerIds, revealed: revealedLayerIds, baseCapacity: level.capacity,
+        pouring: activePour?.source, receiving: activePour?.target,
+        pourDirection: activePour && (activePour.target < activePour.source ? "left" : "right"),
       })).join("")}</div>
     </section>
-    <footer class="game-bottom"><span>${escapeHtml(level.description || "")}</span>
-      <span>${levelState.length} ${escapeHtml(t("bottles"))}</span></footer>
+    <footer class="game-bottom"><span>${levelState.length} ${escapeHtml(t("bottles"))}</span></footer>
   </section>`;
+  if (activePour) {
+    const pour = activePour;
+    requestAnimationFrame(() => {
+      const source = root.querySelector(`[data-bottle="${pour.source}"]`);
+      const target = root.querySelector(`[data-bottle="${pour.target}"]`);
+      positionPourStream(
+        root.querySelector(".pour-stream"),
+        source,
+        target,
+        root.querySelector(".board-wrap"),
+        source?.querySelector(".liquid:last-of-type")?.style.backgroundColor || "#52d8b2",
+      );
+    });
+  }
   startTimer();
 }
 
@@ -547,13 +700,19 @@ async function selectBottle(index) {
     revealed: [...revealedLayerIds],
   };
   movePending = true;
+  activePour = { source, target };
   renderGame();
   let result;
   try {
-    result = await backend("move", {
+    const request = backend("move", {
       level_index: levelIndex, state: levelState, source, target,
     });
+    [result] = await Promise.all([
+      request,
+      new Promise((resolve) => setTimeout(resolve, 680)),
+    ]);
   } finally {
+    activePour = null;
     movePending = false;
   }
   history.push(before);

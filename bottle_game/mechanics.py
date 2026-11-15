@@ -37,10 +37,6 @@ def build_mechanics(level_index: int) -> BottleMechanics:
     mechanics = BottleMechanics()
     if level_index >= 25:
         mechanics.decoy_bottles.add(max(0, (level_index - 25) % 3))
-    if level_index >= 45:
-        mechanics.stone_bottles.add(max(0, (level_index - 45) % 2))
-    if level_index >= 70:
-        mechanics.frozen_bottles.add(max(0, (level_index - 70) % 2))
     if level_index >= 90:
         mechanics.hidden_bottles.add(max(0, (level_index - 90) % 2))
     return mechanics

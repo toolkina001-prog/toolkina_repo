@@ -74,18 +74,12 @@ def _determine_mechanics(
     empty_bottles: int,
 ) -> tuple[list[str], dict[str, Any]]:
     mechanics: list[str] = []
-    config: dict[str, Any] = {"decoy_bottles": [], "frozen_bottles": [], "stone_bottles": []}
+    config: dict[str, Any] = {"decoy_bottles": []}
     empty_indices = list(range(color_count, color_count + empty_bottles))
 
     if level_index >= 25:
         mechanics.append("decoy_bottle")
         config["decoy_bottles"] = [empty_indices[0]]
-    if level_index >= 45:
-        mechanics.append("stone_layer")
-        config["stone_bottles"] = [empty_indices[1] if len(empty_indices) > 1 else empty_indices[0]]
-    if level_index >= 70:
-        mechanics.append("frozen_layer")
-        config["frozen_bottles"] = [empty_indices[2] if len(empty_indices) > 2 else empty_indices[-1]]
     if capacity >= 5:
         mechanics.append("capacity_5")
     return mechanics, config
