@@ -87,6 +87,7 @@ let homeAnimationTimeout = null;
 let statusMessage = "";
 let statusIsError = false;
 let activePour = null;
+let bottleSvgId = 0;
 let audioContext;
 let musicGain;
 let musicTimer = null;
@@ -434,37 +435,95 @@ function renderBottle(index, bottle, capacities, options = {}) {
     isReceiving ? "receiving" : "", complete ? "complete" : "",
   ]
     .filter(Boolean).join(" ");
+  const svgId = `bottle-${bottleSvgId++}`;
+  const clipId = `${svgId}-clip`;
+  const glassId = `${svgId}-glass`;
+  const outerPath = "M36 17 C36 12 39 9 44 9 H56 C61 9 64 12 64 17 V50 C64 58 68 63 76 67 C84 72 88 82 88 94 V270 C88 286 81 292 68 292 H32 C19 292 12 286 12 270 V94 C12 82 16 72 24 67 C32 63 36 58 36 50 Z";
+  const innerPath = "M39 17 C39 14 41 12 44 12 H56 C59 12 61 14 61 17 V50 C61 61 67 65 74 70 C81 75 85 83 85 95 V270 C85 283 78 289 68 289 H32 C22 289 15 283 15 270 V95 C15 83 19 75 26 70 C33 65 39 61 39 50 Z";
+  const capacityHeight = 194 / capacity;
+  const patternMarks = [
+    '<path d="M3 0V12 M9 0V12" stroke="white" stroke-opacity=".42" stroke-width="1"/>',
+    '<path d="M-3 9L9 -3 M3 15L15 3" stroke="white" stroke-opacity=".46" stroke-width="1.4"/>',
+    '<circle cx="3" cy="3" r="1.2" fill="white" fill-opacity=".58"/><circle cx="9" cy="9" r="1.2" fill="white" fill-opacity=".58"/>',
+    '<path d="M0 4Q3 1 6 4T12 4 M0 10Q3 7 6 10T12 10" fill="none" stroke="white" stroke-opacity=".42" stroke-width="1"/>',
+    '<path d="M0 0L12 12 M12 0L0 12" stroke="white" stroke-opacity=".4" stroke-width="1"/>',
+    '<path d="M3 1L5 3L3 5L1 3Z M9 7L11 9L9 11L7 9Z" fill="white" fill-opacity=".52"/>',
+  ];
   const layers = bottle.map((color, layerIndex) => {
     const token = options.tokens?.[index]?.[layerIndex];
     const concealed = options.secrets?.has(token) && !options.revealed?.has(token);
     const colorIndex = colorIndexOf(color);
     const fill = concealed ? "#080b0f" : layerColor(color);
     const texture = concealed ? "texture-secret" : ["texture-snow", "texture-lava", "texture-glitter"][colorIndex % 3];
-    const bottom = (layerIndex / capacities[index]) * 100;
-    const height = 100 / capacities[index];
-    return `<span class="liquid pattern-${colorIndex % 6} ${texture}" aria-hidden="true"
-      style="bottom:${bottom}%;height:${height}%;background-color:${fill}">${concealed ? '<span class="secret-mark">?</span>' : ""}</span>`;
+    const height = capacityHeight + 0.5;
+    const y = 286 - (layerIndex + 1) * capacityHeight;
+    const patternId = `${svgId}-pattern-${layerIndex}`;
+    const liquid = `<rect class="liquid pattern-${colorIndex % 6}" x="15" y="${y}" width="70" height="${height}" fill="${fill}"/>`;
+    if (concealed) {
+      return `<g class="liquid-group ${layerIndex === bottle.length - 1 ? "liquid-top" : ""}">
+        ${liquid}<text class="secret-mark" x="50" y="${y + capacityHeight / 2}">?</text>
+      </g>`;
+    }
+    const extraMarks = texture === "texture-snow"
+      ? '<circle cx="3" cy="9" r=".8" fill="white" fill-opacity=".55"/><circle cx="10" cy="2" r=".7" fill="white" fill-opacity=".5"/>'
+      : texture === "texture-lava"
+        ? '<path d="M0 10Q4 7 8 10T16 10" fill="none" stroke="#fff1a8" stroke-opacity=".38" stroke-width="1.5"/>'
+        : '<path d="M9 2L10 4L12 5L10 6L9 8L8 6L6 5L8 4Z" fill="white" fill-opacity=".55"/>';
+    return `<g class="liquid-group ${texture} ${layerIndex === bottle.length - 1 ? "liquid-top" : ""}">
+      <defs><pattern id="${patternId}" width="12" height="12" patternUnits="userSpaceOnUse">
+        ${patternMarks[colorIndex % patternMarks.length]}${extraMarks}
+      </pattern></defs>
+      ${liquid}<rect class="liquid-pattern" x="15" y="${y}" width="70" height="${height}" fill="url(#${patternId})" opacity=".42"/>
+    </g>`;
   }).join("");
-  const emptyHint = bottle.length === 0 ? '<span class="empty-hint">+</span>' : "";
-  const shell = `<span class="bottle-shell">
-    <span class="bottle-neck-outline"></span><span class="bottle-neck"></span>
-    <span class="bottle-shoulders-outline"></span><span class="bottle-shoulders"></span>
-    <span class="bottle-body-outline"></span>
-    <span class="bottle-body"><span class="bottle-liquid-area">${layers}${emptyHint}</span>
-      <span class="bottle-glint"></span></span>
-    <span class="bottle-mouth"></span>${complete ? '<span class="bottle-cap"></span>' : ""}
-  </span>`;
   const liquidLevel = (bottle.length / capacity) * 100;
+  const splashY = 286 - (bottle.length / capacity) * 194;
+  const emptyHint = bottle.length === 0 ? '<text class="empty-hint" x="50" y="190">+</text>' : "";
+  const defs = `<defs>
+    <clipPath id="${clipId}" clipPathUnits="userSpaceOnUse"><path d="${innerPath}"/></clipPath>
+    <linearGradient id="${glassId}" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#d8f4f1" stop-opacity=".28"/>
+      <stop offset="8%" stop-color="#fff" stop-opacity=".58"/>
+      <stop offset="22%" stop-color="#fff" stop-opacity=".025"/>
+      <stop offset="76%" stop-color="#eafffd" stop-opacity=".055"/>
+      <stop offset="93%" stop-color="#fff" stop-opacity=".44"/>
+      <stop offset="100%" stop-color="#b6d7d4" stop-opacity=".25"/>
+    </linearGradient>
+    <linearGradient id="${svgId}-cap" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#fff2bb"/><stop offset="45%" stop-color="#d7b75f"/>
+      <stop offset="100%" stop-color="#9d7a31"/>
+    </linearGradient>
+  </defs>`;
+  const svg = `<svg class="bottle-illustration" viewBox="0 0 100 300" aria-hidden="true" focusable="false">
+    ${defs}
+    <path class="glass-underlay" d="${outerPath}" fill="rgba(226,247,244,.08)"/>
+    <g class="bottle-liquid-area" clip-path="url(#${clipId})">
+      ${layers}
+      <ellipse class="bottle-splash" cx="50" cy="${splashY}" rx="29" ry="3.5" fill="var(--pour-color, #e8fffb)"/>
+      ${emptyHint}
+    </g>
+    <path class="glass-sheen" d="${outerPath}" fill="url(#${glassId})"/>
+    <path class="bottle-outline" d="${outerPath}"/>
+    <path class="bottle-inner-outline" d="${innerPath}"/>
+    <path class="bottle-highlight" d="M20 99V265Q20 280 31 282 M28 74Q35 69 39 61 M41 16V48"/>
+    <path class="bottle-highlight bottle-highlight-faint" d="M80 99V264Q80 277 72 280 M60 16V47"/>
+    <path class="bottle-base-glint" d="M31 284Q50 289 69 284"/>
+    <rect class="bottle-mouth" x="33" y="7" width="34" height="9" rx="3.5"/>
+    ${complete ? `<g class="bottle-cap">
+      <rect x="36" y="3" width="28" height="12" rx="2.5" fill="url(#${svgId}-cap)"/>
+      <path d="M40 5V13 M45 5V13 M50 5V13 M55 5V13 M60 5V13"/>
+    </g>` : ""}
+  </svg>`;
   const pourColor = options.pourColor ? `;--pour-color:${options.pourColor}` : "";
   const sizing = `--bottle-height:${Math.round(218 * scale)}px;--shell-height:${Math.round(176 * scale)}px;--liquid-level:${liquidLevel}%${pourColor}`;
   if (options.decorative) {
     const homeIndex = Number.isInteger(options.homeIndex) ? `data-home-bottle="${options.homeIndex}"` : "";
-    return `<div class="${classes}" style="${sizing}" ${homeIndex} aria-hidden="true">${shell}</div>`;
+    return `<div class="${classes}" style="${sizing}" ${homeIndex} aria-hidden="true">${svg}</div>`;
   }
   const label = `${t("bottleLabel", { number: index + 1 })}, ${bottle.length}`;
   return `<button type="button" class="${classes}" style="${sizing}" data-bottle="${index}"
       aria-label="${escapeHtml(label)}" aria-pressed="${selected}" ${movePending ? "disabled" : ""}>
-    ${options.showLabel === false ? "" : `<span class="bottle-label">${String(index + 1).padStart(2, "0")}</span>`}${shell}
+    ${options.showLabel === false ? "" : `<span class="bottle-label">${String(index + 1).padStart(2, "0")}</span>`}${svg}
   </button>`;
 }
 
@@ -555,37 +614,61 @@ function stopHomeAnimation() {
 
 function layoutDemoBottle(bottle) {
   const area = bottle.querySelector(".bottle-liquid-area");
-  const layers = [...area.querySelectorAll(".liquid")];
-  layers.forEach((layer, index) => {
-    layer.style.bottom = `${(index / 4) * 100}%`;
-    layer.style.height = "25%";
+  const groups = [...area.querySelectorAll(".liquid-group")];
+  const layerHeight = 194 / 4;
+  groups.forEach((group, index) => {
+    const y = 286 - (index + 1) * layerHeight;
+    group.classList.toggle("liquid-top", index === groups.length - 1);
+    group.querySelectorAll("rect").forEach((rect) => {
+      rect.setAttribute("y", y);
+      rect.setAttribute("height", layerHeight + 0.5);
+    });
+    const mark = group.querySelector(".secret-mark");
+    if (mark) mark.setAttribute("y", y + layerHeight / 2);
   });
+  const splash = area.querySelector(".bottle-splash");
+  if (splash) splash.setAttribute("cy", 286 - groups.length * layerHeight);
   let emptyHint = area.querySelector(".empty-hint");
-  if (!layers.length && !emptyHint) {
-    emptyHint = document.createElement("span");
-    emptyHint.className = "empty-hint";
+  if (!groups.length && !emptyHint) {
+    emptyHint = document.createElementNS("http://www.w3.org/2000/svg", "text");
+    emptyHint.setAttribute("class", "empty-hint");
+    emptyHint.setAttribute("x", "50");
+    emptyHint.setAttribute("y", "190");
+    emptyHint.setAttribute("text-anchor", "middle");
     emptyHint.textContent = "+";
     area.append(emptyHint);
-  } else if (layers.length && emptyHint) {
+  } else if (groups.length && emptyHint) {
     emptyHint.remove();
   }
-  bottle.style.setProperty("--liquid-level", `${(layers.length / 4) * 100}%`);
+  bottle.style.setProperty("--liquid-level", `${(groups.length / 4) * 100}%`);
 }
 
 function transferDemoLayer(source, target) {
   const sourceArea = source.querySelector(".bottle-liquid-area");
   const targetArea = target.querySelector(".bottle-liquid-area");
-  const sourceLayers = sourceArea.querySelectorAll(".liquid");
-  const targetLayers = targetArea.querySelectorAll(".liquid");
+  const sourceLayers = sourceArea.querySelectorAll(".liquid-group");
+  const targetLayers = targetArea.querySelectorAll(".liquid-group");
   const layer = sourceLayers[sourceLayers.length - 1];
-  const targetTop = targetLayers[targetLayers.length - 1];
+  const targetTop = targetLayers[targetLayers.length - 1]?.querySelector(".liquid");
+  const sourceColor = layer?.querySelector(".liquid")?.getAttribute("fill");
   if (!layer || targetLayers.length >= 4 ||
-      (targetTop && targetTop.style.backgroundColor !== layer.style.backgroundColor)) return false;
+      (targetTop && targetTop.getAttribute("fill") !== sourceColor)) return false;
   layer.remove();
   targetArea.append(layer);
   layoutDemoBottle(source);
   layoutDemoBottle(target);
   return true;
+}
+
+function trackPourStream(stream, source, target, container, color, duration) {
+  if (!stream || !source || !target || !container) return;
+  const startedAt = performance.now();
+  const update = (now) => {
+    if (!stream.isConnected || !stream.classList.contains("active")) return;
+    positionPourStream(stream, source, target, container, color);
+    if (now - startedAt < duration) requestAnimationFrame(update);
+  };
+  requestAnimationFrame(update);
 }
 
 function positionPourStream(stream, source, target, container, color) {
@@ -597,18 +680,36 @@ function positionPourStream(stream, source, target, container, color) {
   const startY = sourceRect.top + sourceRect.height / 2 - containerRect.top;
   const endX = targetRect.left + targetRect.width / 2 - containerRect.left;
   const endY = targetRect.top + targetRect.height / 2 - containerRect.top;
-  const controlX = (startX + endX) / 2;
-  const controlY = (startY + endY) / 2 + Math.min(64, Math.max(22, Math.abs(endX - startX) * 0.2));
-  const path = `M ${startX} ${startY} Q ${controlX} ${controlY} ${endX} ${endY}`;
+  const dx = endX - startX;
+  const sag = Math.min(72, Math.max(26, Math.abs(dx) * 0.24));
+  const path = `M ${startX} ${startY} C ${startX + dx * 0.2} ${startY + 4} ${endX - dx * 0.2} ${endY + sag} ${endX} ${endY}`;
   stream.setAttribute("viewBox", `0 0 ${containerRect.width} ${containerRect.height}`);
-  stream.innerHTML = `<path class="pour-body" d="${path}"/>
-    <path class="pour-highlight" d="${path}"/>
-    <circle class="pour-drop" r="3" cx="${startX}" cy="${startY}">
-      <animateMotion dur=".48s" repeatCount="indefinite" path="${path}"/>
-    </circle>
-    <circle class="pour-drop pour-drop-small" r="2" cx="${startX}" cy="${startY}">
-      <animateMotion begin=".22s" dur=".48s" repeatCount="indefinite" path="${path}"/>
-    </circle>`;
+  if (!stream.querySelector(".pour-body")) {
+    const filterId = `pour-filter-${bottleSvgId++}`;
+    stream.innerHTML = `<defs>
+        <filter id="${filterId}" x="-15%" y="-20%" width="130%" height="140%">
+          <feTurbulence type="fractalNoise" baseFrequency=".025 .1" numOctaves="1" seed="4" result="ripple"/>
+          <feDisplacementMap in="SourceGraphic" in2="ripple" scale="2.2" xChannelSelector="R" yChannelSelector="G"/>
+        </filter>
+      </defs>
+      <path class="pour-shadow"/>
+      <path class="pour-body" filter="url(#${filterId})"/>
+      <path class="pour-highlight"/>
+      <circle class="pour-drop" r="3" cx="${startX}" cy="${startY}">
+        <animateMotion dur=".48s" repeatCount="indefinite"/>
+      </circle>
+      <circle class="pour-drop pour-drop-small" r="2" cx="${startX}" cy="${startY}">
+        <animateMotion begin=".22s" dur=".48s" repeatCount="indefinite"/>
+      </circle>`;
+  }
+  stream.querySelectorAll(".pour-shadow, .pour-body, .pour-highlight").forEach((pathElement) =>
+    pathElement.setAttribute("d", path)
+  );
+  stream.querySelectorAll("animateMotion").forEach((motion) => motion.setAttribute("path", path));
+  stream.querySelectorAll(".pour-drop").forEach((drop) => {
+    drop.setAttribute("cx", String(startX));
+    drop.setAttribute("cy", String(startY));
+  });
   stream.style.setProperty("--pour-color", color);
 }
 
@@ -629,7 +730,7 @@ function startHomeAnimation() {
     const source = bottles[sourceIndex];
     const target = bottles[targetIndex];
     const layers = source.querySelectorAll(".liquid");
-    const color = layers.length ? getComputedStyle(layers[layers.length - 1]).backgroundColor : "#5dd8b1";
+    const color = layers.length ? getComputedStyle(layers[layers.length - 1]).fill : "#5dd8b1";
     source.style.setProperty("--pour-color", color);
     target.style.setProperty("--pour-color", color);
     target.style.setProperty("--liquid-level", `${(target.querySelectorAll(".liquid").length / 4) * 100}%`);
@@ -637,8 +738,8 @@ function startHomeAnimation() {
     target.classList.add("home-receiving");
     requestAnimationFrame(() => {
       if (!source.isConnected || !target.isConnected) return;
-      positionPourStream(stream, source, target, stage, color);
       stream.classList.add("active");
+      trackPourStream(stream, source, target, stage, color, 1000);
       homeAnimationTimeout = setTimeout(() => {
         source.classList.remove("home-pouring");
         target.classList.remove("home-receiving");
@@ -781,12 +882,13 @@ function renderGame() {
     requestAnimationFrame(() => {
       const source = root.querySelector(`[data-bottle="${pour.source}"]`);
       const target = root.querySelector(`[data-bottle="${pour.target}"]`);
-      positionPourStream(
+      trackPourStream(
         root.querySelector(".pour-stream"),
         source,
         target,
         root.querySelector(".board-wrap"),
-        source?.querySelector(".liquid:last-of-type")?.style.backgroundColor || "#52d8b2",
+        pourColor || "#52b892",
+        POUR_ANIMATION_MS,
       );
     });
   }
