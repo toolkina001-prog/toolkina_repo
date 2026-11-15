@@ -1,0 +1,17 @@
+{
+  "name": "bottle-sort",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Bottle Sort desktop UI",
+  "main": "electron/main.cjs",
+  "scripts": {
+    "start": "electron .",
+    "check": "node --check electron/main.cjs && node --check electron/preload.cjs && node --check web/renderer.js"
+  },
+  "devDependencies": {
+    "electron": "^45.3.2"
+  },
+  "allowScripts": {
+    "electron@45.3.2": true
+  }
+}

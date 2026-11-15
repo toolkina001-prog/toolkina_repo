@@ -3,10 +3,11 @@
 from __future__ import annotations
 
 import argparse
-import tkinter as tk
+import os
+import subprocess
+from pathlib import Path
 
 from bottle_game.app import play_console
-from bottle_game.gui import BottleSortApp
 
 
 def main() -> None:
@@ -18,11 +19,12 @@ def main() -> None:
         play_console(color_count=3, capacity=4, empty_bottles=2)
         return
 
+    command = ["cmd", "/c", "npm", "start"] if os.name == "nt" else ["npm", "start"]
     try:
-        app = BottleSortApp()
-        app.mainloop()
-    except tk.TclError as error:
-        raise SystemExit(f"Could not start the desktop UI: {error}") from error
+        result = subprocess.run(command, cwd=Path(__file__).resolve().parent, check=False)
+    except FileNotFoundError as error:
+        raise SystemExit("Node.js and npm are required to start the JavaScript desktop UI.") from error
+    raise SystemExit(result.returncode)
 
 
 if __name__ == "__main__":
