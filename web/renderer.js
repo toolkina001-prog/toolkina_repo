@@ -10,11 +10,12 @@ const TEXT = {
     hintLimit: "You have used all three hints for this level.", solutionFound: "A solution exists in {count} moves.",
     solutionMissing: "No solution found within the search time limit.", tutorial: "Level guide",
     settingsTitle: "Make it yours", sound: "Sound effects", soundInfo: "Soft feedback for moves and wins",
-    music: "Ambient music", musicInfo: "A quiet tone while you play", patterns: "Color patterns",
+    music: "Ambient music", musicInfo: "A cheerful, gentle melody while you play", patterns: "Color patterns",
     patternsInfo: "Add texture so liquids are easier to tell apart", language: "Language",
-    save: "Save settings", reset: "Reset progress",     resetConfirm: "Reset all completed levels?",
+    save: "Save settings", reset: "Reset progress", resetConfirm: "Reset completed levels? Your caps will be kept.",
     progressError: "Could not load saved progress: {error}", progressSaved: "Settings saved.",
-    progressReset: "Progress cleared.", openLevel: "Open level {number}", bottles: "bottles",
+    progressReset: "Progress cleared. Caps were kept.", openLevel: "Open level {number}", bottles: "bottles",
+    caps: "Caps", capsEarned: "Earned {count} caps!",
     mechanic_decoy_bottle: "Decoy bottle", mechanic_capacity_5: "Capacity 5", mechanic_giant_bottle_3x: "Giant bottle",
     mechanic_hidden_colors: "Hidden colors", mechanic_stone_layer: "Stone layer", mechanic_frozen_layer: "Frozen layer",
     mechanic_decoy: "Decoy bottle", mechanic_ice: "Frozen layer", mechanic_stone: "Stone layer",
@@ -32,11 +33,12 @@ const TEXT = {
     hintLimit: "Все три подсказки для этого уровня использованы.", solutionFound: "Решение найдено: {count} ходов.",
     solutionMissing: "Решение не найдено за отведённое время.", tutorial: "Подсказка уровня",
     settingsTitle: "Настройки игры", sound: "Звуковые эффекты", soundInfo: "Звуки ходов и победы",
-    music: "Фоновая музыка", musicInfo: "Ненавязчивый звук во время игры", patterns: "Узоры для цветов",
+    music: "Фоновая музыка", musicInfo: "Весёлая, но спокойная мелодия во время игры", patterns: "Узоры для цветов",
     patternsInfo: "Текстуры помогают различать цвета", language: "Язык",
-    save: "Сохранить настройки", reset: "Сбросить прогресс",     resetConfirm: "Сбросить все пройденные уровни?",
+    save: "Сохранить настройки", reset: "Сбросить прогресс", resetConfirm: "Сбросить пройденные уровни? Крышки сохранятся.",
     progressError: "Не удалось загрузить сохранение: {error}", progressSaved: "Настройки сохранены.",
-    progressReset: "Прогресс очищен.", openLevel: "Открыть уровень {number}", bottles: "бутылок",
+    progressReset: "Прогресс очищен, крышки сохранены.", openLevel: "Открыть уровень {number}", bottles: "бутылок",
+    caps: "Крышки", capsEarned: "Получено крышек: {count}",
     mechanic_decoy_bottle: "Бутылка-обманка", mechanic_capacity_5: "Ёмкость 5", mechanic_giant_bottle_3x: "Большая бутылка",
     mechanic_hidden_colors: "Скрытые цвета", mechanic_stone_layer: "Каменный слой", mechanic_frozen_layer: "Замороженный слой",
     mechanic_decoy: "Обманка", mechanic_ice: "Лёд", mechanic_stone: "Камень",
@@ -58,8 +60,9 @@ const root = document.getElementById("app");
 const toast = document.getElementById("toast");
 
 let campaign = [];
-let progress = { completed: [], settings: {} };
+let progress = { completed: [], caps: 0, settings: {} };
 let progressLoadError = "";
+let progressNeedsSave = false;
 let screen = "home";
 let levelIndex = 0;
 let levelState = [];
@@ -85,11 +88,11 @@ let statusMessage = "";
 let statusIsError = false;
 let activePour = null;
 let audioContext;
-let musicOscillators = [];
 let musicGain;
 let musicTimer = null;
 let musicNoteIndex = 0;
 let audioUnlocked = false;
+const POUR_ANIMATION_MS = 340;
 
 const settings = {
   language: "EN",
@@ -124,8 +127,14 @@ function loadProgress() {
     }
     if (!Object.hasOwn(TEXT, settings.language)) settings.language = "EN";
     progress.completed = Array.isArray(progress.completed) ? progress.completed : [];
+    if (Object.hasOwn(parsed, "caps")) {
+      progress.caps = Number.isSafeInteger(parsed.caps) && parsed.caps >= 0 ? parsed.caps : 0;
+    } else {
+      progress.caps = capsForCompletedLevels(progress.completed);
+      progressNeedsSave = true;
+    }
   } catch (error) {
-    progress = { completed: [], settings: {} };
+    progress = { completed: [], caps: 0, settings: {} };
     progressLoadError = error.message;
   }
 }
@@ -198,7 +207,9 @@ function playTone(frequency, duration = 0.07, type = "sine", volume = 0.035) {
   if (!settings.sound_enabled) return;
   const context = ensureAudio();
   if (!context) return;
-  if (context.state === "suspended") context.resume();
+  if (context.state === "suspended") {
+    context.resume().catch((error) => showToast(`Audio could not start: ${error.message}`));
+  }
   const oscillator = context.createOscillator();
   const gain = context.createGain();
   oscillator.type = type;
@@ -211,58 +222,145 @@ function playTone(frequency, duration = 0.07, type = "sine", volume = 0.035) {
   oscillator.stop(context.currentTime + duration);
 }
 
-const MUSIC_NOTES = [261.63, 329.63, 392, 440, 523.25, 440, 392, 329.63];
+const MUSIC_NOTES = [
+  523.25, 659.25, 783.99, 659.25,
+  440, 523.25, 659.25, 523.25,
+  349.23, 440, 523.25, 440,
+  392, 493.88, 587.33, 493.88,
+];
+const MUSIC_CHORDS = [
+  [130.81, 164.81, 196],
+  [110, 130.81, 164.81],
+  [87.31, 110, 130.81],
+  [98, 123.47, 146.83],
+];
 
-function playMusicNote() {
-  if (!settings.music_enabled || !audioUnlocked || !audioContext || audioContext.state !== "running") return;
+function playMusicTone(frequency, start, duration, volume, type = "sine") {
+  if (!audioContext || !musicGain) return;
   const oscillator = audioContext.createOscillator();
   const envelope = audioContext.createGain();
-  const start = audioContext.currentTime;
-  oscillator.type = "sine";
-  oscillator.frequency.value = MUSIC_NOTES[musicNoteIndex % MUSIC_NOTES.length];
+  oscillator.type = type;
+  oscillator.frequency.value = frequency;
   envelope.gain.setValueAtTime(0.0001, start);
-  envelope.gain.exponentialRampToValueAtTime(0.45, start + 0.35);
-  envelope.gain.exponentialRampToValueAtTime(0.0001, start + 2.55);
+  envelope.gain.exponentialRampToValueAtTime(volume, start + 0.035);
+  envelope.gain.exponentialRampToValueAtTime(0.0001, start + duration);
   oscillator.connect(envelope);
   envelope.connect(musicGain);
+  oscillator.addEventListener("ended", () => {
+    oscillator.disconnect();
+    envelope.disconnect();
+  }, { once: true });
   oscillator.start(start);
-  oscillator.stop(start + 2.6);
+  oscillator.stop(start + duration + 0.01);
+}
+
+function playMusicStep() {
+  if (!settings.music_enabled || !audioUnlocked || !audioContext || audioContext.state !== "running") return;
+  const step = musicNoteIndex % MUSIC_NOTES.length;
+  const chord = MUSIC_CHORDS[Math.floor(step / 4)];
+  const start = audioContext.currentTime + 0.015;
+  playMusicTone(MUSIC_NOTES[step], start, 0.34, 0.38, "triangle");
+  if (step % 4 === 0) {
+    playMusicTone(chord[0], start, 1.65, 0.12);
+    playMusicTone(chord[2], start + 0.02, 1.3, 0.07);
+  } else if (step % 4 === 2) {
+    playMusicTone(chord[1], start, 0.5, 0.08);
+  }
   musicNoteIndex += 1;
 }
 
 function startMusic() {
-  if (!settings.music_enabled || !audioUnlocked || musicOscillators.length) return;
+  if (!settings.music_enabled || !audioUnlocked || musicTimer !== null) return;
   const context = ensureAudio();
   if (!context || context.state !== "running") return;
   musicGain = context.createGain();
-  musicGain.gain.value = 0.16;
+  musicGain.gain.value = 0.13;
   musicGain.connect(context.destination);
-
-  for (const frequency of [110, 164.81]) {
-    const oscillator = context.createOscillator();
-    const voice = context.createGain();
-    oscillator.type = "sine";
-    oscillator.frequency.value = frequency;
-    voice.gain.value = 0.12;
-    oscillator.connect(voice);
-    voice.connect(musicGain);
-    oscillator.start();
-    musicOscillators.push(oscillator, voice);
-  }
-  playMusicNote();
-  musicTimer = setInterval(playMusicNote, 2600);
+  playMusicStep();
+  musicTimer = setInterval(playMusicStep, 500);
 }
 
 function stopMusic() {
   clearInterval(musicTimer);
   musicTimer = null;
-  for (const node of musicOscillators) {
-    if (node instanceof OscillatorNode) node.stop();
-    node.disconnect();
-  }
-  musicOscillators = [];
-  musicGain?.disconnect();
+  const fadingGain = musicGain;
   musicGain = null;
+  if (fadingGain && audioContext) {
+    fadingGain.gain.setTargetAtTime(0, audioContext.currentTime, 0.04);
+    setTimeout(() => fadingGain.disconnect(), 300);
+  }
+}
+
+function playVictoryMusic() {
+  if (!settings.music_enabled || !audioUnlocked || !audioContext || audioContext.state !== "running") return;
+  startMusic();
+  const start = audioContext.currentTime + 0.03;
+  [659.25, 783.99, 1046.5, 1318.51, 1046.5, 1318.51].forEach((frequency, index) => {
+    playMusicTone(frequency, start + index * 0.16, 0.24, 0.4, "triangle");
+  });
+}
+
+function playCoinShower() {
+  if (!settings.sound_enabled) return;
+  const context = ensureAudio();
+  if (!context) return;
+  if (context.state === "suspended") {
+    context.resume().catch((error) => showToast(`Audio could not start: ${error.message}`));
+  }
+  const notes = [1567.98, 2093, 1760, 2349.32, 1975.53, 2637.02, 2093, 3135.96, 2349.32, 2793.83, 2093, 2637.02];
+  notes.forEach((frequency, index) => {
+    setTimeout(() => {
+      if (!settings.sound_enabled) return;
+      const start = context.currentTime;
+      for (const [partial, volume] of [[frequency, 0.032], [frequency * 2.4, 0.009]]) {
+        const oscillator = context.createOscillator();
+        const envelope = context.createGain();
+        oscillator.type = "sine";
+        oscillator.frequency.setValueAtTime(partial, start);
+        oscillator.frequency.exponentialRampToValueAtTime(partial * 0.78, start + 0.13);
+        envelope.gain.setValueAtTime(0.0001, start);
+        envelope.gain.exponentialRampToValueAtTime(volume, start + 0.006);
+        envelope.gain.exponentialRampToValueAtTime(0.0001, start + 0.17);
+        oscillator.connect(envelope);
+        envelope.connect(context.destination);
+        oscillator.addEventListener("ended", () => {
+          oscillator.disconnect();
+          envelope.disconnect();
+        }, { once: true });
+        oscillator.start(start);
+        oscillator.stop(start + 0.18);
+      }
+    }, index * 55);
+  });
+}
+
+function launchCapFireworks(anchor) {
+  const layer = document.createElement("div");
+  layer.className = "cap-firework-layer";
+  layer.setAttribute("aria-hidden", "true");
+  const rect = anchor?.getBoundingClientRect();
+  layer.style.left = `${rect ? rect.left + rect.width / 2 : window.innerWidth / 2}px`;
+  layer.style.top = `${rect ? rect.top + rect.height * 0.2 : window.innerHeight / 2}px`;
+  for (let index = 0; index < 32; index += 1) {
+    const angle = (Math.PI * 2 * index) / 32 + (Math.random() - 0.5) * 0.24;
+    const distance = 80 + Math.random() * 210;
+    const cap = document.createElement("span");
+    cap.className = "firework-cap";
+    cap.style.setProperty("--x", `${Math.cos(angle) * distance}px`);
+    cap.style.setProperty("--y", `${Math.sin(angle) * distance - 55}px`);
+    cap.style.setProperty("--delay", `${Math.random() * 100}ms`);
+    cap.style.setProperty("--spin", `${(Math.random() - 0.5) * 900}deg`);
+    cap.style.setProperty("--cap-color", ["#d9aa48", "#e7c56e", "#8db7bb", "#ef8354"][index % 4]);
+    layer.append(cap);
+  }
+  document.body.append(layer);
+  setTimeout(() => layer.remove(), 1900);
+}
+
+function celebrateLevel(target) {
+  playVictoryMusic();
+  playCoinShower();
+  launchCapFireworks(root.querySelector(`[data-bottle="${target}"]`));
 }
 
 document.addEventListener("pointerdown", unlockAudio, { once: true });
@@ -300,6 +398,17 @@ function formatTime(seconds) {
   return `${String(Math.floor(whole / 60)).padStart(2, "0")}:${String(whole % 60).padStart(2, "0")}`;
 }
 
+function colorIndexOf(color) {
+  const colorId = /^C(\d+)$/.exec(color);
+  return colorId
+    ? Number(colorId[1]) % PALETTE.length
+    : Math.abs([...color].reduce((hash, character) => (hash * 31 + character.charCodeAt(0)) | 0, 0)) % PALETTE.length;
+}
+
+function layerColor(color) {
+  return PALETTE[colorIndexOf(color)] || "#56b9a2";
+}
+
 function startTimer() {
   clearInterval(timerHandle);
   timerHandle = setInterval(() => {
@@ -328,11 +437,8 @@ function renderBottle(index, bottle, capacities, options = {}) {
   const layers = bottle.map((color, layerIndex) => {
     const token = options.tokens?.[index]?.[layerIndex];
     const concealed = options.secrets?.has(token) && !options.revealed?.has(token);
-    const colorId = /^C(\d+)$/.exec(color);
-    const colorIndex = colorId
-      ? Number(colorId[1]) % PALETTE.length
-      : Math.abs([...color].reduce((hash, character) => (hash * 31 + character.charCodeAt(0)) | 0, 0)) % PALETTE.length;
-    const fill = concealed ? "#080b0f" : (PALETTE[colorIndex] || "#56b9a2");
+    const colorIndex = colorIndexOf(color);
+    const fill = concealed ? "#080b0f" : layerColor(color);
     const texture = concealed ? "texture-secret" : ["texture-snow", "texture-lava", "texture-glitter"][colorIndex % 3];
     const bottom = (layerIndex / capacities[index]) * 100;
     const height = 100 / capacities[index];
@@ -348,7 +454,9 @@ function renderBottle(index, bottle, capacities, options = {}) {
       <span class="bottle-glint"></span></span>
     <span class="bottle-mouth"></span>${complete ? '<span class="bottle-cap"></span>' : ""}
   </span>`;
-  const sizing = `--bottle-height:${Math.round(218 * scale)}px;--shell-height:${Math.round(176 * scale)}px`;
+  const liquidLevel = (bottle.length / capacity) * 100;
+  const pourColor = options.pourColor ? `;--pour-color:${options.pourColor}` : "";
+  const sizing = `--bottle-height:${Math.round(218 * scale)}px;--shell-height:${Math.round(176 * scale)}px;--liquid-level:${liquidLevel}%${pourColor}`;
   if (options.decorative) {
     const homeIndex = Number.isInteger(options.homeIndex) ? `data-home-bottle="${options.homeIndex}"` : "";
     return `<div class="${classes}" style="${sizing}" ${homeIndex} aria-hidden="true">${shell}</div>`;
@@ -366,8 +474,31 @@ function brand() {
   </button>`;
 }
 
+function capBalance() {
+  return Number.isSafeInteger(progress.caps) && progress.caps >= 0 ? progress.caps : 0;
+}
+
+function capRewardForLevel(levelId) {
+  const levelNumber = Number(levelId);
+  return 50 + (Math.max(1, Number.isSafeInteger(levelNumber) ? levelNumber : 1) - 1) * 10;
+}
+
+function capsForCompletedLevels(completed) {
+  return [...new Set(completed.map(Number).filter((levelId) =>
+    Number.isSafeInteger(levelId) && levelId >= 1
+  ))].reduce((total, levelId) => total + capRewardForLevel(levelId), 0);
+}
+
 function topbar(right = "") {
-  return `<header class="topbar">${brand()}<div class="top-actions">${right}</div></header>`;
+  const balance = capBalance();
+  return `<header class="topbar">${brand()}
+    <div class="top-actions">
+      <span class="caps-wallet" aria-label="${escapeHtml(t("caps"))}: ${balance}">
+        <span class="cap-wallet-icon" aria-hidden="true"></span><strong>${balance}</strong>
+        <span class="caps-wallet-label">${escapeHtml(t("caps"))}</span>
+      </span>${right}
+    </div>
+  </header>`;
 }
 
 function renderHome() {
@@ -376,10 +507,10 @@ function renderHome() {
   const completed = progress.completed.length;
   const level = Math.min(Number(progress.current_level) || 0, campaign.length - 1);
   const sample = [
-    ["C0", "C1", "C0"],
-    ["C1", "C2"],
-    ["C2", "C1", "C3"],
-    ["C3", "C0"],
+    ["C0", "C1"],
+    ["C2", "C1"],
+    ["C3", "C1"],
+    ["C0", "C1"],
     [],
   ];
   const demo = sample.map((layers, index) =>
@@ -402,7 +533,9 @@ function renderHome() {
         </div>
       </section>
       <aside class="scene-card" aria-hidden="true">
-        <div class="demo-stage"><div class="demo-row">${demo}</div><span class="home-pour-stream"></span></div>
+        <div class="demo-stage"><div class="demo-row">${demo}</div>
+          <svg class="home-pour-stream" aria-hidden="true" preserveAspectRatio="none"></svg>
+        </div>
       </aside>
     </div>
     <footer class="home-footer">
@@ -420,22 +553,62 @@ function stopHomeAnimation() {
   homeAnimationTimeout = null;
 }
 
+function layoutDemoBottle(bottle) {
+  const area = bottle.querySelector(".bottle-liquid-area");
+  const layers = [...area.querySelectorAll(".liquid")];
+  layers.forEach((layer, index) => {
+    layer.style.bottom = `${(index / 4) * 100}%`;
+    layer.style.height = "25%";
+  });
+  let emptyHint = area.querySelector(".empty-hint");
+  if (!layers.length && !emptyHint) {
+    emptyHint = document.createElement("span");
+    emptyHint.className = "empty-hint";
+    emptyHint.textContent = "+";
+    area.append(emptyHint);
+  } else if (layers.length && emptyHint) {
+    emptyHint.remove();
+  }
+  bottle.style.setProperty("--liquid-level", `${(layers.length / 4) * 100}%`);
+}
+
+function transferDemoLayer(source, target) {
+  const sourceArea = source.querySelector(".bottle-liquid-area");
+  const targetArea = target.querySelector(".bottle-liquid-area");
+  const sourceLayers = sourceArea.querySelectorAll(".liquid");
+  const targetLayers = targetArea.querySelectorAll(".liquid");
+  const layer = sourceLayers[sourceLayers.length - 1];
+  const targetTop = targetLayers[targetLayers.length - 1];
+  if (!layer || targetLayers.length >= 4 ||
+      (targetTop && targetTop.style.backgroundColor !== layer.style.backgroundColor)) return false;
+  layer.remove();
+  targetArea.append(layer);
+  layoutDemoBottle(source);
+  layoutDemoBottle(target);
+  return true;
+}
+
 function positionPourStream(stream, source, target, container, color) {
   if (!stream || !source || !target || !container) return;
-  const sourceRect = source.getBoundingClientRect();
-  const targetRect = target.getBoundingClientRect();
+  const sourceRect = (source.querySelector(".bottle-mouth") || source).getBoundingClientRect();
+  const targetRect = (target.querySelector(".bottle-mouth") || target).getBoundingClientRect();
   const containerRect = container.getBoundingClientRect();
-  const direction = targetRect.left >= sourceRect.left ? 1 : -1;
-  const startX = sourceRect.left + sourceRect.width * (direction > 0 ? 0.68 : 0.32);
-  const endX = targetRect.left + targetRect.width * (direction > 0 ? 0.32 : 0.68);
-  const startY = sourceRect.top + sourceRect.height * 0.22;
-  const endY = targetRect.top + targetRect.height * 0.22;
-  const dx = endX - startX;
-  const dy = endY - startY;
-  stream.style.left = `${startX - containerRect.left}px`;
-  stream.style.top = `${startY - containerRect.top}px`;
-  stream.style.width = `${Math.max(14, Math.hypot(dx, dy))}px`;
-  stream.style.transform = `rotate(${Math.atan2(dy, dx)}rad)`;
+  const startX = sourceRect.left + sourceRect.width / 2 - containerRect.left;
+  const startY = sourceRect.top + sourceRect.height / 2 - containerRect.top;
+  const endX = targetRect.left + targetRect.width / 2 - containerRect.left;
+  const endY = targetRect.top + targetRect.height / 2 - containerRect.top;
+  const controlX = (startX + endX) / 2;
+  const controlY = (startY + endY) / 2 + Math.min(64, Math.max(22, Math.abs(endX - startX) * 0.2));
+  const path = `M ${startX} ${startY} Q ${controlX} ${controlY} ${endX} ${endY}`;
+  stream.setAttribute("viewBox", `0 0 ${containerRect.width} ${containerRect.height}`);
+  stream.innerHTML = `<path class="pour-body" d="${path}"/>
+    <path class="pour-highlight" d="${path}"/>
+    <circle class="pour-drop" r="3" cx="${startX}" cy="${startY}">
+      <animateMotion dur=".48s" repeatCount="indefinite" path="${path}"/>
+    </circle>
+    <circle class="pour-drop pour-drop-small" r="2" cx="${startX}" cy="${startY}">
+      <animateMotion begin=".22s" dur=".48s" repeatCount="indefinite" path="${path}"/>
+    </circle>`;
   stream.style.setProperty("--pour-color", color);
 }
 
@@ -443,8 +616,10 @@ function startHomeAnimation() {
   const bottles = [...root.querySelectorAll(".home-bottle")];
   const stream = root.querySelector(".home-pour-stream");
   const stage = root.querySelector(".demo-stage");
-  if (bottles.length < 2 || !stream || !stage) return;
+  const row = root.querySelector(".demo-row");
+  if (bottles.length < 2 || !stream || !stage || !row) return;
 
+  const initialContents = bottles.map((bottle) => bottle.querySelector(".bottle-liquid-area").innerHTML);
   let pair = 0;
   const pour = () => {
     bottles.forEach((bottle) => bottle.classList.remove("home-pouring", "home-receiving"));
@@ -455,16 +630,35 @@ function startHomeAnimation() {
     const target = bottles[targetIndex];
     const layers = source.querySelectorAll(".liquid");
     const color = layers.length ? getComputedStyle(layers[layers.length - 1]).backgroundColor : "#5dd8b1";
+    source.style.setProperty("--pour-color", color);
+    target.style.setProperty("--pour-color", color);
+    target.style.setProperty("--liquid-level", `${(target.querySelectorAll(".liquid").length / 4) * 100}%`);
     source.classList.add("home-pouring");
     target.classList.add("home-receiving");
-    positionPourStream(stream, source, target, stage, color);
-    stream.classList.add("active");
-    homeAnimationTimeout = setTimeout(() => {
-      source.classList.remove("home-pouring");
-      target.classList.remove("home-receiving");
-      stream.classList.remove("active");
-    }, 1700);
-    pair += 1;
+    requestAnimationFrame(() => {
+      if (!source.isConnected || !target.isConnected) return;
+      positionPourStream(stream, source, target, stage, color);
+      stream.classList.add("active");
+      homeAnimationTimeout = setTimeout(() => {
+        source.classList.remove("home-pouring");
+        target.classList.remove("home-receiving");
+        stream.classList.remove("active");
+        transferDemoLayer(source, target);
+        pair += 1;
+        if (pair >= bottles.length - 1) {
+          pair = 0;
+          row.classList.add("demo-resetting");
+          homeAnimationTimeout = setTimeout(() => {
+            bottles.forEach((bottle, index) => {
+              const area = bottle.querySelector(".bottle-liquid-area");
+              area.innerHTML = initialContents[index];
+              layoutDemoBottle(bottle);
+            });
+            row.classList.remove("demo-resetting");
+          }, 240);
+        }
+      }, 1000);
+    });
   };
 
   pour();
@@ -541,6 +735,7 @@ function renderGame() {
   screen = "game";
   stopHomeAnimation();
   const level = campaign[levelIndex];
+  const pourColor = activePour ? layerColor(levelState[activePour.source].at(-1)) : undefined;
   const targets = selectedBottle === null ? new Set() : new Set(
     legalMoves.filter(([source]) => source === selectedBottle).map(([, target]) => target)
   );
@@ -570,11 +765,12 @@ function renderGame() {
     </nav>
     <p class="${statusClass}">${escapeHtml(statusMessage)}</p>
     <section class="board-wrap" aria-label="${escapeHtml(t("level", { number: level.id }))}">
-      ${activePour ? '<span class="pour-stream active" aria-hidden="true"></span>' : ""}
+      ${activePour ? '<svg class="pour-stream active" aria-hidden="true" preserveAspectRatio="none"></svg>' : ""}
       <div class="board">${levelState.map((bottle, index) => renderBottle(index, bottle, level.capacities, {
         selected: selectedBottle, targets, tokens: layerIds,
         secrets: secretLayerIds, revealed: revealedLayerIds, baseCapacity: level.capacity,
         pouring: activePour?.source, receiving: activePour?.target,
+        pourColor,
         pourDirection: activePour && (activePour.target < activePour.source ? "left" : "right"),
       })).join("")}</div>
     </section>
@@ -709,7 +905,7 @@ async function selectBottle(index) {
     });
     [result] = await Promise.all([
       request,
-      new Promise((resolve) => setTimeout(resolve, 680)),
+      new Promise((resolve) => setTimeout(resolve, POUR_ANIMATION_MS)),
     ]);
   } finally {
     activePour = null;
@@ -728,15 +924,19 @@ async function selectBottle(index) {
   persistProgress();
   setStatus("");
   playTone(530, 0.12, "triangle", 0.04);
+  let levelWon = false;
   if (result.solved) {
+    levelWon = true;
     elapsedSeconds = currentElapsed();
     startedAt = null;
     if (!progress.completed.includes(campaign[levelIndex].id)) {
       progress.completed.push(campaign[levelIndex].id);
+      const reward = capRewardForLevel(campaign[levelIndex].id || levelIndex + 1);
+      progress.caps = capBalance() + reward;
+      showToast(t("capsEarned", { count: reward }));
     }
     solutionPath = [];
     setStatus(t("solved"));
-    playTone(780, 0.28, "sine", 0.05);
   } else if (legalMoves.length === 0) {
     setStatus(t("dead"), true);
   } else if (solutionPath.length === 0) {
@@ -746,6 +946,7 @@ async function selectBottle(index) {
   }
   persistProgress();
   renderGame();
+  if (levelWon) celebrateLevel(target);
 }
 
 async function requestSolution() {
@@ -835,7 +1036,7 @@ function saveSettings() {
 
 function resetProgress() {
   if (!window.confirm(t("resetConfirm"))) return;
-  progress = { completed: [], settings: { ...settings } };
+  progress = { completed: [], caps: capBalance(), settings: { ...settings } };
   persistProgress();
   showToast(t("progressReset"));
   renderSettings();
@@ -901,6 +1102,10 @@ async function initialize() {
     campaign = await backend("get_campaign");
     if (!Array.isArray(campaign) || campaign.length === 0) {
       throw new Error("Campaign is empty.");
+    }
+    if (progressNeedsSave) {
+      persistProgress();
+      progressNeedsSave = false;
     }
     applySettings();
     renderHome();
