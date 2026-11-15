@@ -57,6 +57,7 @@ class GuiContentTests(unittest.TestCase):
     def test_english_and_russian_have_matching_ui_strings(self):
         self.assertEqual(set(TEXT["EN"]), set(TEXT["RU"]))
         self.assertNotIn("minecraft", TEXT["RU"])
+        self.assertEqual(TEXT["RU"]["dead_restart"], "Начать заново")
 
     def test_menu_scene_draws_bottles_before_the_animation_starts(self):
         canvas = RecordingCanvas()

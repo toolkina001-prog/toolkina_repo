@@ -27,6 +27,7 @@ TEXT = {
         "language": "Language", "save": "Save settings", "back": "Back", "reset": "Reset progress",
         "campaign": "Choose a level", "level": "Level {number}", "level_solved": "Puzzle solved!",
         "dead_title": "Game over", "dead_body": "This position cannot be solved. Start the level again.",
+        "dead_restart": "Start over",
         "progress_error": "Could not load saved progress: {error}",
         "select_level": "Click a level to start", "open": "Open",
         "previous": "Previous", "next": "Next level",
@@ -47,6 +48,7 @@ TEXT = {
         "language": "Язык", "save": "Сохранить настройки", "back": "Назад", "reset": "Сбросить прогресс",
         "campaign": "Выбор уровня", "level": "Уровень {number}", "level_solved": "Уровень пройден!",
         "dead_title": "Игра окончена", "dead_body": "Эту позицию нельзя решить. Начните уровень заново.",
+        "dead_restart": "Начать заново",
         "progress_error": "Не удалось загрузить сохранение: {error}",
         "select_level": "Нажмите на номер уровня, чтобы начать", "open": "Открыть",
         "previous": "Предыдущий", "next": "Следующий уровень",
@@ -1550,7 +1552,7 @@ class BottleSortApp(tk.Tk):
             self._dead_end_dialog = None
             self.restart_level()
 
-        self._button(dialog, "restart", restart, width=24).pack(pady=(0, 24))
+        self._button(dialog, "dead_restart", restart, width=24).pack(pady=(0, 24))
         dialog.protocol("WM_DELETE_WINDOW", restart)
         dialog.update_idletasks()
         x = self.winfo_rootx() + (self.winfo_width() - dialog.winfo_width()) // 2
